@@ -5,6 +5,9 @@
 
 class Ray {
 public:
+	Ray();
+	~Ray();
+
 	Vec3 o; //origin
 	Vec3 d; //direction
 

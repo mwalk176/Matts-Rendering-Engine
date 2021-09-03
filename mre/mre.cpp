@@ -2,6 +2,7 @@
 
 #include "Image.h"
 #include "Scene.h"
+#include "Renderer.h"
 
 
 
@@ -15,7 +16,7 @@ int main(int argc, char* argv[]) {
 
 
 	//get scene
-	//Scene scene(sceneFile);
+	Scene scene(sceneFile);
 
 	//render scene
 	//Image output = new Image(1920, 1080) **USE COMMAND LINE ARGS**
@@ -25,8 +26,8 @@ int main(int argc, char* argv[]) {
 	Vec3 test = output.get(24, 42);
 	std::cout << test << std::endl;
 
-	//Renderer renderer = new Renderer("path tracer"  **COMMAND LINE ARGS**) renderer is real class, make abstract render algorirthm for ray tracer and path tracer
-	//renderer.renderScene(scene, output) *pass output by reference so it modifies output
+	Renderer renderer("path tracer"); //  **COMMAND LINE ARGS**) renderer is real class, make abstract render algorirthm for ray tracer and path tracer
+	//renderer.renderScene(scene, output); // *pass output by reference so it modifies output
 	//output image
 	
 	//write to ppm file

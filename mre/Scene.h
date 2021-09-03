@@ -4,6 +4,7 @@
 #include "Camera.h"
 #include "SceneObject.h"
 #include "Light.h"
+#include <vector>
 
 class Scene {
 public:
@@ -13,8 +14,10 @@ public:
 
 private:
 	Camera camera;
-	SceneObject* objects;
-	Light* lights;
+	std::vector<SceneObject>* objects;
+	std::vector <Light>* lights;
+
+	void useDefaultScene();
 
 };
 

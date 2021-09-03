@@ -138,8 +138,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="mre.cpp" />
+    <ClCompile Include="Ray.cpp" />
+    <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Vec3.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -147,8 +151,10 @@
     <ClInclude Include="DirectionalLight.h" />
     <ClInclude Include="Image.h" />
     <ClInclude Include="Light.h" />
+    <ClInclude Include="MRayTracer.h" />
     <ClInclude Include="PointLight.h" />
     <ClInclude Include="Ray.h" />
+    <ClInclude Include="Integrator.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneObject.h" />
