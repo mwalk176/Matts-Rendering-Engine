@@ -1,10 +1,10 @@
+#ifndef VEC3_H
+#define VEC3_H
+
 #include <ostream>
 #include <sstream>
 #include <fstream>
 #include <iostream>
-
-#ifndef VEC3_H
-#define VEC3_H
 
 
 class Vec3 {
