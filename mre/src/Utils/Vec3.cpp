@@ -42,7 +42,7 @@ Vec3 Vec3::operator*(const Vec3 v) {
 	return result;
 }
 
-Vec3 Vec3::operator*(const float c) {
+Vec3 Vec3::operator*(const double c) {
 	Vec3 result;
 	result.x = x * c;
 	result.y = y * c;
@@ -50,7 +50,7 @@ Vec3 Vec3::operator*(const float c) {
 	return result;
 }
 
-Vec3 Vec3::operator/(const float c) {
+Vec3 Vec3::operator/(const double c) {
 	Vec3 result;
 	result.x = x / c;
 	result.y = y / c;
@@ -58,29 +58,29 @@ Vec3 Vec3::operator/(const float c) {
 	return result;
 }
 
-float Vec3::dot(Vec3 v) {
+double Vec3::dot(Vec3 v) {
 	return (x * v.x) + (y * v.y) + (z * v.z);
 }
 
 void Vec3::normalize() {
-	float magnitude = sqrt((x * x) + (y * y) + (z * z));
+	double magnitude = sqrt((x * x) + (y * y) + (z * z));
 	x /= magnitude;
 	y /= magnitude;
 	z /= magnitude;
 }
 
-float Vec3::calculateMagnitude() {
-	float magnitude = sqrt((x * x) + (y * y) + (z * z));
+double Vec3::calculateMagnitude() {
+	double magnitude = sqrt((x * x) + (y * y) + (z * z));
 	return magnitude;
 }
 
-void Vec3::setAll(float val) {
+void Vec3::setAll(double val) {
 	x = val;
 	y = val;
 	z = val;
 }
 
-void Vec3::setEach(float xNew, float yNew, float zNew) {
+void Vec3::setEach(double xNew, double yNew, double zNew) {
 	x = xNew;
 	y = yNew;
 	z = zNew;

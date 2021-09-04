@@ -1,7 +1,7 @@
 #ifndef IMAGE_H
 #define IMAGE_H
 
-#include "Vec3.h"
+#include "../Utils/Vec3.h"
 
 class Image {
 public:

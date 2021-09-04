@@ -1,8 +1,8 @@
 #ifndef RENDERER_H
 #define RENDERER_H
 
-#include "Scene.h"
-#include "Image.h"
+#include "../Scene/Scene.h"
+#include "../Image/Image.h"
 #include "Integrator.h"
 
 class Renderer {

@@ -56,7 +56,7 @@ void Image::set(int x, int y, Vec3 v) {
 void Image::writeToPPMFile() {
 	//Start creating the file
 	std::ostringstream oss;
-	char s[10];
+	//char s[10];
 	//sprintf_s(s, "%04d", frameNum);
 
 	//oss << "./output/image." << s << ".ppm";

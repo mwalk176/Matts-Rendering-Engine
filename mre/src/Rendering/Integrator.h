@@ -1,7 +1,7 @@
 #ifndef INTEGRATOR_H
 #define INTEGRATOR_H
 
-#include "Vec3.h"
+#include "../Utils/Vec3.h"
 
 
 class Integrator {

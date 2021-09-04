@@ -1,13 +1,13 @@
 #include <iostream>
 
-#include "Image.h"
-#include "Scene.h"
-#include "Renderer.h"
+#include "../Image/Image.h"
+#include "../Scene/Scene.h"
+#include "../Rendering/Renderer.h"
 
 
 
 int main(int argc, char* argv[]) {
-	//std::cout << "Hello World!" << std::endl;
+	std::cout << "Hello World!" << std::endl;
 
 	int width = atoi(argv[1]);
 	int height = atoi(argv[2]);

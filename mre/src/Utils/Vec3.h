@@ -20,14 +20,14 @@ public:
 	Vec3 operator + (const Vec3 v);
 	Vec3 operator - (const Vec3 v);
 	Vec3 operator * (const Vec3 v);
-	Vec3 operator * (const float c);
-	Vec3 operator / (const float c);
+	Vec3 operator * (const double c);
+	Vec3 operator / (const double c);
 
-	float dot(Vec3 v);
+	double dot(Vec3 v);
 	void normalize();
-	float calculateMagnitude();
-	void setAll(float val);
-	void setEach(float xNew, float yNew, float zNew);
+	double calculateMagnitude();
+	void setAll(double val);
+	void setEach(double xNew, double yNew, double zNew);
 
 	friend std::ostream& operator<<(std::ostream& os, Vec3 const& v); 
 };
