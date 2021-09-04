@@ -1,5 +1,6 @@
 #include "Image.h"
 
+
 Image::Image() {
 	width = 256;
 	height = 256;
@@ -60,7 +61,8 @@ void Image::writeToPPMFile() {
 	//sprintf_s(s, "%04d", frameNum);
 
 	//oss << "./output/image." << s << ".ppm";
-	oss << "./output/image" << ".ppm";
+
+	oss << "./Output/image" << ".ppm";
 	std::string outputLocation = oss.str();
 	std::ofstream file(outputLocation, std::ios::binary);
 
