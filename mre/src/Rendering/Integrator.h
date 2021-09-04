@@ -9,6 +9,7 @@ public:
 	virtual Vec3 render() = 0;
 
 private:
+
 };
 
 

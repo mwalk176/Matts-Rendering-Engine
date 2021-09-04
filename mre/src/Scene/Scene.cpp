@@ -15,18 +15,30 @@ Scene::Scene(std::string inputScene) {
 }
 
 Scene::~Scene() {
-	delete objects;
-	delete lights;
+	//delete objects;
+	//delete lights;
 
-	/*for (int i = 0; i < objects->size(); i++) {
-		delete objects->at(i);
-	}*/
+	for (int i = 0; i < objects.size(); i++) {
+		delete objects.at(i);
+	}
+}
+
+Camera Scene::getCamera() {
+	return camera;
 }
 
 void Scene::useDefaultScene() {
 
 	camera = Camera();
-	objects = new std::vector<SceneObject>;
-	lights = new std::vector<Light>;
+	
+	//objects = new std::vector<SceneObject*>;
+	objects.push_back(new Sphere());
+	for (int i = 0; i < objects.size(); i++) {
+		//objects.at(i)->toString();
+		SceneObject* object = objects.at(i);
+		std::cout << object->toString() << std::endl;
+	}
+
+	//lights = new std::vector<Light>;
 
 }

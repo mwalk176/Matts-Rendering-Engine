@@ -10,13 +10,14 @@ int main(int argc, char* argv[]) {
 	std::cout << "Hello World!" << std::endl;
 
 	if (argc < 2) {
-		std::cout << "Error: please specify a width, height, and integrator" << std::endl;
+		std::cout << "Error: please specify a width, height, a scenefile, and integrator" << std::endl;
 		return 0;
 	}
 
 	int width = atoi(argv[1]);
 	int height = atoi(argv[2]);
 	std::string sceneFile = argv[3];
+	std::string integrator = argv[4];
 
 
 
@@ -31,7 +32,7 @@ int main(int argc, char* argv[]) {
 	Vec3 test = output.get(24, 42);
 	std::cout << test << std::endl;
 
-	Renderer renderer("path tracer"); //  **COMMAND LINE ARGS**) renderer is real class, make abstract render algorirthm for ray tracer and path tracer
+	Renderer renderer(integrator); //  **COMMAND LINE ARGS**) renderer is real class, make abstract render algorirthm for ray tracer and path tracer
 	renderer.renderScene(scene, output); // *pass output by reference so it modifies output
 	//output image
 	

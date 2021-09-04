@@ -4,7 +4,15 @@
 #include "SceneObject.h"
 
 class Sphere : public SceneObject {
-	Vec3 pos;
+public:
+	Vec3 getPos();
+	bool intersect();
+
+	std::string toString();
+	//friend std::ostream& operator<<(std::ostream& os, SceneObject const& s);
+
+
+private:
 
 };
 
