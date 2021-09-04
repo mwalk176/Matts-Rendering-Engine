@@ -15,8 +15,8 @@ public:
 	Renderer(std::string algorithm);
 	~Renderer();
 
-	void renderScene(Scene scene, Image& image);
-	void renderRow(Scene scene, Image& image, int y);
+	void renderScene(Scene& scene, Image& image);
+	void renderRow(Scene& scene, Image& image, int y);
 
 private:
 	Integrator* integrator;

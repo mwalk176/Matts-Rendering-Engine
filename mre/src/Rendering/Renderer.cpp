@@ -14,7 +14,7 @@ Renderer::Renderer(std::string algorithm) {
 Renderer::~Renderer() {
 }
 
-void Renderer::renderScene(Scene scene, Image& image) {
+void Renderer::renderScene(Scene& scene, Image& image) {
 	
 	//get camera from scene
 	Camera camera = scene.getCamera();
@@ -48,7 +48,6 @@ void Renderer::renderScene(Scene scene, Image& image) {
 		} else {
 
 			renderRow(scene, image, y);
-
 		}
 	}
 
@@ -63,5 +62,6 @@ void Renderer::renderScene(Scene scene, Image& image) {
 	image.set(42, 492, Vec3(0, 1.0, 1.0));
 }
 
-void Renderer::renderRow(Scene scene, Image& image, int y) {
+void Renderer::renderRow(Scene& scene, Image& image, int y) {
+
 }

@@ -24,10 +24,10 @@ void Image::initImage() {
 }
 
 Image::~Image() {
-	for (int i = 0; i < height; i++) {
-		delete[] image[i];
-	}
-	delete[] image;
+	//for (int i = 0; i < height; i++) {
+	//	delete[] image[i];
+	//}
+	//delete[] image;
 }
 
 int Image::getWidth() {
