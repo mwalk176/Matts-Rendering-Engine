@@ -43,6 +43,7 @@ void Renderer::renderScene(Scene scene, Image& image) {
 			//	}
 			//	threadList.clear();
 			//}
+			renderRow(scene, image, y);
 
 		} else {
 
