@@ -12,4 +12,5 @@ Renderer::~Renderer() {
 
 void Renderer::renderScene(Scene& scene, Image& image) {
 	std::cout << "RENDER HERE" << std::endl;
+	image.set(42, 492, Vec3(0, 1.0, 1.0));
 }
