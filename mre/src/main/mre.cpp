@@ -9,6 +9,10 @@
 int main(int argc, char* argv[]) {
 	std::cout << "Hello World!" << std::endl;
 
+	if (argc < 2) {
+		std::cout << "Error: please specify a width, height, and integrator" << std::endl;
+	}
+
 	int width = atoi(argv[1]);
 	int height = atoi(argv[2]);
 	std::string sceneFile = argv[3];
