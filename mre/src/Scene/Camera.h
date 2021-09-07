@@ -6,6 +6,7 @@
 
 class Camera {
 public:
+	Camera();
 	Camera(int x, int y);
 	~Camera();
 
