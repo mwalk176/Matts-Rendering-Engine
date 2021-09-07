@@ -63,20 +63,20 @@
     <ClCompile Include="src\Rendering\Renderer.cpp">
       <Filter>Source Files\Rendering</Filter>
     </ClCompile>
-    <ClCompile Include="src\Scene\Camera.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Scene\Scene.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Main\mre.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Scene\SceneObjects\Sphere.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\Scene\Camera.cpp">
+      <Filter>Source Files\Scene</Filter>
     </ClCompile>
     <ClCompile Include="src\Rendering\MDebug.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scene\Scene.cpp">
+      <Filter>Source Files\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scene\SceneObjects\Sphere.cpp">
+      <Filter>Source Files\Scene\SceneObjects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -4,7 +4,10 @@ Scene::Scene() {
 	useDefaultScene();
 }
 
-Scene::Scene(std::string inputScene) {
+Scene::Scene(std::string inputScene, Camera inCam) {
+	camera = inCam;
+	//camera = Camera(inCam.getColumns(), inCam.getRows());
+
 	if (inputScene == "TODO") {
 		std::cout << "import scene here" << std::endl;
 		useDefaultScene(); //TODO: DELETE WHEN IMPLEMENTED
@@ -29,7 +32,7 @@ Camera Scene::getCamera() {
 
 void Scene::useDefaultScene() {
 
-	camera = Camera();
+	//camera = Camera();
 	
 	//objects = new std::vector<SceneObject*>;
 	objects.push_back(new Sphere());

@@ -11,7 +11,7 @@
 class Scene {
 public:
 	Scene();
-	Scene(std::string inputScene);
+	Scene(std::string inputScene, Camera inCam);
 	~Scene();
 
 	Camera getCamera();

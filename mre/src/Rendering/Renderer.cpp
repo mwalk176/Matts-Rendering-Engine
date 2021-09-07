@@ -16,12 +16,11 @@ Renderer::~Renderer() {
 
 void Renderer::renderScene(Scene& scene, Image& image) {
 	
-	//get camera from scene
-	Camera camera = scene.getCamera();
+	
 	
 	//get image dimensions
 	int rows = image.getHeight();
-	int columns = image.getWidth();
+	//int columns = image.getWidth();
 
 
 	for (int y = 0; y < rows; y++) {
@@ -63,5 +62,14 @@ void Renderer::renderScene(Scene& scene, Image& image) {
 }
 
 void Renderer::renderRow(Scene& scene, Image& image, int y) {
+	
+	//get camera from scene
+	Camera camera = scene.getCamera();
+
+	int columns = image.getWidth();
+
+	for (int x = 0; x < columns; x++) {
+		Ray primRay = camera.convertToWorld(x, y);
+	}
 
 }

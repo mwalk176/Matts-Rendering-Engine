@@ -3,6 +3,7 @@
 #include "../Image/Image.h"
 #include "../Scene/Scene.h"
 #include "../Rendering/Renderer.h"
+#include "../Scene/Camera.h"
 
 
 
@@ -10,7 +11,11 @@ int main(int argc, char* argv[]) {
 	std::cout << "Hello World!" << std::endl;
 
 	if (argc < 2) {
-		std::cout << "Error: please specify a width, height, a scenefile, and integrator" << std::endl;
+		std::cerr << "Error: please specify a width, height, a scenefile, and integrator" << std::endl;
+		return 0;
+	} 
+	if (argc < 5) {
+		std::cerr << "Error: Insufficient amount of parameters" << std::endl;
 		return 0;
 	}
 
@@ -19,10 +24,11 @@ int main(int argc, char* argv[]) {
 	std::string sceneFile = argv[3];
 	std::string integrator = argv[4];
 
-
+	//Create camera
+	Camera camera(width, height);
 
 	//get scene
-	Scene scene(sceneFile);
+	Scene scene(sceneFile, camera);
 
 	//render scene
 	//Image output = new Image(1920, 1080) **USE COMMAND LINE ARGS**

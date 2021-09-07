@@ -6,16 +6,22 @@
 
 class Camera {
 public:
-	Camera();
+	Camera(int x, int y);
 	~Camera();
 
 	Ray convertToWorld(double x, double y);
+	int getRows();
+	int getColumns();
 
 private:
 	Vec3 lookFrom;
 	Vec3 lookAt;
 	Vec3 up;
-	double fov;
+
+	double hFov; //horizontal fov
+	int rows;
+	int columns;
+	double aspectRatio;
 
 };
 
