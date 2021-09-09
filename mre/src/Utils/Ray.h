@@ -12,6 +12,8 @@ public:
 	Vec3 o; //origin
 	Vec3 d; //direction
 
+	friend std::ostream& operator<<(std::ostream& os, Ray const& r);
+
 private:
 
 };

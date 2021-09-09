@@ -47,11 +47,11 @@ void Image::setHeight(int y) {
 }
 
 Vec3 Image::get(int x, int y) {
-	return image[x][y];
+	return image[y][x];
 }
 
 void Image::set(int x, int y, Vec3 v) {
-	image[x][y] = v;
+	image[y][x] = v;
 }
 
 void Image::writeToPPMFile() {

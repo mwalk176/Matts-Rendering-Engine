@@ -141,6 +141,7 @@
     <ClCompile Include="src\Image\Image.cpp" />
     <ClCompile Include="src\Main\mre.cpp" />
     <ClCompile Include="src\Rendering\MDebug.cpp" />
+    <ClCompile Include="src\Rendering\MRayTracer.cpp" />
     <ClCompile Include="src\Rendering\Renderer.cpp" />
     <ClCompile Include="src\Scene\Camera.cpp" />
     <ClCompile Include="src\Scene\Scene.cpp" />

@@ -78,6 +78,9 @@
     <ClCompile Include="src\Scene\SceneObjects\Sphere.cpp">
       <Filter>Source Files\Scene\SceneObjects</Filter>
     </ClCompile>
+    <ClCompile Include="src\Rendering\MRayTracer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Image\Image.h">

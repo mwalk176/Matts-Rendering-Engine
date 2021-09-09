@@ -5,6 +5,9 @@
 
 class Sphere : public SceneObject {
 public:
+	Sphere();
+	Sphere(Vec3 p);
+
 	Vec3 getPos();
 	bool intersect(Ray r, double& p0, double& p1);
 

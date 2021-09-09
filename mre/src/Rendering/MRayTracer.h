@@ -6,7 +6,7 @@
 
 class MRayTracer : public Integrator {
 public:
-	Vec3 render();
+	Vec3 render(Ray camRay, Scene& scene);
 
 private:
 

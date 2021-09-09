@@ -2,15 +2,13 @@
 
 Vec3 MDebug::render(Ray camRay, Scene& scene) {
 
-    std::vector<SceneObject*> objects = scene.getObjects();
-    for (int i = 0; i < objects.size(); i++) {
-        SceneObject* object = objects.at(i);
-
-        double p0 = INFINITY;
-        double p1 = INFINITY;
-
-        if(object->intersect(camRay, p0, p1))
+    double closestPoint = INFINITY;
+    SceneObject* closestObject = scene.getClosestObject(camRay, closestPoint);
+    if (closestObject == nullptr) { //nothing was hit
+        return Vec3();
     }
-
-    return Vec3();
+    else { //compute lighting for closestObject
+        //std::cout << "HIT!" << std::endl;
+        return Vec3(0,.5,1);
+    }
 }

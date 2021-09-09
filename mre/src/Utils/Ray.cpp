@@ -12,3 +12,8 @@ Ray::Ray(Vec3 origin, Vec3 direction) {
 
 Ray::~Ray() {
 }
+
+std::ostream& operator<<(std::ostream& os, Ray const& r) {
+	os << "{Ray Origin: " << r.o << ", Ray Direction: " << r.d << "}";
+	return os;
+}

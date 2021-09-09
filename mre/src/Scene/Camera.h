@@ -8,16 +8,20 @@
 class Camera {
 public:
 	Camera();
+	//Camera(const Camera& c);
+
+	//Camera operator = (const Camera& c);
+
 	Camera(int x, int y);
 	~Camera();
 
 	Ray convertToWorld(double x, double y);
-	const int getRows();
-	const int getColumns();
+	int getRows();
+	int getColumns();
 	
-	const Vec3 getStart();
-	const Vec3 getIncX();
-	const Vec3 getIncY();
+	Vec3 getStart();
+	Vec3 getIncX();
+	Vec3 getIncY();
 
 
 private:

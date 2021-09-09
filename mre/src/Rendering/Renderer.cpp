@@ -2,13 +2,23 @@
 
 
 Renderer::Renderer() {
+	integrator = new MDebug();
+	maxSamples = 1;
+
 }
 
 Renderer::Renderer(std::string algorithm) {
 	std::cout << "Renderer initialized using integrator " << algorithm << std::endl;
+	maxSamples = 1;
 	if (algorithm == "MDEBUG") {
 		integrator = new MDebug();
+	} else if (algorithm == "MRAYTRACER") {
+		integrator = new MRayTracer();
 	}
+	else {
+		integrator = new MDebug();
+	}
+	
 }
 
 Renderer::~Renderer() {
@@ -49,34 +59,26 @@ void Renderer::renderScene(Scene& scene, Image& image) {
 			renderRow(scene, image, y);
 		}
 	}
-
-
-	
-
-
-	
-
-
-	std::cout << "RENDER HERE" << std::endl;
-	image.set(42, 492, Vec3(0, 1.0, 1.0));
 }
 
 void Renderer::renderRow(Scene& scene, Image& image, int y) {
 	
 	//get camera from scene
-	Camera camera = scene.getCamera();
-	Ray primRay = camera.convertToWorld(0, y);
+	Camera* camera = scene.getCamera();
+	Ray primRay = camera->convertToWorld(0, y);
 
 	int columns = image.getWidth();
 
 	for (int x = 0; x < columns; x++) { //TODO implement subpixel tracing
+
+		if(x==0) std::cout << "x = " << x << ", y = " << y << ", primRay = " << primRay << std::endl;
 		
-		Vec3 col = integrator->render();
+		Vec3 col = integrator->render(primRay, scene);
 
 
 		image.set(x, y, col);
 
-		primRay.d = primRay.d + camera.getIncX(); //move to the right
+		primRay.d = primRay.d + camera->getIncX(); //move to the right
 	}
 
 }

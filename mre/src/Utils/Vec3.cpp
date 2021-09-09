@@ -64,9 +64,9 @@ double Vec3::dot(Vec3 v) {
 
 Vec3 Vec3::cross(Vec3 v) {
 	Vec3 result(0);
-	float xNew = (y * v.z) - (z * v.y);
-	float yNew = (z * v.x) - (x * v.z);
-	float zNew = (x * v.y) - (y * v.x);
+	double xNew = (y * v.z) - (z * v.y);
+	double yNew = (z * v.x) - (x * v.z);
+	double zNew = (x * v.y) - (y * v.x);
 	result.setEach(xNew, yNew, zNew);
 	return result;
 }

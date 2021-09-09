@@ -25,7 +25,7 @@ int main(int argc, char* argv[]) {
 	std::string integrator = argv[4];
 
 	//Create camera
-	Camera camera(width, height);
+	Camera* camera = new Camera(width, height);
 
 	//get scene
 	Scene scene(sceneFile, camera);

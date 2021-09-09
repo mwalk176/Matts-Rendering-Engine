@@ -1,10 +1,30 @@
 #include "Camera.h"
 
 Camera::Camera() {
+	lookFrom = Vec3(0); //camera at origin
+	lookAt = Vec3(0, 0, 1); //look down positive z-axis
+	up = Vec3(0, 1, 0); //positive y-axis is up
+	fov = 60.0;
+
+	rows = 256;
+	columns = 256;
+	aspectRatio = columns / rows;
 }
 
+//Camera Camera::operator=(const Camera& c) {
+//	Camera cam = Camera();
+//	cam.lookFrom = c.lookFrom;
+//	cam.lookAt = c.lookAt;
+//	cam.up = c.up;
+//	cam.fov = c.fov;
+//	cam.rows = c.rows;
+//	cam.columns = c.columns;
+//	cam.aspectRatio = c.aspectRatio;
+//	return cam;
+//}
+
 Camera::Camera(int x, int y) {
-	lookFrom = Vec3(0); //camera at origin
+	lookFrom = Vec3(0, 0, 0); //camera at origin
 	lookAt = Vec3(0, 0, 1); //look down positive z-axis
 	up = Vec3(0, 1, 0); //positive y-axis is up
 	fov = 60.0;
@@ -12,6 +32,8 @@ Camera::Camera(int x, int y) {
 	rows = y;
 	columns = x;
 	aspectRatio = columns / rows;
+
+	buildCoordinateSpace();
 }
 
 Camera::~Camera() {
@@ -22,7 +44,7 @@ Ray Camera::convertToWorld(double x, double y) {
 	Vec3 xVec = incX * x;
 	Vec3 yVec = incY * y;
 	
-	Vec3 worldVec = start + xVec + yVec;
+	Vec3 worldVec = start + xVec - yVec;
 	Ray r(lookFrom, worldVec);
 
 	/*double d = 1.0;
@@ -35,23 +57,23 @@ Ray Camera::convertToWorld(double x, double y) {
 	return r;
 }
 
-const int Camera::getRows() {
+int Camera::getRows() {
 	return rows;
 }
 
-const int Camera::getColumns() {
+int Camera::getColumns() {
 	return columns;
 }
 
-const Vec3 Camera::getStart() {
+Vec3 Camera::getStart() {
 	return start;
 }
 
-const Vec3 Camera::getIncX() {
+Vec3 Camera::getIncX() {
 	return incX;
 }
 
-const Vec3 Camera::getIncY() {
+Vec3 Camera::getIncY() {
 	return incY;
 }
 
@@ -59,6 +81,12 @@ void Camera::buildCoordinateSpace() {
 	e3 = lookAt - lookFrom;
 	e1 = e3.cross(up);
 	e2 = e1.cross(e3);
+	
+	e1 = e1 * -1.0; //flip to left-handed coordinate system
+
+	std::cout << "e1: " << e1 << std::endl;
+	std::cout << "e2: " << e2 << std::endl;
+	std::cout << "e3: " << e3 << std::endl;
 
 	double d = e3.calculateMagnitude();
 	double viewPlaneSizeX = d * tan(fov * (pi / 180.0));

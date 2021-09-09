@@ -11,15 +11,17 @@
 class Scene {
 public:
 	Scene();
-	Scene(std::string inputScene, Camera inCam);
+	Scene(std::string inputScene, Camera* inCam);
 	~Scene();
 
-	Camera getCamera();
+	Camera* getCamera();
 	std::vector<SceneObject*> getObjects();
 	std::vector <Light*> getLights();
 
+	SceneObject* getClosestObject(Ray r, double closestPoint);
+
 private:
-	Camera camera;
+	Camera* camera;
 	std::vector<SceneObject*> objects;
 	std::vector <Light*> lights;
 
