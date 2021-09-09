@@ -62,6 +62,15 @@ double Vec3::dot(Vec3 v) {
 	return (x * v.x) + (y * v.y) + (z * v.z);
 }
 
+Vec3 Vec3::cross(Vec3 v) {
+	Vec3 result(0);
+	float xNew = (y * v.z) - (z * v.y);
+	float yNew = (z * v.x) - (x * v.z);
+	float zNew = (x * v.y) - (y * v.x);
+	result.setEach(xNew, yNew, zNew);
+	return result;
+}
+
 void Vec3::normalize() {
 	double magnitude = sqrt((x * x) + (y * y) + (z * z));
 	x /= magnitude;

@@ -65,11 +65,18 @@ void Renderer::renderRow(Scene& scene, Image& image, int y) {
 	
 	//get camera from scene
 	Camera camera = scene.getCamera();
+	Ray primRay = camera.convertToWorld(0, y);
 
 	int columns = image.getWidth();
 
-	for (int x = 0; x < columns; x++) {
-		Ray primRay = camera.convertToWorld(x, y);
+	for (int x = 0; x < columns; x++) { //TODO implement subpixel tracing
+		
+		Vec3 col = integrator->render();
+
+
+		image.set(x, y, col);
+
+		primRay.d = primRay.d + camera.getIncX(); //move to the right
 	}
 
 }

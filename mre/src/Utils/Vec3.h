@@ -24,6 +24,7 @@ public:
 	Vec3 operator / (const double c);
 
 	double dot(Vec3 v);
+	Vec3 cross(Vec3 v); 
 	void normalize();
 	double calculateMagnitude();
 	void setAll(double val);

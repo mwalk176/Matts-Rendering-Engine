@@ -30,6 +30,14 @@ Camera Scene::getCamera() {
 	return camera;
 }
 
+std::vector<SceneObject*> Scene::getObjects() {
+	return objects;
+}
+
+std::vector<Light*> Scene::getLights() {
+	return lights;
+}
+
 void Scene::useDefaultScene() {
 
 	//camera = Camera();

@@ -15,6 +15,8 @@ public:
 	~Scene();
 
 	Camera getCamera();
+	std::vector<SceneObject*> getObjects();
+	std::vector <Light*> getLights();
 
 private:
 	Camera camera;
