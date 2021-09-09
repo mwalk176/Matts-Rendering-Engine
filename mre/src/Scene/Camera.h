@@ -24,6 +24,10 @@ private:
 	int columns;
 	double aspectRatio;
 
+	Vec3 e1;
+	Vec3 e2;
+	Vec3 e3;
+
 };
 
 #endif
