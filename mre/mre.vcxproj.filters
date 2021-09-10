@@ -49,6 +49,12 @@
     <Filter Include="Source Files\Image">
       <UniqueIdentifier>{dfc5074b-e792-4990-9d8e-2f63f80de3a8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Materials">
+      <UniqueIdentifier>{f77cd235-ce35-44dc-b044-76abbd0f8d70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Materials">
+      <UniqueIdentifier>{99279014-80a3-49d3-a81d-6de8d72cd1d4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Image\Image.cpp">
@@ -78,7 +84,13 @@
     <ClCompile Include="src\Scene\SceneObjects\Sphere.cpp">
       <Filter>Source Files\Scene\SceneObjects</Filter>
     </ClCompile>
+    <ClCompile Include="src\Materials\MDebugMat.cpp">
+      <Filter>Source Files\Materials</Filter>
+    </ClCompile>
     <ClCompile Include="src\Rendering\MRayTracer.cpp">
+      <Filter>Source Files\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scene\SceneObjects\SceneObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -124,6 +136,12 @@
     </ClInclude>
     <ClInclude Include="src\Rendering\MDebug.h">
       <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Materials\Material.h">
+      <Filter>Header Files\Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Materials\MDebugMat.h">
+      <Filter>Header Files\Materials</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

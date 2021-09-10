@@ -16,7 +16,6 @@ public:
 
 
 private:
-	Vec3 pos;
 	double radius;
 
 };

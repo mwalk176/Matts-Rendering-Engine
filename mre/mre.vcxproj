@@ -140,17 +140,21 @@
   <ItemGroup>
     <ClCompile Include="src\Image\Image.cpp" />
     <ClCompile Include="src\Main\mre.cpp" />
+    <ClCompile Include="src\Materials\MDebugMat.cpp" />
     <ClCompile Include="src\Rendering\MDebug.cpp" />
     <ClCompile Include="src\Rendering\MRayTracer.cpp" />
     <ClCompile Include="src\Rendering\Renderer.cpp" />
     <ClCompile Include="src\Scene\Camera.cpp" />
     <ClCompile Include="src\Scene\Scene.cpp" />
+    <ClCompile Include="src\Scene\SceneObjects\SceneObject.cpp" />
     <ClCompile Include="src\Scene\SceneObjects\Sphere.cpp" />
     <ClCompile Include="src\Utils\Ray.cpp" />
     <ClCompile Include="src\Utils\Vec3.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Image\Image.h" />
+    <ClInclude Include="src\Materials\Material.h" />
+    <ClInclude Include="src\Materials\MDebugMat.h" />
     <ClInclude Include="src\Rendering\Integrator.h" />
     <ClInclude Include="src\Rendering\MDebug.h" />
     <ClInclude Include="src\Rendering\MRayTracer.h" />

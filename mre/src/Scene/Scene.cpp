@@ -64,16 +64,14 @@ SceneObject* Scene::getClosestObject(Ray r, double closestPoint) {
 
 void Scene::useDefaultScene() {
 
-	//camera = Camera();
-	
-	//objects = new std::vector<SceneObject*>;
-	objects.push_back(new Sphere(Vec3(3,3,5)));
+
+	objects.push_back(new Sphere(Vec3(0,0,5)));
 	for (int i = 0; i < objects.size(); i++) {
 		//objects.at(i)->toString();
 		SceneObject* object = objects.at(i);
 		std::cout << object->toString() << std::endl;
 	}
 
-	//lights = new std::vector<Light>;
+	
 
 }

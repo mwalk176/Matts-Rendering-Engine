@@ -1,8 +1,8 @@
 #include "Camera.h"
 
 Camera::Camera() {
-	lookFrom = Vec3(3,3,0); //camera at origin
-	lookAt = Vec3(3, 3, 5); //COORDINATES of where you want the camera to look at
+	lookFrom = Vec3(0,0,0); //camera at origin
+	lookAt = Vec3(0, 0, 1); //COORDINATES of where you want the camera to look at
 	up = Vec3(0, 1, 0); //positive y-axis is up
 	fov = 60.0;
 

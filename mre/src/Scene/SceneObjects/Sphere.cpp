@@ -3,6 +3,7 @@
 Sphere::Sphere() {
 	pos = Vec3(0);
 	radius = 1.0;
+	materials.push_back(new MDebugMat(Vec3(rand())));
 }
 
 Sphere::Sphere(Vec3 p) {

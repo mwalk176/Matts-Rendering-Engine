@@ -9,6 +9,11 @@ Vec3 MDebug::render(Ray camRay, Scene& scene) {
     }
     else { //compute lighting for closestObject
         //std::cout << "HIT!" << std::endl;
-        return Vec3(0,.5,1);
+        MDebugMat* mat;
+        std::vector<Material*> materials = closestObject->getMaterials();
+            for(int i = 0; i < materials.size(); i++) {
+
+        }
+        return Vec3(1);
     }
 }
