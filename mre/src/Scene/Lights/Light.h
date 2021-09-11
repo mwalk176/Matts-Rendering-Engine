@@ -5,8 +5,13 @@
 
 class Light {
 public:
-	virtual Vec3 pos() = 0;
+	Light();
+	Vec3 getPos();
 
+	virtual std::string toString() = 0;
+
+protected:
+	Vec3 pos;
 };
 
 

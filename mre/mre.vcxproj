@@ -145,6 +145,8 @@
     <ClCompile Include="src\Rendering\MRayTracer.cpp" />
     <ClCompile Include="src\Rendering\Renderer.cpp" />
     <ClCompile Include="src\Scene\Camera.cpp" />
+    <ClCompile Include="src\Scene\Lights\DirectionalLight.cpp" />
+    <ClCompile Include="src\Scene\Lights\Light.cpp" />
     <ClCompile Include="src\Scene\Scene.cpp" />
     <ClCompile Include="src\Scene\SceneObjects\SceneObject.cpp" />
     <ClCompile Include="src\Scene\SceneObjects\Sphere.cpp" />

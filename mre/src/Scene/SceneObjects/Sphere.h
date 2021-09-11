@@ -3,10 +3,12 @@
 
 #include "SceneObject.h"
 
+
 class Sphere : public SceneObject {
 public:
 	Sphere();
 	Sphere(Vec3 p);
+	Sphere(Vec3 p, double r);
 
 	Vec3 getPos();
 	bool intersect(Ray r, double& p0, double& p1);

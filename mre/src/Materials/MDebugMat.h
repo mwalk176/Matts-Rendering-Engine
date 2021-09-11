@@ -5,6 +5,7 @@
 
 class MDebugMat : public Material {
 public:
+	MDebugMat();
 	MDebugMat(Vec3 c);
 
 	Vec3 getColor();

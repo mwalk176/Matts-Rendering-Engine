@@ -1,5 +1,9 @@
 #include "MDebugMat.h"
 
+MDebugMat::MDebugMat() {
+    color = Vec3(rand(), rand(), rand());
+}
+
 MDebugMat::MDebugMat(Vec3 c) {
     color = c;
 }

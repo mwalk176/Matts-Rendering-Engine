@@ -66,6 +66,7 @@ void Scene::useDefaultScene() {
 
 
 	objects.push_back(new Sphere(Vec3(0,0,5)));
+	objects.push_back(new Sphere(Vec3(0, -10004, 0), 10000));
 	for (int i = 0; i < objects.size(); i++) {
 		//objects.at(i)->toString();
 		SceneObject* object = objects.at(i);

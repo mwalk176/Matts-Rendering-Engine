@@ -5,7 +5,15 @@
 
 class DirectionalLight : public Light {
 public:
-	Vec3 pos();
+	DirectionalLight();
+	DirectionalLight(Vec3 d);
+
+	Vec3 getLightDirection();
+
+	std::string toString();
+
+private:
+	Vec3 lightDirection;
 };
 
 

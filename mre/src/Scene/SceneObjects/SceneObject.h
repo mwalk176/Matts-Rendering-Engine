@@ -9,6 +9,7 @@
 
 class SceneObject {
 public:
+	SceneObject();
 	Vec3 getPos();
 	virtual bool intersect(Ray r, double& p0, double& p1) = 0;
 

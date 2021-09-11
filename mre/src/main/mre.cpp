@@ -8,8 +8,6 @@
 
 
 int main(int argc, char* argv[]) {
-	std::cout << "Hello World!" << std::endl;
-
 	if (argc < 2) {
 		std::cerr << "Error: please specify a width, height, a scenefile, and integrator" << std::endl;
 		return 0;
@@ -18,6 +16,8 @@ int main(int argc, char* argv[]) {
 		std::cerr << "Error: Insufficient amount of parameters" << std::endl;
 		return 0;
 	}
+
+	srand(time(NULL));
 
 	int width = atoi(argv[1]);
 	int height = atoi(argv[2]);
