@@ -40,7 +40,7 @@ std::vector<Light*> Scene::getLights() {
 	return lights;
 }
 
-SceneObject* Scene::getClosestObject(Ray r, double closestPoint) {
+SceneObject* Scene::getClosestObject(Ray r, double& closestPoint) {
 
 	int closestObject = -1;
 	double p0 = INFINITY;
@@ -65,8 +65,16 @@ SceneObject* Scene::getClosestObject(Ray r, double closestPoint) {
 void Scene::useDefaultScene() {
 
 
-	objects.push_back(new Sphere(Vec3(0,0,5)));
-	objects.push_back(new Sphere(Vec3(0, -10004, 0), 10000));
+	MRayTracerMat* mat = new MRayTracerMat();
+	MRayTracerMat* refl = new MRayTracerMat(Vec3(1), 1.5, 1);
+
+
+	objects.push_back(new Sphere(Vec3(0,0,5), 1, mat));
+	objects.push_back(new Sphere(Vec3(3, 0, 5), 1, refl));
+	objects.push_back(new Sphere(Vec3(0, -10004, 0), 10000, mat));
+
+	lights.push_back(new DirectionalLight(Vec3(5, -1, 5)));
+
 	for (int i = 0; i < objects.size(); i++) {
 		//objects.at(i)->toString();
 		SceneObject* object = objects.at(i);

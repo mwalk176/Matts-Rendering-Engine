@@ -65,20 +65,55 @@ void Renderer::renderRow(Scene& scene, Image& image, int y) {
 	
 	//get camera from scene
 	Camera* camera = scene.getCamera();
+
 	Ray primRay = camera->convertToWorld(0, y);
+	
 
 	int columns = image.getWidth();
+	int subRows = 2;
+	int subColumns = 2;
+
+	bool superSample = false;
 
 	for (int x = 0; x < columns; x++) { //TODO implement subpixel tracing
+		if (superSample) {
+			for (int subY = 0; subY < subRows; subY++) { //calculate subpixel grid
+				for (int subX = 0; subX < subColumns; subX++) {
 
-		if(x==0) std::cout << "x = " << x << ", y = " << y << ", primRay = " << primRay << std::endl;
+					double rX = -0.25;
+					double rY = -0.25;
+
+					//rX = (rand() / RAND_MAX) / -2.0;
+					//rY = (rand() / RAND_MAX) / -2.0;
+					if (subX == 1) rX += 0.5;
+					if (subY == 1) rY += 0.5;
+
+
+					double xAdjusted = x + rX;
+					double yAdjusted = y + rY;
+
+					Ray primRay = camera->convertToWorld(xAdjusted, yAdjusted);
+
+					if (x == 0) std::cout << "x = " << x << ", y = " << y << ", primRay = " << primRay << std::endl;
+
+					Vec3 col = integrator->render(primRay, scene);
+
+
+					image.set(x, y, col);
+				}
+			}
+		} else {
+			if (x == 0) std::cout << "x = " << x << ", y = " << y << ", primRay = " << primRay << std::endl;
+
+			Vec3 col = integrator->render(primRay, scene);
+
+
+			image.set(x, y, col);
+			primRay.d = primRay.d + camera->getIncX(); //move to the right
+		}
 		
-		Vec3 col = integrator->render(primRay, scene);
 
-
-		image.set(x, y, col);
-
-		primRay.d = primRay.d + camera->getIncX(); //move to the right
+		
 	}
 
 }

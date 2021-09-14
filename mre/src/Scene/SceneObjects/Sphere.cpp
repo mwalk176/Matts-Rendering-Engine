@@ -15,6 +15,12 @@ Sphere::Sphere(Vec3 p, double r) {
 	radius = r;
 }
 
+Sphere::Sphere(Vec3 p, double r, Material* mat) {
+	pos = p;
+	radius = r;
+	materials.push_back(mat);
+}
+
 Vec3 Sphere::getPos() {
     return Vec3();
 }
@@ -52,6 +58,10 @@ bool Sphere::intersect(Ray r, double& p0, double& p1) {
 
 
 		
+}
+
+Vec3 Sphere::computeNormal(Vec3 intersectionPoint) {
+	return intersectionPoint - pos;
 }
 
 

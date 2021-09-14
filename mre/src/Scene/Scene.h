@@ -5,6 +5,9 @@
 #include "SceneObjects/SceneObject.h"
 #include "Lights/Light.h"
 #include "SceneObjects/Sphere.h"
+#include "../Scene/Lights/DirectionalLight.h"
+#include "../Scene/Lights/PointLight.h"
+#include "../Materials/MRayTracerMat.h"
 
 #include <vector>
 
@@ -18,7 +21,7 @@ public:
 	std::vector<SceneObject*> getObjects();
 	std::vector <Light*> getLights();
 
-	SceneObject* getClosestObject(Ray r, double closestPoint);
+	SceneObject* getClosestObject(Ray r, double& closestPoint);
 
 private:
 	Camera* camera;

@@ -12,6 +12,7 @@ public:
 	SceneObject();
 	Vec3 getPos();
 	virtual bool intersect(Ray r, double& p0, double& p1) = 0;
+	virtual Vec3 computeNormal(Vec3 intersectionPoint) = 0;
 
 	std::vector<Material*> getMaterials();
 

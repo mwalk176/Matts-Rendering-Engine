@@ -5,7 +5,11 @@
 
 class PointLight : public Light {
 public:
-	Vec3 pos();
+	PointLight();
+
+	Vec3 getPos();
+
+	std::string toString();
 
 };
 
