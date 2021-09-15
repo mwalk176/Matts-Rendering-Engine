@@ -95,6 +95,12 @@ void Vec3::setEach(double xNew, double yNew, double zNew) {
 	z = zNew;
 }
 
+void Vec3::clamp() {
+	if (x > 1) x = 1;
+	if (y > 1) y = 1;
+	if (z > 1) z = 1; 
+}
+
 std::ostream& operator<<(std::ostream& os, Vec3 const& v) {
 	os << "{" << v.x << ", " << v.y << ", " << v.z << "}";
 	return os;

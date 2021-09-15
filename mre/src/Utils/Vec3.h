@@ -29,6 +29,9 @@ public:
 	double calculateMagnitude();
 	void setAll(double val);
 	void setEach(double xNew, double yNew, double zNew);
+	void clamp(); 
+
+	
 
 	friend std::ostream& operator<<(std::ostream& os, Vec3 const& v); 
 };
