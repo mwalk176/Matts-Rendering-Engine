@@ -105,6 +105,12 @@
     <ClCompile Include="src\Scene\SceneObjects\SceneObject.cpp">
       <Filter>Source Files\Scene\SceneObjects</Filter>
     </ClCompile>
+    <ClCompile Include="src\Scene\SceneObjects\Rectangle.cpp">
+      <Filter>Source Files\Scene\SceneObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scene\SceneObjects\Triangle.cpp">
+      <Filter>Source Files\Scene\SceneObjects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Image\Image.h">
@@ -157,6 +163,12 @@
     </ClInclude>
     <ClInclude Include="src\Materials\MRayTracerMat.h">
       <Filter>Header Files\Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scene\SceneObjects\Rectangle.h">
+      <Filter>Header Files\Scene\SceneObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scene\SceneObjects\Triangle.h">
+      <Filter>Header Files\Scene\SceneObjects</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

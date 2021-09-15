@@ -150,8 +150,10 @@
     <ClCompile Include="src\Scene\Lights\Light.cpp" />
     <ClCompile Include="src\Scene\Lights\PointLight.cpp" />
     <ClCompile Include="src\Scene\Scene.cpp" />
+    <ClCompile Include="src\Scene\SceneObjects\Rectangle.cpp" />
     <ClCompile Include="src\Scene\SceneObjects\SceneObject.cpp" />
     <ClCompile Include="src\Scene\SceneObjects\Sphere.cpp" />
+    <ClCompile Include="src\Scene\SceneObjects\Triangle.cpp" />
     <ClCompile Include="src\Utils\Ray.cpp" />
     <ClCompile Include="src\Utils\Vec3.cpp" />
   </ItemGroup>
@@ -169,8 +171,10 @@
     <ClInclude Include="src\Scene\Lights\Light.h" />
     <ClInclude Include="src\Scene\Lights\PointLight.h" />
     <ClInclude Include="src\Scene\Scene.h" />
+    <ClInclude Include="src\Scene\SceneObjects\Rectangle.h" />
     <ClInclude Include="src\Scene\SceneObjects\SceneObject.h" />
     <ClInclude Include="src\Scene\SceneObjects\Sphere.h" />
+    <ClInclude Include="src\Scene\SceneObjects\Triangle.h" />
     <ClInclude Include="src\Utils\Ray.h" />
     <ClInclude Include="src\Utils\Vec3.h" />
   </ItemGroup>
