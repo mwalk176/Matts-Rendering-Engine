@@ -8,6 +8,7 @@
 #include "MRayTracer.h"
 
 #include <future>
+#include <cmath>
 
 class Renderer {
 public:

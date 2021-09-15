@@ -6,6 +6,7 @@
 class MRayTracerMat : public Material {
 public:
 	MRayTracerMat();
+	MRayTracerMat(Vec3 c);
 	MRayTracerMat(Vec3 c, double i, int t);
 
 	Vec3 getColor();

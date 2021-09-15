@@ -6,6 +6,7 @@
 #include "../Scene/Lights/DirectionalLight.h"
 #include "../Scene/Lights/PointLight.h"
 
+#define MAX_DEPTH 6
 
 class MRayTracer : public Integrator {
 public:

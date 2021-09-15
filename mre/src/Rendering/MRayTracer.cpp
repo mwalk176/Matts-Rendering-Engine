@@ -12,7 +12,9 @@ Vec3 MRayTracer::render(Ray camRay, Scene& scene) {
 
 Vec3 MRayTracer::trace(Ray ray, Scene& scene, int depth) {
 
+    if (depth > MAX_DEPTH) return Vec3();
     depth++; //increment depth
+
 
     double epsilon = 8e-5;
 
@@ -20,7 +22,7 @@ Vec3 MRayTracer::trace(Ray ray, Scene& scene, int depth) {
     double closestPoint = INFINITY;
     SceneObject* closestObject = scene.getClosestObject(ray, closestPoint);
 
-    if (closestObject == nullptr) return Vec3(); //nothing was hit
+    if (closestObject == nullptr) return scene.getBackgroundColor(); //nothing was hit
 
     
     //compute intersection point and normal and determine if it's inside an object
@@ -42,7 +44,7 @@ Vec3 MRayTracer::trace(Ray ray, Scene& scene, int depth) {
     MRayTracerMat* mat = static_cast<MRayTracerMat*>(getMaterial(closestObject->getMaterials()));
     if (mat == nullptr) return Vec3(); //no compatible material found
     Vec3 objectColor = mat->getColor();
-
+    
     switch (mat->getType()) {
     case 0: { //difuse
 
@@ -57,22 +59,22 @@ Vec3 MRayTracer::trace(Ray ray, Scene& scene, int depth) {
 
             //check if in shadow
             bool inShadow = false;
+            double s0 = INFINITY;
 
             if (lights.at(i)->toString() == "DIRECTIONAL_LIGHT") {
                 Vec3 lightDirection = static_cast<DirectionalLight*>(lights.at(i))->getLightDirection() * -1;
-                shadowRay = lightDirection - intersectionPoint;
+                shadowRay = lightDirection;// -intersectionPoint;
                 shadowRay.normalize();
 
-                if (scene.getClosestObject(Ray(normalOrigin, shadowRay), lightDist) != nullptr) inShadow = true;
+                if (scene.getClosestObject(Ray(normalOrigin, shadowRay), s0) != nullptr) inShadow = true;
 
             } else {
                 Vec3 lightPos = lights.at(i)->getPos();
                 shadowRay = lightPos - intersectionPoint;
                 lightDist = shadowRay.calculateMagnitude();
                 shadowRay.normalize();
-                double s0 = INFINITY;
-                if (scene.getClosestObject(Ray(normalOrigin, shadowRay), lightDist) != nullptr &&
-                    s0 < lightDist) inShadow = true;
+                SceneObject* closestShadowObj = scene.getClosestObject(Ray(normalOrigin, shadowRay), s0);
+                if (closestShadowObj != nullptr && s0 < lightDist) inShadow = true;
             }
 
             if (!inShadow) {
@@ -89,7 +91,68 @@ Vec3 MRayTracer::trace(Ray ray, Scene& scene, int depth) {
         return objectColor * trace(Ray(normalOrigin, reflDirection), scene, depth);
     }
     case 2: { //glass
+        //first calculate reflection
+        Vec3 reflDirection = ray.d - normal * 2 * (ray.d.dot(normal));
 
+        epsilon = 1e-3;
+
+        double iorValue = mat->getIOR();
+        bool outGoingIn = false;
+        if (normal.dot(alignedNormal) > 0) outGoingIn = true;
+        if (outGoingIn) iorValue = 1 / iorValue;
+        double normDirAngle = ray.d.dot(alignedNormal);
+
+        //then check for total internal reflection
+        double interiorAngle = 1 - (iorValue * iorValue) * (1 - normDirAngle * normDirAngle);
+        if (interiorAngle < 0) {
+            return objectColor * trace(Ray(normalOrigin, reflDirection), scene, depth);
+
+        }
+
+        //then calculate refraction
+        Vec3 transmissionRay = Vec3(0);
+        Vec3 refractOrigin = intersectionPoint - normal * epsilon;
+        double theta = 0;
+
+        if (outGoingIn) {
+            transmissionRay = ray.d * iorValue - normal * (normDirAngle * iorValue + sqrt(interiorAngle));
+            transmissionRay.normalize();
+
+            refractOrigin = intersectionPoint - normal * epsilon;
+
+            theta = -normDirAngle;
+        } else {
+            transmissionRay = ray.d * iorValue - normal * (-1 * (normDirAngle * iorValue + sqrt(interiorAngle)));
+            transmissionRay.normalize();
+
+            refractOrigin = intersectionPoint + normal * epsilon;
+
+            theta = transmissionRay.dot(normal);
+        }
+
+        //calculate incidence of relfection (f0) and the fresnel equation
+        double IOR = mat->getIOR();
+        double f0 = ((IOR - 1) * (IOR - 1)) / ((IOR + 1) * (IOR + 1));
+        double fresnel = f0 + (1 - f0) * ((1 - theta) * (1 - theta) * (1 - theta) * (1 - theta) * (1 - theta));
+
+        double gammaBoost = 1.0;
+        //check if angle of incidence is too shallow,
+        if (depth > 2) {
+            double fresnelThreshold = fresnel * 0.5 + 0.25;
+            if (((double)rand() / RAND_MAX) < fresnelThreshold) {
+                Vec3 col = objectColor * trace(Ray(normalOrigin, reflDirection), scene, depth) * (fresnel / fresnelThreshold) * gammaBoost;
+                return col;
+
+            } else {
+                Vec3 col = objectColor * trace(Ray(refractOrigin, transmissionRay), scene, depth) * ((1 - fresnel) / (1 - fresnelThreshold)) * gammaBoost;
+                return col;
+            }
+        } else {
+            Vec3 refl = trace(Ray(normalOrigin, reflDirection), scene, depth) * fresnel;
+            Vec3 refr = trace(Ray(refractOrigin, transmissionRay), scene, depth) * (1 - fresnel);
+            Vec3 col = objectColor * (refl + refr) * gammaBoost;
+            return col;
+        }
     }
     default: {
         return Vec3(0); //object is some other type that isn't compatible with the renderer

@@ -73,35 +73,54 @@ void Renderer::renderRow(Scene& scene, Image& image, int y) {
 	int subRows = 2;
 	int subColumns = 2;
 
-	bool superSample = false;
+	bool superSample = true;
+
+	std::cout << "y = " << y << ", primRay = " << primRay << std::endl;
 
 	for (int x = 0; x < columns; x++) { //TODO implement subpixel tracing
+
+		Vec3 col = Vec3();
+		int timesSampled = 0;
+		int maxSamples = 10;
+
 		if (superSample) {
 			for (int subY = 0; subY < subRows; subY++) { //calculate subpixel grid
 				for (int subX = 0; subX < subColumns; subX++) {
+					for (int samples = 0; samples < maxSamples; samples++) {
+						//double rX = -0.25;
+											//double rY = -0.25;
 
-					double rX = -0.25;
-					double rY = -0.25;
-
-					//rX = (rand() / RAND_MAX) / -2.0;
-					//rY = (rand() / RAND_MAX) / -2.0;
-					if (subX == 1) rX += 0.5;
-					if (subY == 1) rY += 0.5;
-
-
-					double xAdjusted = x + rX;
-					double yAdjusted = y + rY;
-
-					Ray primRay = camera->convertToWorld(xAdjusted, yAdjusted);
-
-					if (x == 0) std::cout << "x = " << x << ", y = " << y << ", primRay = " << primRay << std::endl;
-
-					Vec3 col = integrator->render(primRay, scene);
+						double rX = ((double)rand() / RAND_MAX) / -2.0;
+						double rY = ((double)rand() / RAND_MAX) / -2.0;
+						//float rX = (rand() / RAND_MAX);
+						//double rY = rand();
+						if (subX == 1) rX += 0.5;
+						if (subY == 1) rY += 0.5;
 
 
-					image.set(x, y, col);
+						double xAdjusted = x + rX;
+						double yAdjusted = y + rY;
+
+						Ray primRay = camera->convertToWorld(xAdjusted, yAdjusted);
+
+						
+
+						col = col + integrator->render(primRay, scene);
+						timesSampled++;
+					}
+
+					
+					
+					
+
+
+					
 				}
 			}
+			col = col / timesSampled;
+			col.clamp();
+			image.set(x, y, col);
+
 		} else {
 			if (x == 0) std::cout << "x = " << x << ", y = " << y << ", primRay = " << primRay << std::endl;
 
