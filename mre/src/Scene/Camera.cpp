@@ -24,10 +24,10 @@ Camera::Camera() {
 //}
 
 Camera::Camera(int x, int y) {
-	lookFrom = Vec3(0, 0, 0); //camera at origin
+	lookFrom = Vec3(0, 0, -1); //camera at origin
 	lookAt = Vec3(0, 0, 1); //look down positive z-axis
 	up = Vec3(0, 1, 0); //positive y-axis is up
-	fov = 60.0;
+	fov = 30.0;
 
 	rows = y;
 	columns = x;
