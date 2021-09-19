@@ -26,42 +26,41 @@ Renderer::~Renderer() {
 
 void Renderer::renderScene(Scene& scene, Image& image) {
 	
-	
-	
 	//get image dimensions
 	int rows = image.getHeight();
-	//int columns = image.getWidth();
+
+
+	//set up threads and get cores
+	unsigned int numCores = std::thread::hardware_concurrency();
+	std::vector<std::thread> threadList;
+	unsigned int coreCount = 0;
 
 
 	for (int y = 0; y < rows; y++) {
+		std::cout << "y: " << y << std::endl;
 		if (useMultithreading) {
-			//
-			////set up threads and get cores
-			//unsigned int numCores = std::thread::hardware_concurrency();
-			//std::vector<std::thread> threadList;
-			//unsigned int coreCount = 0;
-			//
-			////create thread for the row
-			//threadList.push_back(std::thread(renderRow, scene, std::ref(image), y));
-			//
-			////if there's max threads for cpu cores, wait until they're done before adding more
-			//coreCount++;
-			//if (coreCount % numCores == 0) {
-			//	for (int i = 0; i < threadList.size(); i++) {
-			//		threadList.at(i).join();
-			//	}
-			//	threadList.clear();
-			//}
-			renderRow(scene, image, y);
 
+			//create thread for the row
+			threadList.push_back(std::thread(&Renderer::renderRow, this, std::ref(scene), std::ref(image), y));
+			
+			//if there's max threads for cpu cores, wait until they're done before adding more
+			coreCount++;
+			if (coreCount % numCores == 0) {
+				for (int i = 0; i < threadList.size(); i++) {
+					threadList.at(i).join();
+				}
+				threadList.clear();
+			}
 		} else {
-
 			renderRow(scene, image, y);
 		}
 	}
 }
 
 void Renderer::renderRow(Scene& scene, Image& image, int y) {
+
+	srand(std::hash<std::thread::id>{}(std::this_thread::get_id())); 
+	//srand(std::hash<std::thread::id>{}(std::this_thread::get_id()) + currentSamples);
 	
 	//get camera from scene
 	Camera* camera = scene.getCamera();
@@ -75,13 +74,13 @@ void Renderer::renderRow(Scene& scene, Image& image, int y) {
 
 	bool superSample = true;
 
-	std::cout << "y = " << y << ", primRay = " << primRay << std::endl;
+	//std::cout << "y = " << y << ", primRay = " << primRay << std::endl;
 
-	for (int x = 0; x < columns; x++) { //TODO implement subpixel tracing
+	for (int x = 0; x < columns; x++) {
 
 		Vec3 col = Vec3();
 		int timesSampled = 0;
-		int maxSamples = 10;
+		int maxSamples = 1;
 
 		if (superSample) {
 			for (int subY = 0; subY < subRows; subY++) { //calculate subpixel grid
@@ -122,7 +121,7 @@ void Renderer::renderRow(Scene& scene, Image& image, int y) {
 			image.set(x, y, col);
 
 		} else {
-			if (x == 0) std::cout << "x = " << x << ", y = " << y << ", primRay = " << primRay << std::endl;
+			//if (x == 0) std::cout << "x = " << x << ", y = " << y << ", primRay = " << primRay << std::endl;
 
 			Vec3 col = integrator->render(primRay, scene);
 

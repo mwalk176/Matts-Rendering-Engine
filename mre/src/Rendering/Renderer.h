@@ -23,7 +23,7 @@ private:
 	Integrator* integrator;
 	//enum integratorTypes {MDEBUG, MRAYTRACER, MPATHTRACER};
 	int maxSamples;
-	bool useMultithreading = false;
+	bool useMultithreading = true;
 
 
 
