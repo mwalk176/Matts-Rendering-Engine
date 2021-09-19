@@ -170,5 +170,8 @@
     <ClInclude Include="src\Scene\SceneObjects\Triangle.h">
       <Filter>Header Files\Scene\SceneObjects</Filter>
     </ClInclude>
+    <ClInclude Include="src\Rendering\RenderSettings.h">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
