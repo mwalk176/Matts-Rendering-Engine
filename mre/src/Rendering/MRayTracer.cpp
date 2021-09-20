@@ -12,7 +12,7 @@ Vec3 MRayTracer::render(Ray camRay, Scene& scene) {
 
 Vec3 MRayTracer::trace(Ray ray, Scene& scene, int depth) {
 
-    if (depth > MAX_DEPTH) return Vec3();
+    if (depth > settings->getMaxTraceDepth()) return Vec3();
     depth++; //increment depth
 
 

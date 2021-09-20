@@ -6,6 +6,7 @@
 #include "Integrator.h"
 #include "MDebug.h"
 #include "MRayTracer.h"
+#include "RenderSettings.h"
 
 #include <future>
 #include <cmath>
@@ -22,8 +23,7 @@ public:
 private:
 	Integrator* integrator;
 	//enum integratorTypes {MDEBUG, MRAYTRACER, MPATHTRACER};
-	int maxSamples;
-	bool useMultithreading = true;
+	RenderSettings* settings = RenderSettings::getInstance();
 
 
 

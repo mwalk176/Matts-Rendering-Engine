@@ -111,6 +111,9 @@
     <ClCompile Include="src\Scene\SceneObjects\Triangle.cpp">
       <Filter>Source Files\Scene\SceneObjects</Filter>
     </ClCompile>
+    <ClCompile Include="src\Rendering\RenderSettings.cpp">
+      <Filter>Source Files\Rendering</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Image\Image.h">

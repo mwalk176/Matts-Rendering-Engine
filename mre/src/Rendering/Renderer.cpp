@@ -3,13 +3,11 @@
 
 Renderer::Renderer() {
 	integrator = new MDebug();
-	maxSamples = 1;
 
 }
 
 Renderer::Renderer(std::string algorithm) {
 	std::cout << "Renderer initialized using integrator " << algorithm << std::endl;
-	maxSamples = 1;
 	if (algorithm == "MDEBUG") {
 		integrator = new MDebug();
 	} else if (algorithm == "MRAYTRACER") {
@@ -29,6 +27,8 @@ void Renderer::renderScene(Scene& scene, Image& image) {
 	//get image dimensions
 	int rows = image.getHeight();
 
+	
+
 
 	//set up threads and get cores
 	unsigned int numCores = std::thread::hardware_concurrency();
@@ -38,7 +38,7 @@ void Renderer::renderScene(Scene& scene, Image& image) {
 
 	for (int y = 0; y < rows; y++) {
 		std::cout << "y: " << y << std::endl;
-		if (useMultithreading) {
+		if (settings->getUseMultithreading()) {
 
 			//create thread for the row
 			threadList.push_back(std::thread(&Renderer::renderRow, this, std::ref(scene), std::ref(image), y));
@@ -58,8 +58,8 @@ void Renderer::renderScene(Scene& scene, Image& image) {
 }
 
 void Renderer::renderRow(Scene& scene, Image& image, int y) {
-
-	srand(std::hash<std::thread::id>{}(std::this_thread::get_id())); 
+	
+	if(settings->getUseMultithreading()) srand(std::hash<std::thread::id>{}(std::this_thread::get_id())); 
 	//srand(std::hash<std::thread::id>{}(std::this_thread::get_id()) + currentSamples);
 	
 	//get camera from scene
@@ -69,10 +69,10 @@ void Renderer::renderRow(Scene& scene, Image& image, int y) {
 	
 
 	int columns = image.getWidth();
-	int subRows = 2;
-	int subColumns = 2;
+	int subRows = settings->getSubRows();
+	int subColumns = settings->getSubColumns();
 
-	bool superSample = true;
+	bool superSample = settings->getUseSupersampling();
 
 	//std::cout << "y = " << y << ", primRay = " << primRay << std::endl;
 
@@ -80,7 +80,7 @@ void Renderer::renderRow(Scene& scene, Image& image, int y) {
 
 		Vec3 col = Vec3();
 		int timesSampled = 0;
-		int maxSamples = 1;
+		int maxSamples = settings->getMaxSamples();
 
 		if (superSample) {
 			for (int subY = 0; subY < subRows; subY++) { //calculate subpixel grid

@@ -5,8 +5,9 @@
 #include "../Materials/MRayTracerMat.h"
 #include "../Scene/Lights/DirectionalLight.h"
 #include "../Scene/Lights/PointLight.h"
+#include "RenderSettings.h"
 
-#define MAX_DEPTH 6
+
 
 class MRayTracer : public Integrator {
 public:
@@ -15,6 +16,7 @@ public:
 private:
 	Vec3 trace(Ray ray, Scene& scene, int depth);
 	Material* getMaterial(std::vector<Material*> materials);
+	RenderSettings* settings = RenderSettings::getInstance();
 };
 
 
