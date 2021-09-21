@@ -1,0 +1,9 @@
+### Camera ###
+#     LookFrom LookAt Up
+Camera  0 0 0  0 0 1  0 1 0
+
+
+### Materials ###
+
+
+### Objects ###
