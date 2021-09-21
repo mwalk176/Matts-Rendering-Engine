@@ -2,7 +2,7 @@
 
 Vec3 MRayTracer::render(Ray camRay, Scene& scene) {
 
-    Vec3 col = trace(camRay, scene, 1);
+    Vec3 col = trace(camRay, scene, 0);
     return col;
 
 
@@ -12,7 +12,7 @@ Vec3 MRayTracer::render(Ray camRay, Scene& scene) {
 
 Vec3 MRayTracer::trace(Ray ray, Scene& scene, int depth) {
 
-    if (depth > settings->getMaxTraceDepth()) return Vec3();
+    if (depth > 6) return Vec3();
     depth++; //increment depth
 
 
@@ -41,7 +41,7 @@ Vec3 MRayTracer::trace(Ray ray, Scene& scene, int depth) {
 
 
     //then get that object's material
-    MRayTracerMat* mat = static_cast<MRayTracerMat*>(getMaterial(closestObject->getMaterials()));
+    MRayTracerMat* mat = static_cast<MRayTracerMat*>(closestObject->getMaterial("MRAYTRACERMAT"));
     if (mat == nullptr) return Vec3(); //no compatible material found
     Vec3 objectColor = mat->getColor();
     

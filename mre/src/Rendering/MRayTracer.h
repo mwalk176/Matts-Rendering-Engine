@@ -5,7 +5,7 @@
 #include "../Materials/MRayTracerMat.h"
 #include "../Scene/Lights/DirectionalLight.h"
 #include "../Scene/Lights/PointLight.h"
-#include "RenderSettings.h"
+//#include "RenderSettings.h"
 
 
 
@@ -16,7 +16,7 @@ public:
 private:
 	Vec3 trace(Ray ray, Scene& scene, int depth);
 	Material* getMaterial(std::vector<Material*> materials);
-	RenderSettings* settings = RenderSettings::getInstance();
+	//RenderSettings* settings = RenderSettings::getInstance();
 };
 
 
