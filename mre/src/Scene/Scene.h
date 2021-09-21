@@ -13,6 +13,7 @@
 #include "../Scene/Lights/PointLight.h"
 
 #include "../Materials/MRayTracerMat.h"
+#include "../Materials/MPathTracerMat.h"
 
 #include <vector>
 

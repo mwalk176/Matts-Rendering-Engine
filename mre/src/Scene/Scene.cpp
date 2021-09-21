@@ -5,10 +5,7 @@ Scene::Scene() {
 }
 
 Scene::Scene(std::string inputScene, Camera* inCam) {
-	//Camera cam();
-	//camera = cam;
 	camera = inCam;
-	//camera = Camera();
 
 	if (inputScene == "TODO") {
 		std::cout << "import scene here" << std::endl;
@@ -78,17 +75,36 @@ void Scene::useDefaultScene() {
 	MRayTracerMat* refl = new MRayTracerMat(Vec3(1), 1.5, 1);
 	MRayTracerMat* glass = new MRayTracerMat(Vec3(1), 1.5, 2);
 
+	MPathTracerMat* pMat = new MPathTracerMat();
+	MPathTracerMat* pGreen = new MPathTracerMat(Vec3(0.2, 1, 0.5));
+	MPathTracerMat* pAzure = new MPathTracerMat(Vec3(0.2, 0.8, 1.0), Vec3(1), 1.5, 0);
+	MPathTracerMat* pYellow = new MPathTracerMat(Vec3(0.8, 1.0, 0.2));
+	MPathTracerMat* pRefl = new MPathTracerMat(Vec3(1), Vec3(), 1.5, 1);
+	MPathTracerMat* pGlass = new MPathTracerMat(Vec3(1), Vec3(), 1.5, 2);
 
-	objects.push_back(new Sphere(Vec3(0,-1.5,5), 1, azure));
-	objects.push_back(new Sphere(Vec3(3, -1.5, 5), 1, refl));
-	objects.push_back(new Sphere(Vec3(-3, -1.5, 5), 1, glass));
-	objects.push_back(new Sphere(Vec3(0, -10002.5, 0), 10000, green));
+	std::vector<Material*> mats{ mat, pMat };
+	std::vector<Material*> greenM{ green, pGreen };
+	std::vector<Material*> azureM{ azure, pAzure };
+	std::vector<Material*> yellowM{ yellow, pYellow };
+	std::vector<Material*> reflM{ refl, pRefl };
+	std::vector<Material*> glassM{ glass, pGlass };
 
-	objects.push_back(new Rectangle(Vec3(-3.5, 1.5, 5), Vec3(-2.5, 1.5, 5), Vec3(-2.5, 0.5, 5), Vec3(-3.5, 0.5, 5), azure));
-	objects.push_back(new Triangle(Vec3(2.5, 1.5, 5), Vec3(3.5, 1.5, 5), Vec3(3, 0.5, 5), yellow));
 
-	lights.push_back(new DirectionalLight(Vec3(1, -1, 0)));
-	lights.push_back(new PointLight(Vec3(5, 10, 0)));
+	
+
+
+	objects.push_back(new Sphere(Vec3(0,-1.5,5), 1, azureM));
+	objects.push_back(new Sphere(Vec3(3, -1.5, 5), 1, reflM));
+	objects.push_back(new Sphere(Vec3(-3, -1.5, 5), 1, glassM));
+	objects.push_back(new Sphere(Vec3(0, -10002.5, 0), 10000, greenM));
+
+	objects.push_back(new Sphere(Vec3(), 100000, azureM));
+
+	objects.push_back(new Rectangle(Vec3(-3.5, 1.5, 5), Vec3(-2.5, 1.5, 5), Vec3(-2.5, 0.5, 5), Vec3(-3.5, 0.5, 5), azureM));
+	objects.push_back(new Triangle(Vec3(2.5, 1.5, 5), Vec3(3.5, 1.5, 5), Vec3(3, 0.5, 5), yellowM));
+
+	//lights.push_back(new DirectionalLight(Vec3(1, -1, 0)));
+	//lights.push_back(new PointLight(Vec3(5, 10, 0)));
 	//lights.push_back(new PointLight(Vec3()));
 
 	for (int i = 0; i < objects.size(); i++) {
