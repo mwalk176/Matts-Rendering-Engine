@@ -39,11 +39,11 @@ int RenderSettings::getMaxSamples() {
 }
 
 RenderSettings::RenderSettings() {
-    useMultithreading = false;
+    useMultithreading = true;
     useSupersampling = true;
     subRows = 2;
     subColumns = 2;
-    maxTraceDepth = 10;
+    maxTraceDepth = 5;
     maxSamples = 1;
 }
 

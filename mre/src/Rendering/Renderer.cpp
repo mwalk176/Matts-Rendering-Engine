@@ -13,6 +13,9 @@ Renderer::Renderer(std::string algorithm) {
 	} else if (algorithm == "MRAYTRACER") {
 		integrator = new MRayTracer();
 	}
+	else if (algorithm == "MPATHTRACER") {
+		integrator = new MPathTracer();
+	}
 	else {
 		integrator = new MDebug();
 	}
@@ -38,7 +41,7 @@ void Renderer::renderScene(Scene& scene, Image& image) {
 
 	for (int y = 0; y < rows; y++) {
 		std::cout << "y: " << y << std::endl;
-		if (settings->getUseMultithreading()) {
+		if (useMultithreading) {
 
 			//create thread for the row
 			threadList.push_back(std::thread(&Renderer::renderRow, this, std::ref(scene), std::ref(image), y));
@@ -59,7 +62,8 @@ void Renderer::renderScene(Scene& scene, Image& image) {
 
 void Renderer::renderRow(Scene& scene, Image& image, int y) {
 	
-	if(settings->getUseMultithreading()) srand(std::hash<std::thread::id>{}(std::this_thread::get_id())); 
+	
+	if(useMultithreading) srand(std::hash<std::thread::id>{}(std::this_thread::get_id())); 
 	//srand(std::hash<std::thread::id>{}(std::this_thread::get_id()) + currentSamples);
 	
 	//get camera from scene
@@ -69,10 +73,10 @@ void Renderer::renderRow(Scene& scene, Image& image, int y) {
 	
 
 	int columns = image.getWidth();
-	int subRows = settings->getSubRows();
-	int subColumns = settings->getSubColumns();
+	int subRows = 2;
+	int subColumns = 2;
 
-	bool superSample = settings->getUseSupersampling();
+	bool superSample = true;
 
 	//std::cout << "y = " << y << ", primRay = " << primRay << std::endl;
 
@@ -80,7 +84,7 @@ void Renderer::renderRow(Scene& scene, Image& image, int y) {
 
 		Vec3 col = Vec3();
 		int timesSampled = 0;
-		int maxSamples = settings->getMaxSamples();
+		int maxSamples = 1;
 
 		if (superSample) {
 			for (int subY = 0; subY < subRows; subY++) { //calculate subpixel grid
@@ -91,7 +95,7 @@ void Renderer::renderRow(Scene& scene, Image& image, int y) {
 
 						double rX = ((double)rand() / RAND_MAX) / -2.0;
 						double rY = ((double)rand() / RAND_MAX) / -2.0;
-						//float rX = (rand() / RAND_MAX);
+						//double rX = (rand() / RAND_MAX);
 						//double rY = rand();
 						if (subX == 1) rX += 0.5;
 						if (subY == 1) rY += 0.5;
