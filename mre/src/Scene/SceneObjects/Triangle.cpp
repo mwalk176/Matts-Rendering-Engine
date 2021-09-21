@@ -8,7 +8,18 @@ Triangle::Triangle(Vec3 p0, Vec3 p1, Vec3 p2, Material* mat) {
 	materials.push_back(mat);
 	computeNormal(Vec3(0));
 
-	std::cout << "Triangle normal: " << normal << "\n";
+	//std::cout << "Triangle normal: " << normal << "\n";
+}
+
+Triangle::Triangle(Vec3 p0, Vec3 p1, Vec3 p2, std::vector<Material*> mats) {
+	v0 = p0;
+	v1 = p1;
+	v2 = p2;
+	pos = (v0 + v1 + v2) / 3.0;
+	for (int i = 0; i < mats.size(); i++) {
+		materials.push_back(mats.at(i));
+	}
+	computeNormal(Vec3(0));
 }
 
 bool Triangle::intersect(Ray r, double& p0, double& p1) {
@@ -22,9 +33,9 @@ bool Triangle::intersect(Ray r, double& p0, double& p1) {
 		Vec3 c0 = intersectionPoint - v0;
 		Vec3 c1 = intersectionPoint - v1;
 		Vec3 c2 = intersectionPoint - v2;
-		float t0 = eIn0.dot(c0);
-		float t1 = eIn1.dot(c1);
-		float t2 = eIn2.dot(c2);
+		double t0 = eIn0.dot(c0);
+		double t1 = eIn1.dot(c1);
+		double t2 = eIn2.dot(c2);
 		if (t0 > 0 && t1 > 0 && t2 > 0) return true;
 	} else {
 		e0 = v1 - v0;
@@ -36,9 +47,9 @@ bool Triangle::intersect(Ray r, double& p0, double& p1) {
 		eIn0 = normal.cross(e0);
 		eIn1 = normal.cross(e1);
 		eIn2 = normal.cross(e2);
-		float t0 = eIn0.dot(c0);
-		float t1 = eIn1.dot(c1);
-		float t2 = eIn2.dot(c2);
+		double t0 = eIn0.dot(c0);
+		double t1 = eIn1.dot(c1);
+		double t2 = eIn2.dot(c2);
 		preComputedEdges = true;
 		if (t0 > 0 && t1 > 0 && t2 > 0) return true;
 
@@ -61,6 +72,31 @@ Vec3 Triangle::computeNormal(Vec3 intersectionPoint) {
 
 	preComputedNormal = true;
 	return normal;
+}
+
+Vec3 Triangle::getNewDirectionTowardsLight(Vec3 shadowRay, Vec3 alignedNormal, Vec3 normalFromLight, double& angleToObject, Vec3 intersectionPoint) {
+	//get a random point along both edges of the triangle going away from the first vertex
+	Vec3 e0 = v1 - v0;
+	Vec3 e1 = v2 - v0;
+	double r0 = (double)rand() / RAND_MAX;
+	double r1 = (double)rand() / RAND_MAX;
+	Vec3 point0 = v0 + e0 * r0;
+	Vec3 point1 = v1 + e1 * r1;
+
+	//get the vector between those two random points
+	Vec3 e2 = point1 - point0;
+	double r2 = (double)rand() / RAND_MAX;
+
+	//get a random point along that vector
+	Vec3 randomPoint = point0 + e2 * r2;
+	//congrats! you've sampled a random point in the triangle!
+
+	Vec3 newShadowRay = randomPoint - intersectionPoint;
+	newShadowRay.normalize();
+
+	angleToObject = 0.9;
+
+	return newShadowRay;
 }
 
 std::string Triangle::toString() {
