@@ -195,7 +195,7 @@ Vec3 MPathTracer::trace(Ray ray, Scene& scene, int depth, bool calculateEmission
 		else {
 			objectColor = lightValue + objectColor *
 				trace(Ray(normalOrigin, randomReflection),
-					scene, depth, true);
+					scene, depth, true); //maybe keep it at false?
 		}
 
 		return objectColor;
