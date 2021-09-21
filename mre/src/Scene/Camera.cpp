@@ -24,7 +24,7 @@ Camera::Camera() {
 //}
 
 Camera::Camera(int x, int y) {
-	lookFrom = Vec3(0, 0, -1); //camera at origin
+	lookFrom = Vec3(0, 0, 0); //camera at origin
 	lookAt = Vec3(0, 0, 1); //look down positive z-axis
 	up = Vec3(0, 1, 0); //positive y-axis is up
 	fov = 30.0;
@@ -77,7 +77,16 @@ Vec3 Camera::getIncY() {
 	return incY;
 }
 
+void Camera::setCameraCoords(Vec3 lf, Vec3 la, Vec3 u, double f) {
+	lookFrom = lf;
+	lookAt = la;
+	up = u;
+	fov = f;
+	buildCoordinateSpace();
+}
+
 void Camera::buildCoordinateSpace() {
+	//lookAt = lookAt + lookFrom;
 	e3 = lookAt - lookFrom;
 	e1 = e3.cross(up);
 	e2 = e1.cross(e3);
@@ -99,4 +108,8 @@ void Camera::buildCoordinateSpace() {
 	incX = e1 * (2 * viewPlaneSizeX) / columns;
 	incY = e2 * (2 * viewPlaneSizeY) / rows;
 	start = lookAt - incX * (columns / 2.0 - 0.5) + incY * (rows / 2.0 - 0.5);
+
+
+
+	
 }

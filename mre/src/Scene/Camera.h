@@ -23,6 +23,8 @@ public:
 	Vec3 getIncX();
 	Vec3 getIncY();
 
+	void setCameraCoords(Vec3 lf, Vec3 la, Vec3 u, double f);
+
 
 private:
 	void buildCoordinateSpace();
