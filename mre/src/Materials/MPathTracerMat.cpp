@@ -1,7 +1,7 @@
 #include "MPathTracerMat.h"
 
 MPathTracerMat::MPathTracerMat() {
-	color = Vec3();
+	color = Vec3(1);
 	emissionColor = Vec3();
 	IOR = 1.5;
 	type = 0;
