@@ -141,8 +141,10 @@
     <ClCompile Include="src\Image\Image.cpp" />
     <ClCompile Include="src\Main\mre.cpp" />
     <ClCompile Include="src\Materials\MDebugMat.cpp" />
+    <ClCompile Include="src\Materials\MPathTracerMat.cpp" />
     <ClCompile Include="src\Materials\MRayTracerMat.cpp" />
     <ClCompile Include="src\Rendering\MDebug.cpp" />
+    <ClCompile Include="src\Rendering\MPathTracer.cpp" />
     <ClCompile Include="src\Rendering\MRayTracer.cpp" />
     <ClCompile Include="src\Rendering\Renderer.cpp" />
     <ClCompile Include="src\Rendering\RenderSettings.cpp" />
@@ -162,9 +164,11 @@
     <ClInclude Include="src\Image\Image.h" />
     <ClInclude Include="src\Materials\Material.h" />
     <ClInclude Include="src\Materials\MDebugMat.h" />
+    <ClInclude Include="src\Materials\MPathTracerMat.h" />
     <ClInclude Include="src\Materials\MRayTracerMat.h" />
     <ClInclude Include="src\Rendering\Integrator.h" />
     <ClInclude Include="src\Rendering\MDebug.h" />
+    <ClInclude Include="src\Rendering\MPathTracer.h" />
     <ClInclude Include="src\Rendering\MRayTracer.h" />
     <ClInclude Include="src\Rendering\Renderer.h" />
     <ClInclude Include="src\Rendering\RenderSettings.h" />

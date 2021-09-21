@@ -114,6 +114,12 @@
     <ClCompile Include="src\Rendering\RenderSettings.cpp">
       <Filter>Source Files\Rendering</Filter>
     </ClCompile>
+    <ClCompile Include="src\Rendering\MPathTracer.cpp">
+      <Filter>Source Files\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Materials\MPathTracerMat.cpp">
+      <Filter>Source Files\Materials</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Image\Image.h">
@@ -175,6 +181,12 @@
     </ClInclude>
     <ClInclude Include="src\Rendering\RenderSettings.h">
       <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Rendering\MPathTracer.h">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Materials\MPathTracerMat.h">
+      <Filter>Header Files\Materials</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
