@@ -21,6 +21,15 @@ Sphere::Sphere(Vec3 p, double r, Material* mat) {
 	materials.push_back(mat);
 }
 
+Sphere::Sphere(Vec3 p, double r, std::vector<Material*> mats) {
+	pos = p;
+	radius = r;
+	for (int i = 0; i < mats.size(); i++) {
+		materials.push_back(mats.at(i));
+	}
+	
+}
+
 Vec3 Sphere::getPos() {
     return Vec3();
 }
@@ -62,6 +71,35 @@ bool Sphere::intersect(Ray r, double& p0, double& p1) {
 
 Vec3 Sphere::computeNormal(Vec3 intersectionPoint) {
 	return intersectionPoint - pos;
+}
+
+Vec3 Sphere::getNewDirectionTowardsLight(Vec3 shadowRay, Vec3 alignedNormal, Vec3 normalFromLight, double& angleToObject, Vec3 intersectionPoint) {
+	//build a coordinate space in the hemisphere of the shadowray light
+	Vec3 se1 = Vec3(0);
+	if (fabs(alignedNormal.x) > fabs(alignedNormal.y)) {
+		se1 = Vec3(shadowRay.z, 0, -shadowRay.x) / sqrt(shadowRay.x * shadowRay.x + shadowRay.z * shadowRay.z);
+	}
+	else {
+		se1 = Vec3(0, -shadowRay.z, shadowRay.y) / sqrt(shadowRay.y * shadowRay.y + shadowRay.z * shadowRay.z);
+	}
+	se1.normalize();
+	Vec3 se2 = shadowRay.cross(se1);
+	se2.normalize();
+
+	//calculate a random direction towards light
+	angleToObject = sqrt(1 - radius * radius / normalFromLight.dot(normalFromLight));
+	double randX = (double)rand() / RAND_MAX; //get us a random point
+	double randomAngle2 = M_PI * 2 * ((double)rand() / RAND_MAX);
+	double angleCos = 1 - randX + randX * angleToObject;
+	double angleSin = sqrt(1 - angleCos * angleCos);
+	Vec3 newShadowRay = se1 * cos(randomAngle2) * angleSin + se2 * sin(randomAngle2) * angleSin + shadowRay * angleCos;
+	newShadowRay.normalize();
+
+	return newShadowRay;
+}
+
+double Sphere::getRadius() {
+	return radius;
 }
 
 
