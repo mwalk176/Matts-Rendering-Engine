@@ -8,7 +8,19 @@ Rectangle::Rectangle(Vec3 p0, Vec3 p1, Vec3 p2, Vec3 p3, Material* mat) {
 	pos = (v0 + v1 + v2 + v3) / 4.0;
 	materials.push_back(mat);
 	computeNormal(Vec3());
-	std::cout << "Rectangle normal: " << normal << "\n";
+	//std::cout << "Rectangle normal: " << normal << "\n";
+}
+
+Rectangle::Rectangle(Vec3 p0, Vec3 p1, Vec3 p2, Vec3 p3, std::vector<Material*> mats) {
+	v0 = p0; //DO THESE CLOCKWISE
+	v1 = p1;
+	v2 = p2;
+	v3 = p3;
+	pos = (v0 + v1 + v2 + v3) / 4.0;
+	for (int i = 0; i < mats.size(); i++) {
+		materials.push_back(mats.at(i));
+	}
+	computeNormal(Vec3());
 }
 
 bool Rectangle::intersect(Ray r, double& p0, double& p1) {
@@ -23,10 +35,10 @@ bool Rectangle::intersect(Ray r, double& p0, double& p1) {
 		Vec3 c1 = intersectionPoint - v1;
 		Vec3 c2 = intersectionPoint - v2;
 		Vec3 c3 = intersectionPoint - v3;
-		float t0 = eIn0.dot(c0);
-		float t1 = eIn1.dot(c1);
-		float t2 = eIn2.dot(c2);
-		float t3 = eIn3.dot(c3);
+		double t0 = eIn0.dot(c0);
+		double t1 = eIn1.dot(c1);
+		double t2 = eIn2.dot(c2);
+		double t3 = eIn3.dot(c3);
 		if (t0 > 0 && t1 > 0 && t2 > 0 && t3 > 0) return true;
 	} else {
 		e0 = v1 - v0;
@@ -41,10 +53,10 @@ bool Rectangle::intersect(Ray r, double& p0, double& p1) {
 		eIn1 = normal.cross(e1);
 		eIn2 = normal.cross(e2);
 		eIn3 = normal.cross(e3);
-		float t0 = eIn0.dot(c0);
-		float t1 = eIn1.dot(c1);
-		float t2 = eIn2.dot(c2);
-		float t3 = eIn3.dot(c3);
+		double t0 = eIn0.dot(c0);
+		double t1 = eIn1.dot(c1);
+		double t2 = eIn2.dot(c2);
+		double t3 = eIn3.dot(c3);
 		if (t0 > 0 && t1 > 0 && t2 > 0 && t3 > 0) return true;
 		preComputedEdges = true;
 	}
@@ -65,6 +77,10 @@ Vec3 Rectangle::computeNormal(Vec3 intersectionPoint) {
 
 	preComputed = true;
 	return normal;
+}
+
+Vec3 Rectangle::getNewDirectionTowardsLight(Vec3 shadowRay, Vec3 alignedNormal, Vec3 normalFromLight, double& angleToObject, Vec3 intersectionPoint) {
+	return shadowRay;
 }
 
 std::string Rectangle::toString() {
