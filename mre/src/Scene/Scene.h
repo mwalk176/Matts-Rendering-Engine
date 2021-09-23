@@ -29,6 +29,7 @@ public:
 	Vec3 getBackgroundColor();
 
 	SceneObject* getClosestObject(Ray r, double& closestPoint);
+	SceneObject* getShadowObject(Ray r, double& closestPoint, double& lightDist);
 
 private:
 	Camera* camera;

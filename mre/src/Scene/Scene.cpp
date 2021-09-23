@@ -63,6 +63,27 @@ SceneObject* Scene::getClosestObject(Ray r, double& closestPoint) {
 	else return nullptr;
 }
 
+SceneObject* Scene::getShadowObject(Ray r, double& closestPoint, double& lightDist) {
+	int closestObject = -1;
+	double p0 = INFINITY;
+	double p1 = INFINITY;
+
+	for (int i = 0; i < objects.size(); i++) {
+		if (objects.at(i)->intersect(r, p0, p1)) {
+			if (p0 < closestPoint) {
+				closestPoint = p0;
+				closestObject = i;
+			} else {
+				continue;
+			}
+
+		}
+	}
+
+	if (closestObject != -1) return objects.at(closestObject);
+	else return nullptr;
+}
+
 void Scene::useDefaultScene() {
 
 	backgroundColor = Vec3();
