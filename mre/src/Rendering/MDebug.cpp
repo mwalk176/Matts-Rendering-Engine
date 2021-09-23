@@ -2,7 +2,7 @@
 
 Vec3 MDebug::render(Ray camRay, Scene& scene) {
 
-    double closestPoint = INFINITY;
+    float closestPoint = INFINITY;
     SceneObject* closestObject = scene.getClosestObject(camRay, closestPoint);
     if (closestObject == nullptr) { //nothing was hit
         return Vec3();

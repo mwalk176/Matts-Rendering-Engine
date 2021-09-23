@@ -10,9 +10,9 @@ public:
 	Rectangle(Vec3 p0, Vec3 p1, Vec3 p2, Vec3 p3, Material* mat);
 	Rectangle(Vec3 p0, Vec3 p1, Vec3 p2, Vec3 p3, std::vector<Material*> mats);
 
-	bool intersect(Ray r, double& p0, double& p1);
+	bool intersect(Ray r, float& p0, float& p1);
 	Vec3 computeNormal(Vec3 intersectionPoint);
-	Vec3 getNewDirectionTowardsLight(Vec3 shadowRay, Vec3 alignedNormal, Vec3 normalFromLight, double& angleToObject, Vec3 intersectionPoint);
+	Vec3 getNewDirectionTowardsLight(Vec3 shadowRay, Vec3 alignedNormal, Vec3 normalFromLight, float& angleToObject, Vec3 intersectionPoint);
 
 	std::string toString();
 
@@ -23,7 +23,7 @@ private:
 
 	Vec3 normal;
 
-	double D = 0;
+	float D = 0;
 	
 	bool preComputed = false;
 	bool preComputedEdges = false;

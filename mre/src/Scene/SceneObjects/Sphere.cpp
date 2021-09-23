@@ -10,18 +10,18 @@ Sphere::Sphere(Vec3 p) {
 	radius = 1;
 }
 
-Sphere::Sphere(Vec3 p, double r) {
+Sphere::Sphere(Vec3 p, float r) {
 	pos = p;
 	radius = r;
 }
 
-Sphere::Sphere(Vec3 p, double r, Material* mat) {
+Sphere::Sphere(Vec3 p, float r, Material* mat) {
 	pos = p;
 	radius = r;
 	materials.push_back(mat);
 }
 
-Sphere::Sphere(Vec3 p, double r, std::vector<Material*> mats) {
+Sphere::Sphere(Vec3 p, float r, std::vector<Material*> mats) {
 	pos = p;
 	radius = r;
 	for (int i = 0; i < mats.size(); i++) {
@@ -34,14 +34,14 @@ Vec3 Sphere::getPos() {
     return Vec3();
 }
 
-bool Sphere::intersect(Ray r, double& p0, double& p1) {
+bool Sphere::intersect(Ray r, float& p0, float& p1) {
 	//analytic way
-	double a = r.d.dot(r.d); //should be 1
+	float a = r.d.dot(r.d); //should be 1
 	Vec3 D2 = r.d * 2;
 	Vec3 PR = r.o - pos; //vector from the sphere's center to the rayOrigin
-	double b = D2.dot(PR);
-	double c = PR.dot(PR) - (radius * radius);
-	double discriminant = (b * b) - (4 * a * c);
+	float b = D2.dot(PR);
+	float c = PR.dot(PR) - (radius * radius);
+	float discriminant = (b * b) - (4 * a * c);
 	if (discriminant < 0) return false; // the ray didn't hit the sphere
 	if (discriminant == 0) { // then it has only one hit
 		p0 = (-1 * b) / (2 * a);
@@ -51,7 +51,7 @@ bool Sphere::intersect(Ray r, double& p0, double& p1) {
 	if (discriminant > 0) { // then it has two hits
 		int sign = 1;
 		if (b < 0) sign = -1;
-		double quadratic = (-0.5) * ((double)b + (double)sign * sqrt(discriminant));
+		float quadratic = (-0.5) * ((float)b + (float)sign * sqrt(discriminant));
 		p0 = quadratic / a;
 		p1 = c / quadratic;
 
@@ -73,7 +73,7 @@ Vec3 Sphere::computeNormal(Vec3 intersectionPoint) {
 	return intersectionPoint - pos;
 }
 
-Vec3 Sphere::getNewDirectionTowardsLight(Vec3 shadowRay, Vec3 alignedNormal, Vec3 normalFromLight, double& angleToObject, Vec3 intersectionPoint) {
+Vec3 Sphere::getNewDirectionTowardsLight(Vec3 shadowRay, Vec3 alignedNormal, Vec3 normalFromLight, float& angleToObject, Vec3 intersectionPoint) {
 	//build a coordinate space in the hemisphere of the shadowray light
 	Vec3 se1 = Vec3(0);
 	if (fabs(alignedNormal.x) > fabs(alignedNormal.y)) {
@@ -88,22 +88,22 @@ Vec3 Sphere::getNewDirectionTowardsLight(Vec3 shadowRay, Vec3 alignedNormal, Vec
 
 	//calculate a random direction towards light
 	angleToObject = sqrt(1 - radius * radius / normalFromLight.dot(normalFromLight));
-	double randX = (double)rand() / RAND_MAX; //get us a random point
-	double randomAngle2 = M_PI * 2 * ((double)rand() / RAND_MAX);
-	double angleCos = 1 - randX + randX * angleToObject;
-	double angleSin = sqrt(1 - angleCos * angleCos);
+	float randX = (float)rand() / RAND_MAX; //get us a random point
+	float randomAngle2 = M_PI * 2 * ((float)rand() / RAND_MAX);
+	float angleCos = 1 - randX + randX * angleToObject;
+	float angleSin = sqrt(1 - angleCos * angleCos);
 	Vec3 newShadowRay = se1 * cos(randomAngle2) * angleSin + se2 * sin(randomAngle2) * angleSin + shadowRay * angleCos;
 	newShadowRay.normalize();
 
 	return newShadowRay;
 }
 
-double Sphere::getRadius() {
+float Sphere::getRadius() {
 	return radius;
 }
 
 
 std::string Sphere::toString() {
-    std::string output = "Sphere";
+    std::string output = "SPHERE";
     return output;
 }

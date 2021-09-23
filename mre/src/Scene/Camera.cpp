@@ -39,7 +39,7 @@ Camera::Camera(int x, int y) {
 Camera::~Camera() {
 }
 
-Ray Camera::convertToWorld(double x, double y) {
+Ray Camera::convertToWorld(float x, float y) {
 
 	Vec3 xVec = incX * x;
 	Vec3 yVec = incY * y;
@@ -47,12 +47,12 @@ Ray Camera::convertToWorld(double x, double y) {
 	Vec3 worldVec = start + xVec - yVec;
 	Ray r(lookFrom, worldVec);
 
-	/*double d = 1.0;
+	/*float d = 1.0;
 
 
-	double viewPlaneSizeX = d * tan(fov);
-	double vFov = 2.0 * atan(tan(fov / 2.0) / aspectRatio);
-	double viewPlaneSizeY = d * tan(vFov); */
+	float viewPlaneSizeX = d * tan(fov);
+	float vFov = 2.0 * atan(tan(fov / 2.0) / aspectRatio);
+	float viewPlaneSizeY = d * tan(vFov); */
 
 	return r;
 }
@@ -77,7 +77,7 @@ Vec3 Camera::getIncY() {
 	return incY;
 }
 
-void Camera::setCameraCoords(Vec3 lf, Vec3 la, Vec3 u, double f) {
+void Camera::setCameraCoords(Vec3 lf, Vec3 la, Vec3 u, float f) {
 	lookFrom = lf;
 	lookAt = la;
 	up = u;
@@ -97,9 +97,9 @@ void Camera::buildCoordinateSpace() {
 	std::cout << "e2: " << e2 << std::endl;
 	std::cout << "e3: " << e3 << std::endl;
 
-	double d = e3.calculateMagnitude();
-	double viewPlaneSizeX = d * tan(fov * (pi / 180.0));
-	double viewPlaneSizeY = viewPlaneSizeX * rows / columns;
+	float d = e3.calculateMagnitude();
+	float viewPlaneSizeX = d * tan(fov * (pi / 180.0));
+	float viewPlaneSizeY = viewPlaneSizeX * rows / columns;
 
 	e1.normalize();
 	e2.normalize();

@@ -13,9 +13,9 @@ class SceneObject {
 public:
 	SceneObject();
 	Vec3 getPos();
-	virtual bool intersect(Ray r, double& p0, double& p1) = 0;
+	virtual bool intersect(Ray r, float& p0, float& p1) = 0;
 	virtual Vec3 computeNormal(Vec3 intersectionPoint) = 0;
-	virtual Vec3 getNewDirectionTowardsLight(Vec3 shadowRay, Vec3 alignedNormal, Vec3 normalFromLight, double& angleToObject, Vec3 intersectionPoint) = 0;
+	virtual Vec3 getNewDirectionTowardsLight(Vec3 shadowRay, Vec3 alignedNormal, Vec3 normalFromLight, float& angleToObject, Vec3 intersectionPoint) = 0;
 	Material* getMaterial(std::string mType);
 	void setPrimaryMaterial(Material* m);
 

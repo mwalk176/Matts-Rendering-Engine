@@ -12,7 +12,7 @@ Vec3 MPathTracer::trace(Ray ray, Scene& scene, int depth, bool calculateEmission
 	Vec3 backgroundColor = scene.getBackgroundColor();
 
 
-	double closestPoint = INFINITY;
+	float closestPoint = INFINITY;
 
 	//check for intersection with object
 	//int closestObject = scene.getClosestObject(rayOrigin, rayDirection, scene, closestPoint);
@@ -39,11 +39,11 @@ Vec3 MPathTracer::trace(Ray ray, Scene& scene, int depth, bool calculateEmission
 		return Vec3(emissionColor.x, emissionColor.y, emissionColor.z) * mat->getGamma();
 	}
 
-	double brightestColor = objectColor.x;
+	float brightestColor = objectColor.x;
 	if (objectColor.y > brightestColor) brightestColor = objectColor.y;
 	if (objectColor.z > brightestColor) brightestColor = objectColor.z;
 	if (depth > 5) {
-		if ((double)rand() / RAND_MAX < brightestColor) {
+		if ((float)rand() / RAND_MAX < brightestColor) {
 			objectColor = objectColor * (1 / brightestColor);
 		}
 		else {
@@ -62,131 +62,39 @@ Vec3 MPathTracer::trace(Ray ray, Scene& scene, int depth, bool calculateEmission
 		alignedNormal = normal * -1;
 	}
 
-	double epsilon = 8e-5;
+	float epsilon = 8e-5;
 	if (closestObject->toString() == "SPHERE") {
 		Sphere* sphereLight = static_cast<Sphere*>(closestObject);
 		epsilon = 8e-6 * (sphereLight->getRadius() + 1.0);
 	}
 	Vec3 normalOrigin = intersectionPoint + normal * epsilon;
 
-	Vec3 lightValue = Vec3(0);
+	std::chrono::time_point<std::chrono::system_clock> start, end;
+	std::chrono::duration<double> elapsed_seconds;
 
 	switch (mat->getType()) {
 	case 0: {//diffuse
 
-		//diffuse reflections
-		//calculate a random ray direction in the hemisphere around the normal
-		double randomAngle = M_PI * 2 * ((double)rand() / RAND_MAX);
-		double distanceModifier = (double)rand() / RAND_MAX;
-		double distanceModifier2 = sqrt(distanceModifier);
+		
+		//start = std::chrono::system_clock::now();
 
-		//get a set of basis vectors to have a hemisphere around object's normal
-		Vec3 e1 = Vec3(0);
+		Vec3 randomReflection = computeRandomReflection(alignedNormal);
 
-		//make sure the alignedNormal is the "up" vector in the hemisphere
-		if (fabs(alignedNormal.x) > fabs(alignedNormal.y)) {
-			e1 = Vec3(alignedNormal.z, 0, -alignedNormal.x) /
-				sqrt(alignedNormal.x * alignedNormal.x +
-					alignedNormal.z * alignedNormal.z);
-		}
-		else {
-			e1 = Vec3(0, -alignedNormal.z, alignedNormal.y) /
-				sqrt(alignedNormal.y * alignedNormal.y +
-					alignedNormal.z * alignedNormal.z);
-		}
-		e1.normalize();
-		Vec3 e2 = alignedNormal.cross(e1);
-		e2.normalize();
+		//end = std::chrono::system_clock::now();
+		//elapsed_seconds = end - start;
+		//std::cout << "Compute Random Reflection elapsed time: " << elapsed_seconds.count() << "s\n";
 
-		Vec3 randomReflection = (e1 * cos(randomAngle) * distanceModifier2 +
-			e2 * sin(randomAngle) * distanceModifier2 +
-			alignedNormal * sqrt(1 - distanceModifier));
-		randomReflection.normalize();
+		//start = std::chrono::system_clock::now();
 
-		//Shadow Ray computation for physical lights 
-		for (unsigned int i = 0; i < scene.getObjects().size(); i++) {
-			SceneObject* sObject = scene.getObjects().at(i);
-			MPathTracerMat* sMat = static_cast<MPathTracerMat*>(sObject->getMaterial("MPATHTRACERMAT"));
-			if (sMat == nullptr) continue;
-			if (sMat->getEmission().calculateMagnitude() <= 0) continue; //we only want lights
+		Vec3 lightValue = computeShadowRay(normalOrigin, intersectionPoint, scene,
+			alignedNormal, objectColor, normal);
 
-			//shoot another ray towards the face of the light
-			Vec3 shadowRay = sObject->getPos() - intersectionPoint;
-			Vec3 normalFromLight = intersectionPoint - sObject->getPos();
-			double lightDist = shadowRay.calculateMagnitude();
-			shadowRay.normalize();
+		/*end = std::chrono::system_clock::now();
+		elapsed_seconds = end - start;
+		std::cout << "Compute Shadow Ray elapsed time: " << elapsed_seconds.count() << "s\n";
 
-			bool insideLight = false;
-			if (sObject->toString() == "SPHERE") {
-				Sphere* sphereLight = static_cast<Sphere*>(sObject);
-				if (lightDist < sphereLight->getRadius()) {
-					//we're inside the light
-					continue;
-				}
-			}
+		if(depth == 1) start = std::chrono::system_clock::now();*/
 
-
-			double angleToObject = 0;
-			Vec3 newShadowRay = sObject->
-				getNewDirectionTowardsLight(shadowRay, alignedNormal,
-					normalFromLight, angleToObject, intersectionPoint);
-
-			double s0 = 0;
-			double s1 = 0;
-			bool inShadow = false;
-
-
-			//check to see if another object is inbetween the light
-			for (unsigned int j = 0; j < scene.getObjects().size(); j++) {
-				if (scene.getObjects().at(j)->intersect(Ray(
-					normalOrigin, newShadowRay), s0, s1) &&
-					s0 < lightDist) {
-					inShadow = true;
-					break;
-				}
-			}
-			if (!inShadow) {
-				double brdf = 2 * M_PI * (1.0 - angleToObject);
-				lightValue = lightValue + objectColor *
-					(alignedNormal.dot(newShadowRay) * brdf) * M_1_PI;
-			}
-
-		}
-
-		std::vector<Light*> lights = scene.getLights();
-
-		//Shadow Ray calculation for point and directional lights
-		for (unsigned int i = 0; i < lights.size(); i++) {
-
-			double lightDist = INFINITY;
-			Vec3 shadowRay;
-
-			//check if in shadow
-			bool inShadow = false;
-			double s0 = INFINITY;
-
-			if (lights.at(i)->toString() == "DIRECTIONAL_LIGHT") {
-				Vec3 lightDirection = static_cast<DirectionalLight*>(lights.at(i))->getLightDirection() * -1;
-				shadowRay = lightDirection;// -intersectionPoint;
-				shadowRay.normalize();
-
-				if (scene.getClosestObject(Ray(normalOrigin, shadowRay), s0) != nullptr) inShadow = true;
-
-			}
-			else {
-				Vec3 lightPos = lights.at(i)->getPos();
-				shadowRay = lightPos - intersectionPoint;
-				lightDist = shadowRay.calculateMagnitude();
-				shadowRay.normalize();
-				SceneObject* closestShadowObj = scene.getClosestObject(Ray(normalOrigin, shadowRay), s0);
-				if (closestShadowObj != nullptr && s0 < lightDist) inShadow = true;
-			}
-
-			if (!inShadow) {
-				lightValue = lightValue + normal.dot(shadowRay);
-				if (lightValue.calculateMagnitude() < 0.02) lightValue = Vec3(0.02);
-			}
-		}
 		if (calculateEmission) {
 			objectColor = emissionColor + lightValue +
 				objectColor * trace(Ray(normalOrigin,
@@ -197,6 +105,10 @@ Vec3 MPathTracer::trace(Ray ray, Scene& scene, int depth, bool calculateEmission
 				trace(Ray(normalOrigin, randomReflection),
 					scene, depth, true); //maybe keep it at false?
 		}
+
+		/*if (depth == 1) end = std::chrono::system_clock::now();
+		if (depth == 1) elapsed_seconds = end - start;
+		if (depth == 1) std::cout << "Recursive Path Trace elapsed time: " << elapsed_seconds.count() << "s\n\n\n";*/
 
 		return objectColor;
 	}
@@ -210,14 +122,14 @@ Vec3 MPathTracer::trace(Ray ray, Scene& scene, int depth, bool calculateEmission
 
 		epsilon = 1e-3;
 
-		double iorValue = mat->getIOR();
+		float iorValue = mat->getIOR();
 		bool outGoingIn = false;
 		if (normal.dot(alignedNormal) > 0) outGoingIn = true;
 		if (outGoingIn) iorValue = 1 / iorValue;
-		double normDirAngle = ray.d.dot(alignedNormal);
+		float normDirAngle = ray.d.dot(alignedNormal);
 
 		//then check for total internal reflection
-		double interiorAngle = 1 - (iorValue * iorValue) * (1 - normDirAngle * normDirAngle);
+		float interiorAngle = 1 - (iorValue * iorValue) * (1 - normDirAngle * normDirAngle);
 		if (interiorAngle < 0) {
 			return emissionColor + objectColor * trace(Ray(normalOrigin, reflDirection), scene, depth, true);
 
@@ -226,7 +138,7 @@ Vec3 MPathTracer::trace(Ray ray, Scene& scene, int depth, bool calculateEmission
 		//then calculate refraction
 		Vec3 transmissionRay = Vec3(0);
 		Vec3 refractOrigin = intersectionPoint - normal * epsilon;
-		double theta = 0;
+		float theta = 0;
 
 		if (outGoingIn) {
 			transmissionRay = ray.d * iorValue - normal * (normDirAngle * iorValue + sqrt(interiorAngle));
@@ -246,15 +158,15 @@ Vec3 MPathTracer::trace(Ray ray, Scene& scene, int depth, bool calculateEmission
 		}
 
 		//calculate incidence of relfection (f0) and the fresnel equation
-		double f0 = ((iorValue - 1) * (iorValue - 1)) / ((iorValue + 1) * (iorValue + 1));
-		//double f0 = ((scene[closestObject]->IOR - 1) * (scene[closestObject]->IOR - 1)) / ((scene[closestObject]->IOR + 1) * (scene[closestObject]->IOR + 1));
-		double fresnel = f0 + (1 - f0) * ((1 - theta) * (1 - theta) * (1 - theta) * (1 - theta) * (1 - theta));
+		float f0 = ((iorValue - 1) * (iorValue - 1)) / ((iorValue + 1) * (iorValue + 1));
+		//float f0 = ((scene[closestObject]->IOR - 1) * (scene[closestObject]->IOR - 1)) / ((scene[closestObject]->IOR + 1) * (scene[closestObject]->IOR + 1));
+		float fresnel = f0 + (1 - f0) * ((1 - theta) * (1 - theta) * (1 - theta) * (1 - theta) * (1 - theta));
 
 
 		//check if angle of incidence is too shallow,
 		if (depth > 2) {
-			double fresnelThreshold = fresnel * 0.5 + 0.25;
-			if (((double)rand() / RAND_MAX) < fresnelThreshold) {
+			float fresnelThreshold = fresnel * 0.5 + 0.25;
+			if (((float)rand() / RAND_MAX) < fresnelThreshold) {
 				Vec3 col = emissionColor + objectColor * trace(Ray(normalOrigin, reflDirection), scene, depth, true) * (fresnel / fresnelThreshold) * mat->getGamma();
 				return col;
 
@@ -273,7 +185,7 @@ Vec3 MPathTracer::trace(Ray ray, Scene& scene, int depth, bool calculateEmission
 	}
 	case 3: {//glossy
 
-		double roughness = 0.1; //0 is mirror, 1 is completely rough
+		float roughness = 0.1; //0 is mirror, 1 is completely rough
 
 		Vec3 reflDirection = ray.d - normal * 2 * (ray.d.dot(normal));
 
@@ -290,11 +202,11 @@ Vec3 MPathTracer::trace(Ray ray, Scene& scene, int depth, bool calculateEmission
 		se2.normalize();
 
 		//calculate a random direction towards light
-		double angleToSphere = sqrt(1 - roughness / normal.dot(normal));
-		double randX = (double)rand() / RAND_MAX; //get us a random point
-		double randomAngle2 = M_PI * 2 * ((double)rand() / RAND_MAX);
-		double angleCos = 1 - randX + randX * angleToSphere;
-		double angleSin = sqrt(1 - angleCos * angleCos);
+		float angleToSphere = sqrt(1 - roughness / normal.dot(normal));
+		float randX = (float)rand() / RAND_MAX; //get us a random point
+		float randomAngle2 = M_PI * 2 * ((float)rand() / RAND_MAX);
+		float angleCos = 1 - randX + randX * angleToSphere;
+		float angleSin = sqrt(1 - angleCos * angleCos);
 		Vec3 newReflRay = se1 * cos(randomAngle2) * angleSin + se2 * sin(randomAngle2) * angleSin + reflDirection * angleCos;
 		newReflRay.normalize();
 
@@ -305,4 +217,113 @@ Vec3 MPathTracer::trace(Ray ray, Scene& scene, int depth, bool calculateEmission
 		return Vec3(0);
 	}
 	}
+}
+
+Vec3 MPathTracer::computeRandomReflection(Vec3 alignedNormal) {
+	//diffuse reflections
+		//calculate a random ray direction in the hemisphere around the normal
+	float randomAngle = M_PI * 2 * ((float)rand() / RAND_MAX);
+	float distanceModifier = (float)rand() / RAND_MAX;
+	float distanceModifier2 = sqrt(distanceModifier);
+
+	//get a set of basis vectors to have a hemisphere around object's normal
+	Vec3 e1 = Vec3(0);
+
+	//make sure the alignedNormal is the "up" vector in the hemisphere
+	if (fabs(alignedNormal.x) > fabs(alignedNormal.y)) {
+		e1 = Vec3(alignedNormal.z, 0, -alignedNormal.x) /
+			sqrt(alignedNormal.x * alignedNormal.x +
+				alignedNormal.z * alignedNormal.z);
+	} else {
+		e1 = Vec3(0, -alignedNormal.z, alignedNormal.y) /
+			sqrt(alignedNormal.y * alignedNormal.y +
+				alignedNormal.z * alignedNormal.z);
+	}
+	e1.normalize();
+	Vec3 e2 = alignedNormal.cross(e1);
+	e2.normalize();
+
+	Vec3 randomReflection = (e1 * cos(randomAngle) * distanceModifier2 +
+		e2 * sin(randomAngle) * distanceModifier2 +
+		alignedNormal * sqrt(1 - distanceModifier));
+	randomReflection.normalize();
+
+	return randomReflection;
+}
+
+Vec3 MPathTracer::computeShadowRay(Vec3 normalOrigin, Vec3 intersectionPoint, Scene& scene, 
+	Vec3 alignedNormal, Vec3 objectColor, Vec3 normal) {
+
+	Vec3 lightValue = Vec3();
+	
+	//Shadow Ray computation for physical lights 
+	for (unsigned int i = 0; i < scene.getObjects().size(); i++) {
+		SceneObject* sObject = scene.getObjects().at(i);
+		MPathTracerMat* sMat = static_cast<MPathTracerMat*>(sObject->getMaterial("MPATHTRACERMAT"));
+		if (sMat == nullptr) continue;
+		if (sMat->getEmission().calculateMagnitude() <= 0) continue; //we only want lights
+
+		//shoot another ray towards the face of the light
+		Vec3 shadowRay = sObject->getPos() - intersectionPoint;
+		Vec3 normalFromLight = intersectionPoint - sObject->getPos();
+		float lightDist = shadowRay.calculateMagnitude();
+		shadowRay.normalize();
+
+		bool insideLight = false;
+		if (sObject->toString() == "SPHERE") {
+			Sphere* sphereLight = static_cast<Sphere*>(sObject);
+			if (lightDist < sphereLight->getRadius()) {
+				//we're inside the light
+				continue;
+			}
+		}
+
+		float angleToObject = 0;
+		Vec3 newShadowRay = sObject->
+			getNewDirectionTowardsLight(shadowRay, alignedNormal,
+				normalFromLight, angleToObject, intersectionPoint);
+
+		if (!scene.inShadow(Ray(normalOrigin, newShadowRay), lightDist)) {
+			float brdf = 2 * M_PI * (1.0 - angleToObject);
+			lightValue = lightValue + objectColor *
+				(alignedNormal.dot(newShadowRay) * brdf) * M_1_PI;
+		}
+
+	}
+
+	std::vector<Light*> lights = scene.getLights();
+
+	//Shadow Ray calculation for point and directional lights
+	for (unsigned int i = 0; i < lights.size(); i++) {
+
+		float lightDist = INFINITY;
+		Vec3 shadowRay;
+
+		//check if in shadow
+		bool inShadow = false;
+		float s0 = INFINITY;
+
+		if (lights.at(i)->toString() == "DIRECTIONAL_LIGHT") {
+			Vec3 lightDirection = static_cast<DirectionalLight*>(lights.at(i))->getLightDirection() * -1;
+			shadowRay = lightDirection;// -intersectionPoint;
+			shadowRay.normalize();
+
+			if (scene.getClosestObject(Ray(normalOrigin, shadowRay), s0) != nullptr) inShadow = true;
+
+		} else {
+			Vec3 lightPos = lights.at(i)->getPos();
+			shadowRay = lightPos - intersectionPoint;
+			lightDist = shadowRay.calculateMagnitude();
+			shadowRay.normalize();
+			SceneObject* closestShadowObj = scene.getClosestObject(Ray(normalOrigin, shadowRay), s0);
+			if (closestShadowObj != nullptr && s0 < lightDist) inShadow = true;
+		}
+
+		if (!inShadow) {
+			lightValue = lightValue + normal.dot(shadowRay);
+			if (lightValue.calculateMagnitude() < 0.02) lightValue = Vec3(0.02);
+		}
+	}
+
+	return lightValue;
 }

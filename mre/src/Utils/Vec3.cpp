@@ -6,13 +6,13 @@ Vec3::Vec3() {
 	z = 0;
 }
 
-Vec3::Vec3(double num) {
+Vec3::Vec3(float num) {
 	x = num;
 	y = num;
 	z = num;
 }
 
-Vec3::Vec3(double inX, double inY, double inZ) {
+Vec3::Vec3(float inX, float inY, float inZ) {
 	x = inX;
 	y = inY;
 	z = inZ;
@@ -42,7 +42,7 @@ Vec3 Vec3::operator*(const Vec3 v) {
 	return result;
 }
 
-Vec3 Vec3::operator*(const double c) {
+Vec3 Vec3::operator*(const float c) {
 	Vec3 result;
 	result.x = x * c;
 	result.y = y * c;
@@ -50,7 +50,7 @@ Vec3 Vec3::operator*(const double c) {
 	return result;
 }
 
-Vec3 Vec3::operator/(const double c) {
+Vec3 Vec3::operator/(const float c) {
 	Vec3 result;
 	result.x = x / c;
 	result.y = y / c;
@@ -58,38 +58,38 @@ Vec3 Vec3::operator/(const double c) {
 	return result;
 }
 
-double Vec3::dot(Vec3 v) {
+float Vec3::dot(Vec3 v) {
 	return (x * v.x) + (y * v.y) + (z * v.z);
 }
 
 Vec3 Vec3::cross(Vec3 v) {
 	Vec3 result(0);
-	double xNew = (y * v.z) - (z * v.y);
-	double yNew = (z * v.x) - (x * v.z);
-	double zNew = (x * v.y) - (y * v.x);
+	float xNew = (y * v.z) - (z * v.y);
+	float yNew = (z * v.x) - (x * v.z);
+	float zNew = (x * v.y) - (y * v.x);
 	result.setEach(xNew, yNew, zNew);
 	return result;
 }
 
 void Vec3::normalize() {
-	double magnitude = sqrt((x * x) + (y * y) + (z * z));
+	float magnitude = sqrt((x * x) + (y * y) + (z * z));
 	x /= magnitude;
 	y /= magnitude;
 	z /= magnitude;
 }
 
-double Vec3::calculateMagnitude() {
-	double magnitude = sqrt((x * x) + (y * y) + (z * z));
+float Vec3::calculateMagnitude() {
+	float magnitude = sqrt((x * x) + (y * y) + (z * z));
 	return magnitude;
 }
 
-void Vec3::setAll(double val) {
+void Vec3::setAll(float val) {
 	x = val;
 	y = val;
 	z = val;
 }
 
-void Vec3::setEach(double xNew, double yNew, double zNew) {
+void Vec3::setEach(float xNew, float yNew, float zNew) {
 	x = xNew;
 	y = yNew;
 	z = zNew;

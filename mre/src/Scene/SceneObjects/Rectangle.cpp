@@ -23,7 +23,7 @@ Rectangle::Rectangle(Vec3 p0, Vec3 p1, Vec3 p2, Vec3 p3, std::vector<Material*> 
 	computeNormal(Vec3());
 }
 
-bool Rectangle::intersect(Ray r, double& p0, double& p1) {
+bool Rectangle::intersect(Ray r, float& p0, float& p1) {
 	if (fabs(normal.dot(r.d)) < 0.001) return false;
 	p0 = -(normal.dot(r.o) - D) / normal.dot(r.d);
 	//std::cout <<  "Rectangle p0: " << p0 << "\n";
@@ -35,10 +35,10 @@ bool Rectangle::intersect(Ray r, double& p0, double& p1) {
 		Vec3 c1 = intersectionPoint - v1;
 		Vec3 c2 = intersectionPoint - v2;
 		Vec3 c3 = intersectionPoint - v3;
-		double t0 = eIn0.dot(c0);
-		double t1 = eIn1.dot(c1);
-		double t2 = eIn2.dot(c2);
-		double t3 = eIn3.dot(c3);
+		float t0 = eIn0.dot(c0);
+		float t1 = eIn1.dot(c1);
+		float t2 = eIn2.dot(c2);
+		float t3 = eIn3.dot(c3);
 		if (t0 > 0 && t1 > 0 && t2 > 0 && t3 > 0) return true;
 	} else {
 		e0 = v1 - v0;
@@ -53,10 +53,10 @@ bool Rectangle::intersect(Ray r, double& p0, double& p1) {
 		eIn1 = normal.cross(e1);
 		eIn2 = normal.cross(e2);
 		eIn3 = normal.cross(e3);
-		double t0 = eIn0.dot(c0);
-		double t1 = eIn1.dot(c1);
-		double t2 = eIn2.dot(c2);
-		double t3 = eIn3.dot(c3);
+		float t0 = eIn0.dot(c0);
+		float t1 = eIn1.dot(c1);
+		float t2 = eIn2.dot(c2);
+		float t3 = eIn3.dot(c3);
 		if (t0 > 0 && t1 > 0 && t2 > 0 && t3 > 0) return true;
 		preComputedEdges = true;
 	}
@@ -79,7 +79,7 @@ Vec3 Rectangle::computeNormal(Vec3 intersectionPoint) {
 	return normal;
 }
 
-Vec3 Rectangle::getNewDirectionTowardsLight(Vec3 shadowRay, Vec3 alignedNormal, Vec3 normalFromLight, double& angleToObject, Vec3 intersectionPoint) {
+Vec3 Rectangle::getNewDirectionTowardsLight(Vec3 shadowRay, Vec3 alignedNormal, Vec3 normalFromLight, float& angleToObject, Vec3 intersectionPoint) {
 	return shadowRay;
 }
 

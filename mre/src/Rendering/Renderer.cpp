@@ -38,9 +38,39 @@ void Renderer::renderScene(Scene& scene, Image& image) {
 	std::vector<std::thread> threadList;
 	unsigned int coreCount = 0;
 
+	time_t timer;
+	double startTime = time(&timer);
+	double deltaTime = -1;
+	bool calculateTime = false;
+	double averageCycleTime = 0;
+	double totalTime = 0;
+
 
 	for (int y = 0; y < rows; y++) {
-		std::cout << "y: " << y << std::endl;
+		
+
+		if (calculateTime) {
+			deltaTime = time(&timer) - startTime;
+			startTime = time(&timer);
+			averageCycleTime = averageCycleTime == 0 ? (averageCycleTime + deltaTime) : (averageCycleTime + deltaTime) / 2.0;
+			totalTime = totalTime + deltaTime;
+			calculateTime = false;
+			std::cout << "Cycle complete, current y: " << y << std::endl;
+			std::cout << "  Elapsed time: " << (int)(totalTime / 60) << " minutes, " << (int)totalTime % 60 << " seconds" << std::endl;
+			std::cout << "  Previous cycle took " << deltaTime << " seconds to complete" << std::endl;
+			std::cout << "  Average cycle time: " << averageCycleTime << " seconds" << std::endl;
+			int remainingRows = rows - y;
+			double remainingCycles = remainingRows / numCores;
+			double estimatedTime = remainingCycles * averageCycleTime;
+			int minutesLeft = estimatedTime / 60;
+			int secondsLeft = (int)estimatedTime % 60;
+			std::cout << "  " << remainingCycles << " cycles left" << std::endl;
+			std::cout << "  Estimated time remaining: " << minutesLeft << " minutes, " << secondsLeft << " seconds" << std::endl << std::endl;
+
+		}
+
+
+
 		if (useMultithreading) {
 
 			//create thread for the row
@@ -53,9 +83,12 @@ void Renderer::renderScene(Scene& scene, Image& image) {
 					threadList.at(i).join();
 				}
 				threadList.clear();
+				calculateTime = true;
 			}
 		} else {
+			std::cout << "y: " << y << std::endl;
 			renderRow(scene, image, y);
+			
 		}
 	}
 }
@@ -90,19 +123,19 @@ void Renderer::renderRow(Scene& scene, Image& image, int y) {
 			for (int subY = 0; subY < subRows; subY++) { //calculate subpixel grid
 				for (int subX = 0; subX < subColumns; subX++) {
 					for (int samples = 0; samples < maxSamples; samples++) {
-						//double rX = -0.25;
-											//double rY = -0.25;
+						//float rX = -0.25;
+											//float rY = -0.25;
 
-						double rX = ((double)rand() / RAND_MAX) / -2.0;
-						double rY = ((double)rand() / RAND_MAX) / -2.0;
-						//double rX = (rand() / RAND_MAX);
-						//double rY = rand();
+						float rX = ((float)rand() / RAND_MAX) / -2.0;
+						float rY = ((float)rand() / RAND_MAX) / -2.0;
+						//float rX = (rand() / RAND_MAX);
+						//float rY = rand();
 						if (subX == 1) rX += 0.5;
 						if (subY == 1) rY += 0.5;
 
 
-						double xAdjusted = x + rX;
-						double yAdjusted = y + rY;
+						float xAdjusted = x + rX;
+						float yAdjusted = y + rY;
 
 						Ray primRay = camera->convertToWorld(xAdjusted, yAdjusted);
 
@@ -110,14 +143,7 @@ void Renderer::renderRow(Scene& scene, Image& image, int y) {
 
 						col = col + integrator->render(primRay, scene);
 						timesSampled++;
-					}
-
-					
-					
-					
-
-
-					
+					}	
 				}
 			}
 			col = col / timesSampled;

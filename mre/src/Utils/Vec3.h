@@ -9,26 +9,26 @@
 
 class Vec3 {
 public:
-	double x;
-	double y;
-	double z;
+	float x;
+	float y;
+	float z;
 
 	Vec3();
-	Vec3(double num);
-	Vec3(double inX, double inY, double inZ);
+	Vec3(float num);
+	Vec3(float inX, float inY, float inZ);
 
 	Vec3 operator + (const Vec3 v);
 	Vec3 operator - (const Vec3 v);
 	Vec3 operator * (const Vec3 v);
-	Vec3 operator * (const double c);
-	Vec3 operator / (const double c);
+	Vec3 operator * (const float c);
+	Vec3 operator / (const float c);
 
-	double dot(Vec3 v);
+	float dot(Vec3 v);
 	Vec3 cross(Vec3 v); 
 	void normalize();
-	double calculateMagnitude();
-	void setAll(double val);
-	void setEach(double xNew, double yNew, double zNew);
+	float calculateMagnitude();
+	void setAll(float val);
+	void setEach(float xNew, float yNew, float zNew);
 	void clamp(); 
 
 	

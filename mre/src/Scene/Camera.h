@@ -15,7 +15,7 @@ public:
 	Camera(int x, int y);
 	~Camera();
 
-	Ray convertToWorld(double x, double y);
+	Ray convertToWorld(float x, float y);
 	int getRows();
 	int getColumns();
 	
@@ -23,7 +23,7 @@ public:
 	Vec3 getIncX();
 	Vec3 getIncY();
 
-	void setCameraCoords(Vec3 lf, Vec3 la, Vec3 u, double f);
+	void setCameraCoords(Vec3 lf, Vec3 la, Vec3 u, float f);
 
 
 private:
@@ -33,10 +33,10 @@ private:
 	Vec3 lookAt;
 	Vec3 up;
 
-	double fov; //horizontal fov
+	float fov; //horizontal fov
 	int rows;
 	int columns;
-	double aspectRatio;
+	float aspectRatio;
 
 	Vec3 e1;
 	Vec3 e2;
@@ -47,7 +47,7 @@ private:
 	Vec3 incY;
 
 
-	const double pi = acos(-1);
+	const float pi = acos(-1);
 
 };
 

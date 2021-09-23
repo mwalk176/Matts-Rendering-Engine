@@ -11,6 +11,7 @@
 
 #include <future>
 #include <cmath>
+#include <time.h>
 
 class Renderer {
 public:

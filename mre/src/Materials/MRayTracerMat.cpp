@@ -12,7 +12,7 @@ MRayTracerMat::MRayTracerMat(Vec3 c) {
     type = 0;
 }
 
-MRayTracerMat::MRayTracerMat(Vec3 c, double i, int t) {
+MRayTracerMat::MRayTracerMat(Vec3 c, float i, int t) {
     color = c;
     IOR = i;
     type = t;
@@ -22,7 +22,7 @@ Vec3 MRayTracerMat::getColor() {
     return color;
 }
 
-double MRayTracerMat::getIOR() {
+float MRayTracerMat::getIOR() {
     return IOR;
 }
 

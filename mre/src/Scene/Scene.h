@@ -28,8 +28,8 @@ public:
 	std::vector <Light*> getLights();
 	Vec3 getBackgroundColor();
 
-	SceneObject* getClosestObject(Ray r, double& closestPoint);
-	SceneObject* getShadowObject(Ray r, double& closestPoint, double& lightDist);
+	SceneObject* getClosestObject(Ray r, float& closestPoint);
+	bool inShadow(Ray r, float& lightDist);
 
 private:
 	Camera* camera;
@@ -38,6 +38,7 @@ private:
 	Vec3 backgroundColor;
 
 	void useDefaultScene();
+	void scene1();
 
 };
 
