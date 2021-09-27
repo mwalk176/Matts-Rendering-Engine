@@ -8,7 +8,9 @@
 
 class MDebug : public Integrator {
 public:
-	Vec3 render(Ray camRay, Scene& scene);
+	MDebug();
+	MDebug(Scene* s);
+	Vec3 render(Ray camRay);
 
 private:
 

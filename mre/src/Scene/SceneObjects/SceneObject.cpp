@@ -12,12 +12,12 @@ Vec3 SceneObject::getPos() {
     return pos;
 }
 
-Material* SceneObject::getMaterial(std::string mType) {
+Material* SceneObject::getMaterial(int mType) {
     if (primaryMaterial == nullptr) {
         for (int i = 0; i < materials.size(); i++) {
-            if (materials.at(i)->toString() == mType) {
-                primaryMaterial = materials.at(i);
-                return materials.at(i);
+            if (materials[i]->matType == mType) {
+                primaryMaterial = materials[i];
+                return materials[i];
             }
         }
         return nullptr;

@@ -4,18 +4,21 @@ MRayTracerMat::MRayTracerMat() { //creates a default white diffuse material
     color = Vec3(1);
     IOR = 1.5;
     type = 0;
+    matType = 1;
 }
 
 MRayTracerMat::MRayTracerMat(Vec3 c) {
     color = c;
     IOR = 1.5;
     type = 0;
+    matType = 1;
 }
 
 MRayTracerMat::MRayTracerMat(Vec3 c, float i, int t) {
     color = c;
     IOR = i;
     type = t;
+    matType = 1;
 }
 
 Vec3 MRayTracerMat::getColor() {

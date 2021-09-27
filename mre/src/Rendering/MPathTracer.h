@@ -9,20 +9,29 @@
 #include "../Materials/MPathTracerMat.h"
 
 #include <chrono>
+#include <vector>
 
 
 class MPathTracer : public Integrator {
 public:
-	Vec3 render(Ray camRay, Scene& scene);
+	MPathTracer();
+	MPathTracer(Scene* s);
+	Vec3 render(Ray camRay);
+	
 
 private:
-	Vec3 trace(Ray ray, Scene& scene, int depth, bool calculateEmission);
+	Vec3 trace(Ray ray, int depth, bool calculateEmission);
 	Vec3 computeRandomReflection(Vec3 alignedNormal);
-	Vec3 computeShadowRay(Vec3 normalOrigin, Vec3 intersectionPoint, Scene& scene, 
+	Vec3 computeShadowRay(Vec3 normalOrigin, Vec3 intersectionPoint, 
 		Vec3 alignedNormal, Vec3 objectColor, Vec3 normal);
 
 	//Material* getMaterial(std::vector<Material*> materials);
 	//RenderSettings* settings = RenderSettings::getInstance();
+
+	//Scene scene;
+	Vec3 backgroundColor;
+	std::vector<SceneObject*> objects; //remove these later
+	std::vector<Light*> lights; //todo remove this later
 
 };
 

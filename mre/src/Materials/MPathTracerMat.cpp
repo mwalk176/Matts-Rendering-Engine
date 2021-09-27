@@ -6,6 +6,7 @@ MPathTracerMat::MPathTracerMat() {
 	IOR = 1.5;
 	type = 0;
 	gamma = 1.0;
+	matType = 2;
 }
 
 MPathTracerMat::MPathTracerMat(Vec3 c) {
@@ -14,6 +15,7 @@ MPathTracerMat::MPathTracerMat(Vec3 c) {
 	IOR = 1.5;
 	type = 0;
 	gamma = 1.0;
+	matType = 2;
 }
 
 MPathTracerMat::MPathTracerMat(Vec3 c, Vec3 e, float i, int t) {
@@ -22,6 +24,7 @@ MPathTracerMat::MPathTracerMat(Vec3 c, Vec3 e, float i, int t) {
 	IOR = i;
 	type = t;
 	gamma = 1.0;
+	matType = 2;
 }
 
 MPathTracerMat::MPathTracerMat(Vec3 c, Vec3 e, float i, int t, float g) {
@@ -30,27 +33,28 @@ MPathTracerMat::MPathTracerMat(Vec3 c, Vec3 e, float i, int t, float g) {
 	IOR = i;
 	type = t;
 	gamma = g;
+	matType = 2;
 }
 
-Vec3 MPathTracerMat::getColor() {
-	return color;
-}
-
-Vec3 MPathTracerMat::getEmission() {
-	return emissionColor;
-}
-
-float MPathTracerMat::getIOR() {
-	return IOR;
-}
-
-int MPathTracerMat::getType() {
-	return type;
-}
-
-float MPathTracerMat::getGamma() {
-	return gamma;
-}
+//Vec3 MPathTracerMat::getColor() {
+//	return color;
+//}
+//
+//Vec3 MPathTracerMat::getEmission() {
+//	return emissionColor;
+//}
+//
+//float MPathTracerMat::getIOR() {
+//	return IOR;
+//}
+//
+//int MPathTracerMat::getType() {
+//	return type;
+//}
+//
+//float MPathTracerMat::getGamma() {
+//	return gamma;
+//}
 
 std::string MPathTracerMat::toString() {
 	return "MPATHTRACERMAT";

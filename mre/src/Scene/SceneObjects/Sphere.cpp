@@ -3,31 +3,35 @@
 Sphere::Sphere() {
 	pos = Vec3(0);
 	radius = 1.0;
+	shapeType = 0;
 }
 
 Sphere::Sphere(Vec3 p) {
 	pos = p;
 	radius = 1;
+	shapeType = 0;
 }
 
 Sphere::Sphere(Vec3 p, float r) {
 	pos = p;
 	radius = r;
+	shapeType = 0;
 }
 
 Sphere::Sphere(Vec3 p, float r, Material* mat) {
 	pos = p;
 	radius = r;
 	materials.push_back(mat);
+	shapeType = 0;
 }
 
 Sphere::Sphere(Vec3 p, float r, std::vector<Material*> mats) {
 	pos = p;
 	radius = r;
 	for (int i = 0; i < mats.size(); i++) {
-		materials.push_back(mats.at(i));
+		materials.push_back(mats[i]);
 	}
-	
+	shapeType = 0;
 }
 
 Vec3 Sphere::getPos() {
@@ -104,6 +108,5 @@ float Sphere::getRadius() {
 
 
 std::string Sphere::toString() {
-    std::string output = "SPHERE";
-    return output;
+	return "SPHERE";
 }

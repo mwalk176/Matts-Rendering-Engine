@@ -145,6 +145,7 @@
     <ClCompile Include="src\Materials\MDebugMat.cpp" />
     <ClCompile Include="src\Materials\MPathTracerMat.cpp" />
     <ClCompile Include="src\Materials\MRayTracerMat.cpp" />
+    <ClCompile Include="src\Rendering\Integrator.cpp" />
     <ClCompile Include="src\Rendering\MDebug.cpp" />
     <ClCompile Include="src\Rendering\MPathTracer.cpp" />
     <ClCompile Include="src\Rendering\MRayTracer.cpp" />

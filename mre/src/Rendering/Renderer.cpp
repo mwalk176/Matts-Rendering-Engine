@@ -1,23 +1,19 @@
 #include "Renderer.h"
 
 
-Renderer::Renderer() {
-	integrator = new MDebug();
-
-}
-
-Renderer::Renderer(std::string algorithm) {
+Renderer::Renderer(std::string algorithm, Scene* s) {
+	scene = s;
 	std::cout << "Renderer initialized using integrator " << algorithm << std::endl;
 	if (algorithm == "MDEBUG") {
-		integrator = new MDebug();
+		integrator = new MDebug(s);
 	} else if (algorithm == "MRAYTRACER") {
-		integrator = new MRayTracer();
+		integrator = new MRayTracer(s);
 	}
 	else if (algorithm == "MPATHTRACER") {
-		integrator = new MPathTracer();
+		integrator = new MPathTracer(s);
 	}
 	else {
-		integrator = new MDebug();
+		integrator = new MDebug(s);
 	}
 	
 }
@@ -25,7 +21,10 @@ Renderer::Renderer(std::string algorithm) {
 Renderer::~Renderer() {
 }
 
-void Renderer::renderScene(Scene& scene, Image& image) {
+void Renderer::renderScene(Image& image) {
+
+
+
 	
 	//get image dimensions
 	int rows = image.getHeight();
@@ -74,33 +73,33 @@ void Renderer::renderScene(Scene& scene, Image& image) {
 		if (useMultithreading) {
 
 			//create thread for the row
-			threadList.push_back(std::thread(&Renderer::renderRow, this, std::ref(scene), std::ref(image), y));
+			threadList.push_back(std::thread(&Renderer::renderRow, this, std::ref(image), y));
 			
 			//if there's max threads for cpu cores, wait until they're done before adding more
 			coreCount++;
 			if (coreCount % numCores == 0) {
 				for (int i = 0; i < threadList.size(); i++) {
-					threadList.at(i).join();
+					threadList[i].join();
 				}
 				threadList.clear();
 				calculateTime = true;
 			}
 		} else {
 			std::cout << "y: " << y << std::endl;
-			renderRow(scene, image, y);
+			renderRow(image, y);
 			
 		}
 	}
 }
 
-void Renderer::renderRow(Scene& scene, Image& image, int y) {
+void Renderer::renderRow(Image& image, int y) {
 	
 	
 	if(useMultithreading) srand(std::hash<std::thread::id>{}(std::this_thread::get_id())); 
 	//srand(std::hash<std::thread::id>{}(std::this_thread::get_id()) + currentSamples);
 	
 	//get camera from scene
-	Camera* camera = scene.getCamera();
+	Camera* camera = scene->getCamera();
 
 	Ray primRay = camera->convertToWorld(0, y);
 	
@@ -126,8 +125,8 @@ void Renderer::renderRow(Scene& scene, Image& image, int y) {
 						//float rX = -0.25;
 											//float rY = -0.25;
 
-						float rX = ((float)rand() / RAND_MAX) / -2.0;
-						float rY = ((float)rand() / RAND_MAX) / -2.0;
+						float rX = ((float)rand() / RAND_MAX) / -2.0f;
+						float rY = ((float)rand() / RAND_MAX) / -2.0f;
 						//float rX = (rand() / RAND_MAX);
 						//float rY = rand();
 						if (subX == 1) rX += 0.5;
@@ -141,7 +140,7 @@ void Renderer::renderRow(Scene& scene, Image& image, int y) {
 
 						
 
-						col = col + integrator->render(primRay, scene);
+						col = col + integrator->render(primRay);
 						timesSampled++;
 					}	
 				}
@@ -153,7 +152,7 @@ void Renderer::renderRow(Scene& scene, Image& image, int y) {
 		} else {
 			//if (x == 0) std::cout << "x = " << x << ", y = " << y << ", primRay = " << primRay << std::endl;
 
-			Vec3 col = integrator->render(primRay, scene);
+			Vec3 col = integrator->render(primRay);
 
 
 			image.set(x, y, col);

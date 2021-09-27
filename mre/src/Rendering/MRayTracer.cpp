@@ -1,8 +1,15 @@
 #include "MRayTracer.h"
 
-Vec3 MRayTracer::render(Ray camRay, Scene& scene) {
+MRayTracer::MRayTracer() {
+}
 
-    Vec3 col = trace(camRay, scene, 0);
+MRayTracer::MRayTracer(Scene* s) {
+    scene = s;
+}
+
+Vec3 MRayTracer::render(Ray camRay) {
+
+    Vec3 col = trace(camRay, 0);
     return col;
 
 
@@ -10,19 +17,19 @@ Vec3 MRayTracer::render(Ray camRay, Scene& scene) {
     
 }
 
-Vec3 MRayTracer::trace(Ray ray, Scene& scene, int depth) {
+Vec3 MRayTracer::trace(Ray ray, int depth) {
 
     if (depth > 6) return Vec3();
     depth++; //increment depth
 
 
-    float epsilon = 8e-5;
+    float epsilon = 8e-5f;
 
     //first find closest object (if there is one)
     float closestPoint = INFINITY;
-    SceneObject* closestObject = scene.getClosestObject(ray, closestPoint);
+    SceneObject* closestObject = scene->getClosestObject(ray, closestPoint);
 
-    if (closestObject == nullptr) return scene.getBackgroundColor(); //nothing was hit
+    if (closestObject == nullptr) return scene->getBackgroundColor(); //nothing was hit
 
     
     //compute intersection point and normal and determine if it's inside an object
@@ -41,14 +48,14 @@ Vec3 MRayTracer::trace(Ray ray, Scene& scene, int depth) {
 
 
     //then get that object's material
-    MRayTracerMat* mat = static_cast<MRayTracerMat*>(closestObject->getMaterial("MRAYTRACERMAT"));
+    MRayTracerMat* mat = static_cast<MRayTracerMat*>(closestObject->getMaterial(1));
     if (mat == nullptr) return Vec3(); //no compatible material found
     Vec3 objectColor = mat->getColor();
     
     switch (mat->getType()) {
     case 0: { //difuse
 
-        std::vector<Light*> lights = scene.getLights();
+        std::vector<Light*> lights = scene->getLights();
 
         float lightIntensity = 0;
 
@@ -61,25 +68,25 @@ Vec3 MRayTracer::trace(Ray ray, Scene& scene, int depth) {
             bool inShadow = false;
             float s0 = INFINITY;
 
-            if (lights.at(i)->toString() == "DIRECTIONAL_LIGHT") {
-                Vec3 lightDirection = static_cast<DirectionalLight*>(lights.at(i))->getLightDirection() * -1;
+            if (lights[i]->toString() == "DIRECTIONAL_LIGHT") {
+                Vec3 lightDirection = static_cast<DirectionalLight*>(lights[i])->getLightDirection() * -1;
                 shadowRay = lightDirection;// -intersectionPoint;
                 shadowRay.normalize();
 
-                if (scene.getClosestObject(Ray(normalOrigin, shadowRay), s0) != nullptr) inShadow = true;
+                if (scene->getClosestObject(Ray(normalOrigin, shadowRay), s0) != nullptr) inShadow = true;
 
             } else {
-                Vec3 lightPos = lights.at(i)->getPos();
+                Vec3 lightPos = lights[i]->getPos();
                 shadowRay = lightPos - intersectionPoint;
                 lightDist = shadowRay.calculateMagnitude();
                 shadowRay.normalize();
-                SceneObject* closestShadowObj = scene.getClosestObject(Ray(normalOrigin, shadowRay), s0);
+                SceneObject* closestShadowObj = scene->getClosestObject(Ray(normalOrigin, shadowRay), s0);
                 if (closestShadowObj != nullptr && s0 < lightDist) inShadow = true;
             }
 
             if (!inShadow) {
                 lightIntensity = lightIntensity + normal.dot(shadowRay);
-                if (lightIntensity < 0.02) lightIntensity = 0.02;
+                if (lightIntensity < 0.02) lightIntensity = 0.02f;
             }
         }
         lightIntensity = (lightIntensity / lights.size());
@@ -88,13 +95,13 @@ Vec3 MRayTracer::trace(Ray ray, Scene& scene, int depth) {
     }
     case 1: { //pure specular
         Vec3 reflDirection = ray.d - normal * 2 * (ray.d.dot(normal));
-        return objectColor * trace(Ray(normalOrigin, reflDirection), scene, depth);
+        return objectColor * trace(Ray(normalOrigin, reflDirection), depth);
     }
     case 2: { //glass
         //first calculate reflection
         Vec3 reflDirection = ray.d - normal * 2 * (ray.d.dot(normal));
 
-        epsilon = 1e-3;
+        epsilon = 1e-3f;
 
         float iorValue = mat->getIOR();
         bool outGoingIn = false;
@@ -105,7 +112,7 @@ Vec3 MRayTracer::trace(Ray ray, Scene& scene, int depth) {
         //then check for total internal reflection
         float interiorAngle = 1 - (iorValue * iorValue) * (1 - normDirAngle * normDirAngle);
         if (interiorAngle < 0) {
-            return objectColor * trace(Ray(normalOrigin, reflDirection), scene, depth);
+            return objectColor * trace(Ray(normalOrigin, reflDirection), depth);
 
         }
 
@@ -138,18 +145,18 @@ Vec3 MRayTracer::trace(Ray ray, Scene& scene, int depth) {
         float gammaBoost = 1.0;
         //check if angle of incidence is too shallow,
         if (depth > 2) {
-            float fresnelThreshold = fresnel * 0.5 + 0.25;
+            float fresnelThreshold = fresnel * 0.5f + 0.25f;
             if (((float)rand() / RAND_MAX) < fresnelThreshold) {
-                Vec3 col = objectColor * trace(Ray(normalOrigin, reflDirection), scene, depth) * (fresnel / fresnelThreshold) * gammaBoost;
+                Vec3 col = objectColor * trace(Ray(normalOrigin, reflDirection), depth) * (fresnel / fresnelThreshold) * gammaBoost;
                 return col;
 
             } else {
-                Vec3 col = objectColor * trace(Ray(refractOrigin, transmissionRay), scene, depth) * ((1 - fresnel) / (1 - fresnelThreshold)) * gammaBoost;
+                Vec3 col = objectColor * trace(Ray(refractOrigin, transmissionRay), depth) * ((1 - fresnel) / (1 - fresnelThreshold)) * gammaBoost;
                 return col;
             }
         } else {
-            Vec3 refl = trace(Ray(normalOrigin, reflDirection), scene, depth) * fresnel;
-            Vec3 refr = trace(Ray(refractOrigin, transmissionRay), scene, depth) * (1 - fresnel);
+            Vec3 refl = trace(Ray(normalOrigin, reflDirection), depth) * fresnel;
+            Vec3 refr = trace(Ray(refractOrigin, transmissionRay), depth) * (1 - fresnel);
             Vec3 col = objectColor * (refl + refr) * gammaBoost;
             return col;
         }
@@ -166,8 +173,8 @@ Vec3 MRayTracer::trace(Ray ray, Scene& scene, int depth) {
 
 Material* MRayTracer::getMaterial(std::vector<Material*> materials) {
     for (int i = 0; i < materials.size(); i++) {
-        if (materials.at(i)->toString() == "MRAYTRACERMAT") {
-            return materials.at(i);
+        if (materials[i]->toString() == "MRAYTRACERMAT") {
+            return materials[i];
         }
     }
     return nullptr;

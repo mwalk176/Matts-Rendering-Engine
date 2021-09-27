@@ -9,6 +9,7 @@ Rectangle::Rectangle(Vec3 p0, Vec3 p1, Vec3 p2, Vec3 p3, Material* mat) {
 	materials.push_back(mat);
 	computeNormal(Vec3());
 	//std::cout << "Rectangle normal: " << normal << "\n";
+	shapeType = 2;
 }
 
 Rectangle::Rectangle(Vec3 p0, Vec3 p1, Vec3 p2, Vec3 p3, std::vector<Material*> mats) {
@@ -18,9 +19,10 @@ Rectangle::Rectangle(Vec3 p0, Vec3 p1, Vec3 p2, Vec3 p3, std::vector<Material*> 
 	v3 = p3;
 	pos = (v0 + v1 + v2 + v3) / 4.0;
 	for (int i = 0; i < mats.size(); i++) {
-		materials.push_back(mats.at(i));
+		materials.push_back(mats[i]);
 	}
 	computeNormal(Vec3());
+	shapeType = 2;
 }
 
 bool Rectangle::intersect(Ray r, float& p0, float& p1) {

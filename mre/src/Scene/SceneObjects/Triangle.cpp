@@ -7,6 +7,7 @@ Triangle::Triangle(Vec3 p0, Vec3 p1, Vec3 p2, Material* mat) {
 	pos = (v0 + v1 + v2) / 3.0;
 	materials.push_back(mat);
 	computeNormal(Vec3(0));
+	shapeType = 1;
 
 	//std::cout << "Triangle normal: " << normal << "\n";
 }
@@ -17,9 +18,10 @@ Triangle::Triangle(Vec3 p0, Vec3 p1, Vec3 p2, std::vector<Material*> mats) {
 	v2 = p2;
 	pos = (v0 + v1 + v2) / 3.0;
 	for (int i = 0; i < mats.size(); i++) {
-		materials.push_back(mats.at(i));
+		materials.push_back(mats[i]);
 	}
 	computeNormal(Vec3(0));
+	shapeType = 1;
 }
 
 bool Triangle::intersect(Ray r, float& p0, float& p1) {
@@ -94,7 +96,7 @@ Vec3 Triangle::getNewDirectionTowardsLight(Vec3 shadowRay, Vec3 alignedNormal, V
 	Vec3 newShadowRay = randomPoint - intersectionPoint;
 	newShadowRay.normalize();
 
-	angleToObject = 0.9;
+	angleToObject = 0.9f;
 
 	return newShadowRay;
 }

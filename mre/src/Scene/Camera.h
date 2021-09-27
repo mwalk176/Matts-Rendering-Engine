@@ -1,6 +1,8 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
+#define _USE_MATH_DEFINES
+
 #include "../Utils/Vec3.h"
 #include "../Utils/Ray.h"
 #include <cmath>
@@ -47,7 +49,7 @@ private:
 	Vec3 incY;
 
 
-	const float pi = acos(-1);
+	//const float pi = acos(-1);
 
 };
 

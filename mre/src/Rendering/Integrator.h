@@ -8,7 +8,14 @@
 
 class Integrator {
 public:
-	virtual Vec3 render(Ray camRay, Scene& scene) = 0;
+	Integrator();
+	Integrator(Scene* s);
+	virtual Vec3 render(Ray camRay) = 0;
+	//virtual void addScene(Scene* scene) = 0;
+
+protected:
+	Scene* scene;
+
 
 private:
 

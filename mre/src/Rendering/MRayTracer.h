@@ -11,10 +11,12 @@
 
 class MRayTracer : public Integrator {
 public:
-	Vec3 render(Ray camRay, Scene& scene);
+	MRayTracer();
+	MRayTracer(Scene* s);
+	Vec3 render(Ray camRay);
 
 private:
-	Vec3 trace(Ray ray, Scene& scene, int depth);
+	Vec3 trace(Ray ray, int depth);
 	Material* getMaterial(std::vector<Material*> materials);
 	//RenderSettings* settings = RenderSettings::getInstance();
 };

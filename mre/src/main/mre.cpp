@@ -28,18 +28,18 @@ int main(int argc, char* argv[]) {
 	Camera* camera = new Camera(width, height);
 
 	//get scene
-	Scene scene(sceneFile, camera);
+	Scene* scene = new Scene(sceneFile, camera);
 
 	//render scene
 	//Image output = new Image(1920, 1080) **USE COMMAND LINE ARGS**
 	Image output(width, height);
-	Vec3 hi(0.2, 0.8, 1.0);
+	Vec3 hi(0.2f, 0.8f, 1.0f);
 	output.set(24, 42, hi);
 	Vec3 test = output.get(24, 42);
 	std::cout << test << std::endl;
 
-	Renderer renderer(integrator); //  **COMMAND LINE ARGS**) renderer is real class, make abstract render algorirthm for ray tracer and path tracer
-	renderer.renderScene(scene, output); // *pass output by reference so it modifies output
+	Renderer renderer(integrator, scene); //  **COMMAND LINE ARGS**) renderer is real class, make abstract render algorirthm for ray tracer and path tracer
+	renderer.renderScene(output); // *pass output by reference so it modifies output
 	//output image
 	
 	//write to ppm file

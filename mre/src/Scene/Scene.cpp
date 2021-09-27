@@ -21,7 +21,7 @@ Scene::~Scene() {
 	//delete lights;
 
 	for (int i = 0; i < objects.size(); i++) {
-		delete objects.at(i);
+		delete objects[i];
 	}
 }
 
@@ -48,7 +48,7 @@ SceneObject* Scene::getClosestObject(Ray r, float& closestPoint) {
 	float p1 = INFINITY;
 
 	for (int i = 0; i < objects.size(); i++) {
-		if (objects.at(i)->intersect(r, p0, p1)) {
+		if (objects[i]->intersect(r, p0, p1)) {
 			if (p0 < closestPoint) {
 				closestPoint = p0;
 				closestObject = i;
@@ -90,23 +90,23 @@ void Scene::useDefaultScene() {
 
 
 	MRayTracerMat* mat = new MRayTracerMat();
-	MRayTracerMat* grey = new MRayTracerMat(0.5);
-	MRayTracerMat* green = new MRayTracerMat(Vec3(0.2, 1, 0.5));
-	MRayTracerMat* azure = new MRayTracerMat(Vec3(0.2, 0.8, 1.0));
-	MRayTracerMat* yellow = new MRayTracerMat(Vec3(0.8, 1.0, 0.2));
-	MRayTracerMat* refl = new MRayTracerMat(Vec3(1), 1.5, 1);
-	MRayTracerMat* glass = new MRayTracerMat(Vec3(1), 1.5, 2);
+	MRayTracerMat* grey = new MRayTracerMat(0.5f);
+	MRayTracerMat* green = new MRayTracerMat(Vec3(0.2f, 1.0f, 0.5f));
+	MRayTracerMat* azure = new MRayTracerMat(Vec3(0.2f, 0.8f, 1.0f));
+	MRayTracerMat* yellow = new MRayTracerMat(Vec3(0.8f, 1.0f, 0.2f));
+	MRayTracerMat* refl = new MRayTracerMat(Vec3(1.0f), 1.5f, 1);
+	MRayTracerMat* glass = new MRayTracerMat(Vec3(1.0f), 1.5f, 2);
 
 	MPathTracerMat* pMat = new MPathTracerMat();
-	MPathTracerMat* pGrey = new MPathTracerMat(0.5);
-	MPathTracerMat* pGreen = new MPathTracerMat(Vec3(0.2, 1, 0.5));
-	MPathTracerMat* pAzure = new MPathTracerMat(Vec3(0.2, 0.8, 1.0));
-	MPathTracerMat* pYellow = new MPathTracerMat(Vec3(0.8, 1.0, 0.2));
-	MPathTracerMat* pRefl = new MPathTracerMat(Vec3(1), Vec3(), 1.5, 1);
-	MPathTracerMat* pGlass = new MPathTracerMat(Vec3(1), Vec3(), 1.5, 2);
+	MPathTracerMat* pGrey = new MPathTracerMat(0.5f);
+	MPathTracerMat* pGreen = new MPathTracerMat(Vec3(0.2f, 1.0f, 0.5f));
+	MPathTracerMat* pAzure = new MPathTracerMat(Vec3(0.2f, 0.8f, 1.0f));
+	MPathTracerMat* pYellow = new MPathTracerMat(Vec3(0.8f, 1.0f, 0.2f));
+	MPathTracerMat* pRefl = new MPathTracerMat(Vec3(1.0f), Vec3(), 1.5f, 1);
+	MPathTracerMat* pGlass = new MPathTracerMat(Vec3(1.0f), Vec3(), 1.5f, 2);
 
-	MPathTracerMat* light = new MPathTracerMat(Vec3(1), Vec3(1), 1.5, 0);
-	MPathTracerMat* dimLight = new MPathTracerMat(Vec3(1), Vec3(0.1), 1.5, 0);
+	MPathTracerMat* light = new MPathTracerMat(Vec3(1.0f), Vec3(1.0f), 1.5f, 0);
+	MPathTracerMat* dimLight = new MPathTracerMat(Vec3(1.0f), Vec3(0.1f), 1.5f, 0);
 
 	std::vector<Material*> mats{ mat, pMat };
 	std::vector<Material*> greyM{ grey, pGrey };
@@ -142,8 +142,8 @@ void Scene::useDefaultScene() {
 	//lights.push_back(new PointLight(Vec3()));
 
 	for (int i = 0; i < objects.size(); i++) {
-		//objects.at(i)->toString();
-		SceneObject* object = objects.at(i);
+		//objects[i]->toString();
+		SceneObject* object = objects[i];
 		std::cout << object->toString() << std::endl;
 	}
 

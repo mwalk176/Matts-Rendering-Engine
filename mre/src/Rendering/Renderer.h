@@ -15,17 +15,18 @@
 
 class Renderer {
 public:
-	Renderer();
-	Renderer(std::string algorithm);
+	//Renderer();
+	Renderer(std::string algorithm, Scene* s);
 	~Renderer();
 
-	void renderScene(Scene& scene, Image& image);
-	void renderRow(Scene& scene, Image& image, int y);
+	void renderScene(Image& image);
+	void renderRow(Image& image, int y);
 
 private:
 	Integrator* integrator;
 	//enum integratorTypes {MDEBUG, MRAYTRACER, MPATHTRACER};
 	//RenderSettings* settings = RenderSettings::getInstance();
+	Scene* scene;
 
 
 	bool useMultithreading = true;

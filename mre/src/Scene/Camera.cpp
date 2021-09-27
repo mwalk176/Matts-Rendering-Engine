@@ -98,7 +98,7 @@ void Camera::buildCoordinateSpace() {
 	std::cout << "e3: " << e3 << std::endl;
 
 	float d = e3.calculateMagnitude();
-	float viewPlaneSizeX = d * tan(fov * (pi / 180.0));
+	float viewPlaneSizeX = d * tan(fov * (M_PI / 180.0f));
 	float viewPlaneSizeY = viewPlaneSizeX * rows / columns;
 
 	e1.normalize();
@@ -107,7 +107,7 @@ void Camera::buildCoordinateSpace() {
 
 	incX = e1 * (2 * viewPlaneSizeX) / columns;
 	incY = e2 * (2 * viewPlaneSizeY) / rows;
-	start = lookAt - incX * (columns / 2.0 - 0.5) + incY * (rows / 2.0 - 0.5);
+	start = lookAt - incX * (columns / 2.0f - 0.5f) + incY * (rows / 2.0f - 0.5f);
 
 
 
