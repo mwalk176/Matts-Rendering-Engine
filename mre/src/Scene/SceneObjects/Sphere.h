@@ -1,6 +1,8 @@
 #ifndef SPHERE_H
 #define SPHERE_H
 
+#define SPHERE 0
+
 #include "SceneObject.h"
 #include "../../Materials/Material.h"
 

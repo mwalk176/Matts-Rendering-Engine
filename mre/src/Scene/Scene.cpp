@@ -1,7 +1,7 @@
 #include "Scene.h"
 
 Scene::Scene() {
-	scene1();
+	useDefaultScene();
 }
 
 Scene::Scene(std::string inputScene, Camera* inCam) {
@@ -9,10 +9,10 @@ Scene::Scene(std::string inputScene, Camera* inCam) {
 
 	if (inputScene == "TODO") {
 		std::cout << "import scene here" << std::endl;
-		scene1(); //TODO: DELETE WHEN IMPLEMENTED
+		useDefaultScene(); //TODO: DELETE WHEN IMPLEMENTED
 	}
 	else {
-		scene1();
+		useDefaultScene();
 	}
 }
 
@@ -81,10 +81,10 @@ void Scene::useDefaultScene() {
 
 	backgroundColor = Vec3();
 
-	Vec3 lookFrom = Vec3(0, 0, -4);
+	Vec3 lookFrom = Vec3(0, 0, -6);
 	Vec3 lookAt = Vec3(0, 0, 1);
 	Vec3 up = Vec3(0, 1, 0);
-	float fov = 30.0;
+	float fov = 10.0;
 
 	camera->setCameraCoords(lookFrom, lookAt, up, fov);
 
@@ -132,10 +132,10 @@ void Scene::useDefaultScene() {
 	objects.push_back(new Rectangle(Vec3(0, -2.5, 0), Vec3(-1000, -2.5, 0), Vec3(-1000, -2.5, 1000), Vec3(0, -2.5, 1000), greyM)); //front left
 
 
-	objects.push_back(new Sphere(Vec3(), 100000, light));
+	objects.push_back(new Sphere(Vec3(), 100000, dimLight));
 	objects.push_back(new Sphere(Vec3(5, 10, -7), 5, light));
 	//objects.push_back(new Rectangle(Vec3(-3.5, 1.5, 5), Vec3(-2.5, 1.5, 5), Vec3(-2.5, 0.5, 5), Vec3(-3.5, 0.5, 5), azureM));
-	objects.push_back(new Triangle(Vec3(3.5, 1.5, 5), Vec3(1.5, 1.55, 7), Vec3(0.5, 1.75, 5), azureM));
+	objects.push_back(new Triangle(Vec3(3.5, 1.5, 5), Vec3(1.5, 1.55, 7), Vec3(0.5, 1.75, 5), light));
 
 	lights.push_back(new DirectionalLight(Vec3(1, -1, 0)));
 	lights.push_back(new PointLight(Vec3(5, 10, -5)));

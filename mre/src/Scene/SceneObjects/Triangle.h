@@ -1,6 +1,7 @@
 #ifndef TRIANGLE_H
 #define TRIANGLE_H
 
+#define TRIANGLE 1
 
 #include "SceneObject.h"
 

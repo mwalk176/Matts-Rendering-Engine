@@ -121,7 +121,7 @@
       <Filter>Source Files\Materials</Filter>
     </ClCompile>
     <ClCompile Include="src\Rendering\Integrator.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Rendering</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -70,7 +70,7 @@ Vec3 MPathTracer::trace(Ray ray, int depth, bool calculateEmission) {
 	}
 
 	float epsilon = 8e-5f;
-	if (closestObject->shapeType == 0) {
+	if (closestObject->shapeType == SPHERE) {
 		Sphere* sphereLight = static_cast<Sphere*>(closestObject);
 		epsilon = 8e-6f * (sphereLight->getRadius() + 1.0f);
 	}
@@ -130,7 +130,7 @@ Vec3 MPathTracer::trace(Ray ray, int depth, bool calculateEmission) {
 			shadowRay.normalize();
 
 			bool insideLight = false;
-			if (sObject->shapeType == 0) {
+			if (sObject->shapeType == SPHERE) {
 				Sphere* sphereLight = static_cast<Sphere*>(sObject);
 				if (lightDist < sphereLight->getRadius()) {
 					//we're inside the light
@@ -163,7 +163,7 @@ Vec3 MPathTracer::trace(Ray ray, int depth, bool calculateEmission) {
 			bool inShadow = false;
 			float s0 = INFINITY;
 
-			if (lights[i]->toString() == "DIRECTIONAL_LIGHT") {
+			if (lights[i]->lightType == DIRECTIONAL_LIGHT) {
 				Vec3 lightDirection = static_cast<DirectionalLight*>(lights[i])->getLightDirection() * -1;
 				shadowRay = lightDirection;// -intersectionPoint;
 				shadowRay.normalize();
@@ -362,7 +362,7 @@ Vec3 MPathTracer::computeShadowRay(Vec3 normalOrigin, Vec3 intersectionPoint,
 		shadowRay.normalize();
 
 		bool insideLight = false;
-		if (sObject->shapeType == 0) {
+		if (sObject->shapeType == SPHERE) {
 			Sphere* sphereLight = static_cast<Sphere*>(sObject);
 			if (lightDist < sphereLight->getRadius()) {
 				//we're inside the light
@@ -395,7 +395,7 @@ Vec3 MPathTracer::computeShadowRay(Vec3 normalOrigin, Vec3 intersectionPoint,
 		bool inShadow = false;
 		float s0 = INFINITY;
 
-		if (lights[i]->toString() == "DIRECTIONAL_LIGHT") {
+		if (lights[i]->lightType == DIRECTIONAL_LIGHT) {
 			Vec3 lightDirection = static_cast<DirectionalLight*>(lights[i])->getLightDirection() * -1;
 			shadowRay = lightDirection;// -intersectionPoint;
 			shadowRay.normalize();

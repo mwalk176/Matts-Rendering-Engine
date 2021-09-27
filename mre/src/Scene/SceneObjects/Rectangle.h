@@ -1,6 +1,7 @@
 #ifndef RECTANGLE_H
 #define RECTANGLE_H
 
+#define RECTANGLE 2
 
 #include "SceneObject.h"
 
