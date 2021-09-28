@@ -179,6 +179,7 @@
     <ClInclude Include="src\Scene\Lights\DirectionalLight.h" />
     <ClInclude Include="src\Scene\Lights\Light.h" />
     <ClInclude Include="src\Scene\Lights\PointLight.h" />
+    <ClInclude Include="src\Scene\Optimization\BoundingBox.h" />
     <ClInclude Include="src\Scene\Scene.h" />
     <ClInclude Include="src\Scene\SceneObjects\Rectangle.h" />
     <ClInclude Include="src\Scene\SceneObjects\SceneObject.h" />
