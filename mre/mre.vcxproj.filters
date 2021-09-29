@@ -55,6 +55,9 @@
     <Filter Include="Source Files\Materials">
       <UniqueIdentifier>{99279014-80a3-49d3-a81d-6de8d72cd1d4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Scene\Optimization">
+      <UniqueIdentifier>{8aaca36a-5fb0-4421-b822-c5af1ff6135e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Image\Image.cpp">
@@ -190,6 +193,9 @@
     </ClInclude>
     <ClInclude Include="src\Materials\MPathTracerMat.h">
       <Filter>Header Files\Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scene\Optimization\BoundingBox.h">
+      <Filter>Header Files\Scene\Optimization</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
