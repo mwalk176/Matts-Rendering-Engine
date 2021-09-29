@@ -24,6 +24,7 @@ private:
 	Vec3 computeRandomReflection(Vec3 alignedNormal);
 	Vec3 computeShadowRay(Vec3 normalOrigin, Vec3 intersectionPoint, 
 		Vec3 alignedNormal, Vec3 objectColor, Vec3 normal);
+	Vec3 jitterRay(Vec3 n, Vec3 d, float roughness);
 
 	//Material* getMaterial(std::vector<Material*> materials);
 	//RenderSettings* settings = RenderSettings::getInstance();

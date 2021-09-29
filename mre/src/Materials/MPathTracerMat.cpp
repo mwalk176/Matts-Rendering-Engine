@@ -7,6 +7,7 @@ MPathTracerMat::MPathTracerMat() {
 	type = 0;
 	gamma = 1.0;
 	matType = 2;
+	roughness = 0;
 }
 
 MPathTracerMat::MPathTracerMat(Vec3 c) {
@@ -16,6 +17,7 @@ MPathTracerMat::MPathTracerMat(Vec3 c) {
 	type = 0;
 	gamma = 1.0;
 	matType = 2;
+	roughness = 0;
 }
 
 MPathTracerMat::MPathTracerMat(Vec3 c, Vec3 e, float i, int t) {
@@ -25,6 +27,7 @@ MPathTracerMat::MPathTracerMat(Vec3 c, Vec3 e, float i, int t) {
 	type = t;
 	gamma = 1.0;
 	matType = 2;
+	roughness = 0;
 }
 
 MPathTracerMat::MPathTracerMat(Vec3 c, Vec3 e, float i, int t, float g) {
@@ -34,6 +37,17 @@ MPathTracerMat::MPathTracerMat(Vec3 c, Vec3 e, float i, int t, float g) {
 	type = t;
 	gamma = g;
 	matType = 2;
+	roughness = 0;
+}
+
+MPathTracerMat::MPathTracerMat(Vec3 c, Vec3 e, float i, int t, float g, float r) {
+	color = c;
+	emissionColor = e;
+	IOR = i;
+	type = t;
+	gamma = g;
+	matType = 2;
+	roughness = r;
 }
 
 //Vec3 MPathTracerMat::getColor() {

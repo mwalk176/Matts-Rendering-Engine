@@ -205,12 +205,24 @@ Vec3 MPathTracer::trace(Ray ray, int depth, bool calculateEmission) {
 		return color;
 	}
 	case 1: {//mirror
+		if (mat->roughness == 0) {
+			Vec3 reflDirection = ray.d - normal * 2 * (ray.d.dot(normal));
+			return mat->emissionColor + mat->color * trace(Ray(normalOrigin, reflDirection), depth, true);
+		}
+
 		Vec3 reflDirection = ray.d - normal * 2 * (ray.d.dot(normal));
-		return mat->emissionColor + mat->color * trace(Ray(normalOrigin, reflDirection), depth, true);
+		Vec3 newReflRay = jitterRay(alignedNormal, reflDirection, mat->roughness);
+
+		return mat->emissionColor + mat->color * trace(Ray(normalOrigin, newReflRay), depth, true);
+
 	}
 	case 2: {//glass
 		//first calculate reflection
 		Vec3 reflDirection = ray.d - normal * 2 * (ray.d.dot(normal));
+		if (mat->roughness > 0) {
+			Vec3 newReflRay = jitterRay(normal, reflDirection, mat->roughness);
+			reflDirection = newReflRay;
+		}
 
 		epsilon = 1e-3;
 
@@ -248,14 +260,17 @@ Vec3 MPathTracer::trace(Ray ray, int depth, bool calculateEmission) {
 
 			theta = transmissionRay.dot(normal);
 		}
+		if (mat->roughness > 0) {
+			Vec3 newTransmissionRay = jitterRay(normal, transmissionRay, mat->roughness);
+			transmissionRay = newTransmissionRay;
+		}
 
 		//calculate incidence of relfection (f0) and the fresnel equation
 		float f0 = ((iorValue - 1) * (iorValue - 1)) / ((iorValue + 1) * (iorValue + 1));
-		//float f0 = ((scene[closestObject]->IOR - 1) * (scene[closestObject]->IOR - 1)) / ((scene[closestObject]->IOR + 1) * (scene[closestObject]->IOR + 1));
 		float fresnel = f0 + (1 - f0) * ((1 - theta) * (1 - theta) * (1 - theta) * (1 - theta) * (1 - theta));
 
 
-		//check if angle of incidence is too shallow,
+		//based off a random threshold, after 2 bounces do either a refract or a reflect trace
 		if (depth > 2) {
 			float fresnelThreshold = fresnel * 0.5 + 0.25;
 			if (((float)rand() / RAND_MAX) < fresnelThreshold) {
@@ -274,36 +289,6 @@ Vec3 MPathTracer::trace(Ray ray, int depth, bool calculateEmission) {
 			Vec3 col = mat->emissionColor + mat->color * (refl + refr) * mat->gamma;
 			return col;
 		}
-	}
-	case 3: {//glossy
-
-		float roughness = 0.1f; //0 is mirror, 1 is completely rough
-
-		Vec3 reflDirection = ray.d - normal * 2 * (ray.d.dot(normal));
-
-		//build a coordinate space in the hemisphere of the shadowray light
-		Vec3 se1 = Vec3(0);
-		if (fabs(alignedNormal.x) > fabs(alignedNormal.y)) {
-			se1 = Vec3(reflDirection.z, 0, -reflDirection.x) / sqrt(reflDirection.x * reflDirection.x + reflDirection.z * reflDirection.z);
-		}
-		else {
-			se1 = Vec3(0, -reflDirection.z, reflDirection.y) / sqrt(reflDirection.y * reflDirection.y + reflDirection.z * reflDirection.z);
-		}
-		se1.normalize();
-		Vec3 se2 = reflDirection.cross(se1);
-		se2.normalize();
-
-		//calculate a random direction towards light
-		float angleToSphere = sqrt(1 - roughness / normal.dot(normal));
-		float randX = (float)rand() / RAND_MAX; //get us a random point
-		float randomAngle2 = M_PI * 2 * ((float)rand() / RAND_MAX);
-		float angleCos = 1 - randX + randX * angleToSphere;
-		float angleSin = sqrt(1 - angleCos * angleCos);
-		Vec3 newReflRay = se1 * cos(randomAngle2) * angleSin + se2 * sin(randomAngle2) * angleSin + reflDirection * angleCos;
-		newReflRay.normalize();
-
-		return mat->emissionColor + mat->color * trace(Ray(normalOrigin, newReflRay), depth, true);
-
 	}
 	default: { //the sphere is something else and we don't know what it is
 		return Vec3(0);
@@ -418,4 +403,30 @@ Vec3 MPathTracer::computeShadowRay(Vec3 normalOrigin, Vec3 intersectionPoint,
 	}
 
 	return lightValue;
+}
+
+Vec3 MPathTracer::jitterRay(Vec3 n, Vec3 d, float roughness) {
+
+	//build a coordinate space in the hemisphere of the reflection ray
+	Vec3 se1 = Vec3(0);
+	if (fabs(n.x) > fabs(n.y)) {
+		se1 = Vec3(d.z, 0, -d.x) / sqrt(d.x * d.x + d.z * d.z);
+	} else {
+		se1 = Vec3(0, -d.z, d.y) / sqrt(d.y * d.y + d.z * d.z);
+	}
+	se1.normalize();
+	Vec3 se2 = d.cross(se1);
+	se2.normalize();
+
+	//calculate a new random reflection in a radius around the original ray
+	float angleToSphere = sqrt(1 - roughness / n.dot(n));
+	float randX = (float)rand() / RAND_MAX; //get us a random point
+	float randomAngle2 = M_PI * 2 * ((float)rand() / RAND_MAX);
+	float angleCos = 1 - randX + randX * angleToSphere;
+	float angleSin = sqrt(1 - angleCos * angleCos);
+	Vec3 newReflRay = se1 * cos(randomAngle2) * angleSin + se2 * sin(randomAngle2) * angleSin + d * angleCos;
+	newReflRay.normalize();
+
+	return newReflRay;
+
 }

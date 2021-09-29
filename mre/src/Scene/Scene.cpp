@@ -102,10 +102,10 @@ void Scene::useDefaultScene() {
 	MPathTracerMat* pGreen = new MPathTracerMat(Vec3(0.2f, 1.0f, 0.5f));
 	MPathTracerMat* pAzure = new MPathTracerMat(Vec3(0.2f, 0.8f, 1.0f));
 	MPathTracerMat* pYellow = new MPathTracerMat(Vec3(0.8f, 1.0f, 0.2f));
-	MPathTracerMat* pRefl = new MPathTracerMat(Vec3(1.0f), Vec3(), 1.5f, 1);
-	MPathTracerMat* pGlass = new MPathTracerMat(Vec3(1.0f), Vec3(), 1.5f, 2);
+	MPathTracerMat* pRefl = new MPathTracerMat(Vec3(1.0f), Vec3(), 1.5f, 1, 1, 0.1f);
+	MPathTracerMat* pGlass = new MPathTracerMat(Vec3(1.0f), Vec3(), 1.5f, 2, 1, 0.1f);
 
-	MPathTracerMat* light = new MPathTracerMat(Vec3(1.0f), Vec3(1.0f), 1.5f, 0);
+	MPathTracerMat* light = new MPathTracerMat(Vec3(1.0f), Vec3(2.0f), 1.5f, 0);
 	MPathTracerMat* dimLight = new MPathTracerMat(Vec3(1.0f), Vec3(0.1f), 1.5f, 0);
 
 	std::vector<Material*> mats{ mat, pMat };
@@ -135,7 +135,7 @@ void Scene::useDefaultScene() {
 	objects.push_back(new Sphere(Vec3(), 100000, dimLight));
 	objects.push_back(new Sphere(Vec3(5, 10, -7), 5, light));
 	//objects.push_back(new Rectangle(Vec3(-3.5, 1.5, 5), Vec3(-2.5, 1.5, 5), Vec3(-2.5, 0.5, 5), Vec3(-3.5, 0.5, 5), azureM));
-	objects.push_back(new Triangle(Vec3(3.5, 1.5, 5), Vec3(1.5, 1.55, 7), Vec3(0.5, 1.75, 5), light));
+	objects.push_back(new Triangle(Vec3(3.5, 1.5, 5), Vec3(1.5, 1, 7), Vec3(0.5, 1.75, 5), light));
 
 	lights.push_back(new DirectionalLight(Vec3(1, -1, 0)));
 	lights.push_back(new PointLight(Vec3(5, 10, -5)));
