@@ -175,11 +175,11 @@
     <ClInclude Include="src\Rendering\MRayTracer.h" />
     <ClInclude Include="src\Rendering\Renderer.h" />
     <ClInclude Include="src\Rendering\RenderSettings.h" />
+    <ClInclude Include="src\Scene\Acceleration\BoundingBox.h" />
     <ClInclude Include="src\Scene\Camera.h" />
     <ClInclude Include="src\Scene\Lights\DirectionalLight.h" />
     <ClInclude Include="src\Scene\Lights\Light.h" />
     <ClInclude Include="src\Scene\Lights\PointLight.h" />
-    <ClInclude Include="src\Scene\Optimization\BoundingBox.h" />
     <ClInclude Include="src\Scene\Scene.h" />
     <ClInclude Include="src\Scene\SceneObjects\Rectangle.h" />
     <ClInclude Include="src\Scene\SceneObjects\SceneObject.h" />

@@ -32,7 +32,7 @@ Vec3 MPathTracer::trace(Ray ray, int depth, bool calculateEmission) {
 		if (depth == 1) return backgroundColor;
 
 		//return black otherwise so it doesn't affect object illumination
-		return Vec3();
+		return Vec3(); //BUT MAYBE WE WANT IT TO AFFECT ILLUMINATION???? 
 	}
 
 	MPathTracerMat* mat = static_cast<MPathTracerMat*>(closestObject->getMaterial(2));
