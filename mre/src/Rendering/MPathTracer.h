@@ -25,6 +25,7 @@ private:
 	Vec3 computeShadowRay(Vec3 normalOrigin, Vec3 intersectionPoint, 
 		Vec3 alignedNormal, Vec3 objectColor, Vec3 normal);
 	Vec3 jitterRay(Vec3 n, Vec3 d, float roughness);
+	void computeObjectLights();
 
 	//Material* getMaterial(std::vector<Material*> materials);
 	//RenderSettings* settings = RenderSettings::getInstance();
@@ -33,6 +34,7 @@ private:
 	Vec3 backgroundColor;
 	std::vector<SceneObject*> objects; //remove these later
 	std::vector<Light*> lights; //todo remove this later
+	std::vector<SceneObject*> objectLights;
 
 };
 

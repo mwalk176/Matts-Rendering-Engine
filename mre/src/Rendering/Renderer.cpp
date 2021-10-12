@@ -116,7 +116,7 @@ void Renderer::renderRow(Image& image, int y) {
 
 		Vec3 col = Vec3();
 		int timesSampled = 0;
-		int maxSamples = 100;
+		int maxSamples = 1;
 
 		if (superSample) {
 			for (int subY = 0; subY < subRows; subY++) { //calculate subpixel grid

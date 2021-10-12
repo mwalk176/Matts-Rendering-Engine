@@ -205,3 +205,5 @@ void Scene::scene1() {
 	objects.push_back(new Sphere(Vec3(0, -10001.5, 0), 10000, pGrey));
 
 }
+
+

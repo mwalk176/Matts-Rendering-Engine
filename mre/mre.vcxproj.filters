@@ -197,5 +197,14 @@
     <ClInclude Include="src\Scene\Acceleration\BoundingBox.h">
       <Filter>Header Files\Scene\Acceleration</Filter>
     </ClInclude>
+    <ClInclude Include="src\Scene\Acceleration\Accelerator.h">
+      <Filter>Header Files\Scene\Acceleration</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scene\Acceleration\AccelStructure.h">
+      <Filter>Header Files\Scene\Acceleration</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scene\Acceleration\KDTree.h">
+      <Filter>Header Files\Scene\Acceleration</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

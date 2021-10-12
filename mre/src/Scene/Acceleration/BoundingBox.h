@@ -2,11 +2,15 @@
 #define BOUNDINGBOX_H
 
 
+#include "../SceneObjects/SceneObject.h"
+
+
 class BoundingBox {
 public:
 
 
 private:
+	SceneObject* obj;
 
 
 };

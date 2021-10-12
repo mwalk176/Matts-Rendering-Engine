@@ -25,6 +25,7 @@ public:
 
 	Camera* getCamera();
 	std::vector<SceneObject*> getObjects();
+	//std::vector<SceneObject*> getObjectLights();
 	std::vector <Light*> getLights();
 	Vec3 getBackgroundColor();
 
@@ -34,11 +35,13 @@ public:
 private:
 	Camera* camera;
 	std::vector<SceneObject*> objects;
+	std::vector<SceneObject*> objectLights;
 	std::vector <Light*> lights;
 	Vec3 backgroundColor;
 
 	void useDefaultScene();
 	void scene1();
+	//void computeObjectLights();
 
 };
 

@@ -175,7 +175,10 @@
     <ClInclude Include="src\Rendering\MRayTracer.h" />
     <ClInclude Include="src\Rendering\Renderer.h" />
     <ClInclude Include="src\Rendering\RenderSettings.h" />
+    <ClInclude Include="src\Scene\Acceleration\Accelerator.h" />
+    <ClInclude Include="src\Scene\Acceleration\AccelStructure.h" />
     <ClInclude Include="src\Scene\Acceleration\BoundingBox.h" />
+    <ClInclude Include="src\Scene\Acceleration\KDTree.h" />
     <ClInclude Include="src\Scene\Camera.h" />
     <ClInclude Include="src\Scene\Lights\DirectionalLight.h" />
     <ClInclude Include="src\Scene\Lights\Light.h" />

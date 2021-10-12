@@ -8,6 +8,7 @@ MPathTracer::MPathTracer(Scene* s) {
 	scene = s;
 	objects = s->getObjects();
 	lights = s->getLights();
+	computeObjectLights();
 }
 
 Vec3 MPathTracer::render(Ray camRay) {
@@ -231,11 +232,8 @@ Vec3 MPathTracer::computeShadowRay(Vec3 normalOrigin, Vec3 intersectionPoint,
 	Vec3 lightValue = Vec3();
 
 	//Shadow Ray computation for physical lights  
-	for (unsigned int i = 0; i < objects.size(); i++) {
-		SceneObject* sObject = objects[i];
-		MPathTracerMat* sMat = static_cast<MPathTracerMat*>(sObject->getMaterial(2));
-		if (sMat == nullptr) continue;
-		if (sMat->emissionColor.calculateMagnitude() <= 0) continue; //we only want lights
+	for (unsigned int i = 0; i < objectLights.size(); i++) {
+		SceneObject* sObject = objectLights[i];
 
 		//shoot another ray towards the face of the light
 		Vec3 shadowRay = sObject->getPos() - intersectionPoint;
@@ -252,6 +250,8 @@ Vec3 MPathTracer::computeShadowRay(Vec3 normalOrigin, Vec3 intersectionPoint,
 			}
 		}
 
+		//doesn't take into account the actual light intensity.... maybe fix that?
+
 		float angleToObject = 0;
 		Vec3 newShadowRay = sObject->
 			getNewDirectionTowardsLight(shadowRay, alignedNormal,
@@ -265,7 +265,6 @@ Vec3 MPathTracer::computeShadowRay(Vec3 normalOrigin, Vec3 intersectionPoint,
 
 	}
 
-	//std::vector<Light*> lights = scene->getLights();
 
 	//Shadow Ray calculation for point and directional lights
 	for (unsigned int i = 0; i < lights.size(); i++) {
@@ -328,4 +327,15 @@ Vec3 MPathTracer::jitterRay(Vec3 n, Vec3 d, float roughness) {
 
 	return newReflRay;
 
+}
+
+void MPathTracer::computeObjectLights() {
+	for (int i = 0; i < objects.size(); i++) {
+		SceneObject* object = objects[i];
+		MPathTracerMat* mat = static_cast<MPathTracerMat*>(object->getMaterial(2));
+		if (mat == nullptr) continue;
+		if (mat->emissionColor.calculateMagnitude() <= 0) continue; //we only want lights
+
+		objectLights.push_back(object);
+	}
 }
