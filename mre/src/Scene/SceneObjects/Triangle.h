@@ -29,6 +29,8 @@ private:
 	bool preComputedNormal = false;
 	bool preComputedEdges = false;
 
+	void computeBounds();
+
 
 };
 

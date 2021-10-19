@@ -4,18 +4,21 @@ Sphere::Sphere() {
 	pos = Vec3(0);
 	radius = 1.0;
 	shapeType = 0;
+	computeBounds();
 }
 
 Sphere::Sphere(Vec3 p) {
 	pos = p;
 	radius = 1;
 	shapeType = 0;
+	computeBounds();
 }
 
 Sphere::Sphere(Vec3 p, float r) {
 	pos = p;
 	radius = r;
 	shapeType = 0;
+	computeBounds();
 }
 
 Sphere::Sphere(Vec3 p, float r, Material* mat) {
@@ -23,6 +26,7 @@ Sphere::Sphere(Vec3 p, float r, Material* mat) {
 	radius = r;
 	materials.push_back(mat);
 	shapeType = 0;
+	computeBounds();
 }
 
 Sphere::Sphere(Vec3 p, float r, std::vector<Material*> mats) {
@@ -32,6 +36,7 @@ Sphere::Sphere(Vec3 p, float r, std::vector<Material*> mats) {
 		materials.push_back(mats[i]);
 	}
 	shapeType = 0;
+	computeBounds();
 }
 
 Vec3 Sphere::getPos() {
@@ -109,4 +114,12 @@ float Sphere::getRadius() {
 
 std::string Sphere::toString() {
 	return "SPHERE";
+}
+
+void Sphere::computeBounds() {
+	min = Vec3(pos - radius);
+	max = Vec3(pos + radius);
+
+	std::cout << "Sphere Min: " << min << "\n";
+	std::cout << "Sphere Max: " << max << "\n\n";
 }

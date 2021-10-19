@@ -12,6 +12,11 @@ Vec3 SceneObject::getPos() {
     return pos;
 }
 
+void SceneObject::getBounds(Vec3& minimum, Vec3& maximum) {
+    minimum = min;
+    maximum = max;
+}
+
 Material* SceneObject::getMaterial(int mType) {
     if (primaryMaterial == nullptr) {
         for (int i = 0; i < materials.size(); i++) {

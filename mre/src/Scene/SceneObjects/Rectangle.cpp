@@ -10,6 +10,7 @@ Rectangle::Rectangle(Vec3 p0, Vec3 p1, Vec3 p2, Vec3 p3, Material* mat) {
 	computeNormal(Vec3());
 	//std::cout << "Rectangle normal: " << normal << "\n";
 	shapeType = 2;
+	computeBounds();
 }
 
 Rectangle::Rectangle(Vec3 p0, Vec3 p1, Vec3 p2, Vec3 p3, std::vector<Material*> mats) {
@@ -23,6 +24,7 @@ Rectangle::Rectangle(Vec3 p0, Vec3 p1, Vec3 p2, Vec3 p3, std::vector<Material*> 
 	}
 	computeNormal(Vec3());
 	shapeType = 2;
+	computeBounds();
 }
 
 bool Rectangle::intersect(Ray r, float& p0, float& p1) {
@@ -87,4 +89,51 @@ Vec3 Rectangle::getNewDirectionTowardsLight(Vec3 shadowRay, Vec3 alignedNormal, 
 
 std::string Rectangle::toString() {
 	return "RECTANGLE";
+}
+
+void Rectangle::computeBounds() {
+	float xMin, yMin, zMin;
+	float xMax, yMax, zMax;
+
+	//find absolute minimum values from the 3 points
+	xMin = v0.x;
+	yMin = v0.y;
+	zMin = v0.z;
+
+	if (v1.x < xMin) xMin = v1.x;
+	if (v2.x < xMin) xMin = v2.x;
+	if (v3.x < xMin) xMin = v3.x;
+
+	if (v1.y < yMin) yMin = v1.y;
+	if (v2.y < yMin) yMin = v2.y;
+	if (v3.y < yMin) yMin = v3.y;
+
+	if (v1.z < zMin) zMin = v1.z;
+	if (v2.z < zMin) zMin = v2.z;
+	if (v3.z < zMin) zMin = v3.z;
+
+
+
+	//find absolute maximum values from the 3 points
+	xMax = v0.x;
+	yMax = v0.y;
+	zMax = v0.z;
+
+	if (v1.x > xMax) xMax = v1.x;
+	if (v2.x > xMax) xMax = v2.x;
+	if (v3.x > xMax) xMax = v3.x;
+
+	if (v1.y > yMax) yMax = v1.y;
+	if (v2.y > yMax) yMax = v2.y;
+	if (v3.y > yMax) yMax = v3.y;
+
+	if (v1.z > zMax) zMax = v1.z;
+	if (v2.z > zMax) zMax = v2.z;
+	if (v3.z > zMax) zMax = v3.z;
+
+	min = Vec3(xMin, yMin, zMin);
+	max = Vec3(xMax, yMax, zMax);
+
+	std::cout << "Rectangle Min: " << min << "\n";
+	std::cout << "Rectangle Max: " << max << "\n\n";
 }

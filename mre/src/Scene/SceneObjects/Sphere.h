@@ -19,6 +19,7 @@ public:
 	bool intersect(Ray r, float& p0, float& p1);
 	Vec3 computeNormal(Vec3 intersectionPoint);
 	Vec3 getNewDirectionTowardsLight(Vec3 shadowRay, Vec3 alignedNormal, Vec3 normalFromLight, float& angleToObject, Vec3 intersectionPoint);
+	//void getBounds(Vec3& minimum, Vec3& maximum);
 	float getRadius();
 
 	std::string toString();
@@ -27,6 +28,8 @@ public:
 
 private:
 	float radius;
+
+	void computeBounds();
 
 };
 

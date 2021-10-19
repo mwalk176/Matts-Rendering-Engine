@@ -8,6 +8,7 @@ Triangle::Triangle(Vec3 p0, Vec3 p1, Vec3 p2, Material* mat) {
 	materials.push_back(mat);
 	computeNormal(Vec3(0));
 	shapeType = 1;
+	computeBounds();
 
 	//std::cout << "Triangle normal: " << normal << "\n";
 }
@@ -22,6 +23,7 @@ Triangle::Triangle(Vec3 p0, Vec3 p1, Vec3 p2, std::vector<Material*> mats) {
 	}
 	computeNormal(Vec3(0));
 	shapeType = 1;
+	computeBounds();
 }
 
 bool Triangle::intersect(Ray r, float& p0, float& p1) {
@@ -103,4 +105,46 @@ Vec3 Triangle::getNewDirectionTowardsLight(Vec3 shadowRay, Vec3 alignedNormal, V
 
 std::string Triangle::toString() {
 	return "TRIANGLE";
+}
+
+void Triangle::computeBounds() {
+	float xMin, yMin, zMin;
+	float xMax, yMax, zMax;
+
+	//find absolute minimum values from the 3 points
+	xMin = v0.x;
+	yMin = v0.y;
+	zMin = v0.z;
+
+	if (v1.x < xMin) xMin = v1.x;
+	if (v2.x < xMin) xMin = v2.x;
+
+	if (v1.y < yMin) yMin = v1.y;
+	if (v2.y < yMin) yMin = v2.y;
+
+	if (v1.z < zMin) zMin = v1.z;
+	if (v2.z < zMin) zMin = v2.z;
+
+
+
+
+	//find absolute maximum values from the 3 points
+	xMax = v0.x;
+	yMax = v0.y;
+	zMax = v0.z;
+
+	if (v1.x > xMax) xMax = v1.x;
+	if (v2.x > xMax) xMax = v2.x;
+
+	if (v1.y > yMax) yMax = v1.y;
+	if (v2.y > yMax) yMax = v2.y;
+
+	if (v1.z > zMax) zMax = v1.z;
+	if (v2.z > zMax) zMax = v2.z;
+
+	min = Vec3(xMin, yMin, zMin);
+	max = Vec3(xMax, yMax, zMax);
+
+	std::cout << "Triangle Min: " << min << "\n";
+	std::cout << "Triangle Max: " << max << "\n\n";
 }
