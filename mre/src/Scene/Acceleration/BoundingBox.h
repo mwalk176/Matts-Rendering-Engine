@@ -7,10 +7,17 @@
 
 class BoundingBox {
 public:
-
+	BoundingBox(SceneObject* o);
+	bool intersect(Ray& r);
 
 private:
+
 	SceneObject* obj;
+	std::vector<BoundingBox*> children;
+
+	Vec3 min;
+	Vec3 max;
+	Vec3 bounds[2];
 
 
 };

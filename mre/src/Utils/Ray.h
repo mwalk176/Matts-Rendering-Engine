@@ -11,6 +11,9 @@ public:
 
 	Vec3 o; //origin
 	Vec3 d; //direction
+	Vec3 inv; //inverse of the direction
+	int sign[3]; //sign of the three components of the inverse
+
 
 	friend std::ostream& operator<<(std::ostream& os, Ray const& r);
 
