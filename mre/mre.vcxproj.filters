@@ -129,6 +129,12 @@
     <ClCompile Include="src\Scene\Acceleration\BoundingBox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Scene\Acceleration\Accelerator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scene\Acceleration\BruteForce.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Image\Image.h">
@@ -207,6 +213,9 @@
       <Filter>Header Files\Scene\Acceleration</Filter>
     </ClInclude>
     <ClInclude Include="src\Scene\Acceleration\KDTree.h">
+      <Filter>Header Files\Scene\Acceleration</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scene\Acceleration\BruteForce.h">
       <Filter>Header Files\Scene\Acceleration</Filter>
     </ClInclude>
   </ItemGroup>

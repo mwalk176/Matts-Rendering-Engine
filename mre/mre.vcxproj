@@ -151,7 +151,9 @@
     <ClCompile Include="src\Rendering\MRayTracer.cpp" />
     <ClCompile Include="src\Rendering\Renderer.cpp" />
     <ClCompile Include="src\Rendering\RenderSettings.cpp" />
+    <ClCompile Include="src\Scene\Acceleration\Accelerator.cpp" />
     <ClCompile Include="src\Scene\Acceleration\BoundingBox.cpp" />
+    <ClCompile Include="src\Scene\Acceleration\BruteForce.cpp" />
     <ClCompile Include="src\Scene\Camera.cpp" />
     <ClCompile Include="src\Scene\Lights\DirectionalLight.cpp" />
     <ClCompile Include="src\Scene\Lights\Light.cpp" />
@@ -179,6 +181,7 @@
     <ClInclude Include="src\Scene\Acceleration\Accelerator.h" />
     <ClInclude Include="src\Scene\Acceleration\AccelStructure.h" />
     <ClInclude Include="src\Scene\Acceleration\BoundingBox.h" />
+    <ClInclude Include="src\Scene\Acceleration\BruteForce.h" />
     <ClInclude Include="src\Scene\Acceleration\KDTree.h" />
     <ClInclude Include="src\Scene\Camera.h" />
     <ClInclude Include="src\Scene\Lights\DirectionalLight.h" />

@@ -12,7 +12,7 @@ int main(int argc, char* argv[]) {
 		std::cerr << "Error: please specify a width, height, a scenefile, and integrator" << std::endl;
 		return 0;
 	} 
-	if (argc < 5) {
+	if (argc < 6) {
 		std::cerr << "Error: Insufficient amount of parameters" << std::endl;
 		return 0;
 	}
@@ -23,12 +23,13 @@ int main(int argc, char* argv[]) {
 	int height = atoi(argv[2]);
 	std::string sceneFile = argv[3];
 	std::string integrator = argv[4];
+	std::string accelMethod = argv[5];
 
 	//Create camera
 	Camera* camera = new Camera(width, height);
 
 	//get scene
-	Scene* scene = new Scene(sceneFile, camera);
+	Scene* scene = new Scene(sceneFile, camera, accelMethod);
 
 	//render scene
 	//Image output = new Image(1920, 1080) **USE COMMAND LINE ARGS**

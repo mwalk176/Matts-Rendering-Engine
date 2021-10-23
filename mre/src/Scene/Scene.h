@@ -15,12 +15,14 @@
 #include "../Materials/MRayTracerMat.h"
 #include "../Materials/MPathTracerMat.h"
 
+#include "Acceleration/Accelerator.h"
+
 #include <vector>
 
 class Scene {
 public:
 	Scene();
-	Scene(std::string inputScene, Camera* inCam);
+	Scene(std::string inputScene, Camera* inCam, std::string accelMethod);
 	~Scene();
 
 	Camera* getCamera();
@@ -35,9 +37,11 @@ public:
 private:
 	Camera* camera;
 	std::vector<SceneObject*> objects;
-	std::vector<SceneObject*> objectLights;
+	//std::vector<SceneObject*> objectLights;
 	std::vector <Light*> lights;
 	Vec3 backgroundColor;
+	Accelerator accelerator;
+	
 
 	void useDefaultScene();
 	void scene1();

@@ -2,10 +2,12 @@
 
 Scene::Scene() {
 	useDefaultScene();
+	accelerator = Accelerator();
 }
 
-Scene::Scene(std::string inputScene, Camera* inCam) {
+Scene::Scene(std::string inputScene, Camera* inCam, std::string accelMethod) {
 	camera = inCam;
+	accelerator = Accelerator(accelMethod);
 
 	if (inputScene == "TODO") {
 		std::cout << "import scene here" << std::endl;
@@ -14,6 +16,7 @@ Scene::Scene(std::string inputScene, Camera* inCam) {
 	else {
 		useDefaultScene();
 	}
+	
 }
 
 Scene::~Scene() {
@@ -43,38 +46,43 @@ Vec3 Scene::getBackgroundColor() {
 
 SceneObject* Scene::getClosestObject(Ray r, float& closestPoint) {
 
-	int closestObject = -1;
-	float p0 = INFINITY;
-	float p1 = INFINITY;
+	return accelerator.getClosestObject(r, closestPoint);
 
-	for (int i = 0; i < objects.size(); i++) {
-		if (objects[i]->intersect(r, p0, p1)) {
-			if (p0 < closestPoint) {
-				closestPoint = p0;
-				closestObject = i;
-			} else {
-				continue;
-			}
+	//int closestObject = -1;
+	//float p0 = INFINITY;
+	//float p1 = INFINITY;
 
-		}
-	}
+	//for (int i = 0; i < objects.size(); i++) {
+	//	if (objects[i]->intersect(r, p0, p1)) {
+	//		if (p0 < closestPoint) {
+	//			closestPoint = p0;
+	//			closestObject = i;
+	//		} else {
+	//			continue;
+	//		}
 
-	if (closestObject != -1) return objects.at(closestObject);
-	else return nullptr;
+	//	}
+	//}
+
+	//if (closestObject != -1) return objects.at(closestObject);
+	//else return nullptr;
 }
 
 bool Scene::inShadow(Ray r, float& lightDist) {
-	int closestObject = -1;
-	float p0 = INFINITY;
-	float p1 = INFINITY;
 
-	for (unsigned int j = 0; j < objects.size(); j++) {
-		if (objects.at(j)->intersect(r, p0, p1) &&
-			p0 < lightDist) {
-			return true;
-		}
-	}
-	return false;
+	return accelerator.inShadow(r, lightDist);
+
+	//int closestObject = -1;
+	//float p0 = INFINITY;
+	//float p1 = INFINITY;
+
+	//for (unsigned int j = 0; j < objects.size(); j++) {
+	//	if (objects.at(j)->intersect(r, p0, p1) &&
+	//		p0 < lightDist) {
+	//		return true;
+	//	}
+	//}
+	//return false;
 }
 
 void Scene::useDefaultScene() {
@@ -147,7 +155,7 @@ void Scene::useDefaultScene() {
 		std::cout << object->toString() << std::endl;
 	}
 
-	
+	accelerator.init(objects);
 
 }
 
@@ -203,6 +211,9 @@ void Scene::scene1() {
 	objects.push_back(new Triangle(Vec3(0, 2, 5), Vec3(-1, 3, 5), Vec3(1, 3, 5), light2));
 
 	objects.push_back(new Sphere(Vec3(0, -10001.5, 0), 10000, pGrey));
+
+
+	accelerator.init(objects);
 
 }
 
