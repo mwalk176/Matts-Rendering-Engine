@@ -4,9 +4,11 @@ BoundingBox::BoundingBox(SceneObject* o) {
     obj = o;
     min = Vec3();
     max = Vec3();
+    center = Vec3();
     o->getBounds(min, max);
     bounds[0] = min;
     bounds[1] = max;
+    computeCenter();
 }
 
 bool BoundingBox::intersect(Ray& r) {
@@ -32,4 +34,16 @@ bool BoundingBox::intersect(Ray& r) {
     if (tz1 < tx1) tx1 = tz1;
 
     return true;
+}
+
+void BoundingBox::computeCenter() {
+    float xMidpoint = (min.x + max.x) / 2.0;
+    float yMidpoint = (min.y + max.y) / 2.0;
+    float zMidpoint = (min.z + max.z) / 2.0;
+    center = Vec3(xMidpoint, yMidpoint, zMidpoint);
+}
+
+std::ostream& operator<<(std::ostream& os, BoundingBox const& b) {
+    os << "Bounding Box:\n\tMin: " << b.min << "\n\tMax: " << b.max << "\n\tCenter: " << b.center << "\n";
+    return os;
 }
