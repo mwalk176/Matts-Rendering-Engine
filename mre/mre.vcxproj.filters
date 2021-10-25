@@ -58,6 +58,9 @@
     <Filter Include="Header Files\Scene\Acceleration">
       <UniqueIdentifier>{8aaca36a-5fb0-4421-b822-c5af1ff6135e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Scene\Acceleration">
+      <UniqueIdentifier>{0031fc76-9c3f-45ef-a09b-a260dfd3e2ba}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Image\Image.cpp">
@@ -126,14 +129,17 @@
     <ClCompile Include="src\Rendering\Integrator.cpp">
       <Filter>Source Files\Rendering</Filter>
     </ClCompile>
-    <ClCompile Include="src\Scene\Acceleration\BoundingBox.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Scene\Acceleration\Accelerator.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Scene\Acceleration</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scene\Acceleration\BoundingBox.cpp">
+      <Filter>Source Files\Scene\Acceleration</Filter>
     </ClCompile>
     <ClCompile Include="src\Scene\Acceleration\BruteForce.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Scene\Acceleration</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scene\Acceleration\KDTree.cpp">
+      <Filter>Source Files\Scene\Acceleration</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

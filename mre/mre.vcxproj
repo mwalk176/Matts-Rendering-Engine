@@ -154,6 +154,7 @@
     <ClCompile Include="src\Scene\Acceleration\Accelerator.cpp" />
     <ClCompile Include="src\Scene\Acceleration\BoundingBox.cpp" />
     <ClCompile Include="src\Scene\Acceleration\BruteForce.cpp" />
+    <ClCompile Include="src\Scene\Acceleration\KDTree.cpp" />
     <ClCompile Include="src\Scene\Camera.cpp" />
     <ClCompile Include="src\Scene\Lights\DirectionalLight.cpp" />
     <ClCompile Include="src\Scene\Lights\Light.cpp" />
