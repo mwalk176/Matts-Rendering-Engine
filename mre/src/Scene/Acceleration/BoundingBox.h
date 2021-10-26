@@ -17,6 +17,7 @@ public:
 	Vec3 min;
 	Vec3 max;
 	Vec3 center;
+	float centerVals[3];
 
 	BoundingBox* left;
 	BoundingBox* right;

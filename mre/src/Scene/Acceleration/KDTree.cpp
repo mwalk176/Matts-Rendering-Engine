@@ -1,5 +1,6 @@
 #include "KDTree.h"
 
+
 void KDTree::buildTree(std::vector<SceneObject*> objects) {
 	//surround all objects in bounding boxes
 	for (int i = 0; i < objects.size(); i++) {
@@ -12,14 +13,22 @@ void KDTree::buildTree(std::vector<SceneObject*> objects) {
 	//remainingObjects = objects;
 	Vec3 globalMin = Vec3();
 	Vec3 globalMax = Vec3();
-	computeGlobalBounds(globalMin, globalMax);
-	BoundingBox* root = new BoundingBox(globalMin, globalMax);
+	computeGlobalBounds(globalMin, globalMax, objects);
+	root = new BoundingBox(globalMin, globalMax);
 	int depth = 0;
 
 	//find median on x-axis
 	//if depth is 0, find median on x, if depth is 1, find median on y, if depth is 2, find median on z, repeat
+	float median = findMedian(X_AXIS, boxList);
+	
+	std::vector<BoundingBox*> leftBoxes;
+	std::vector<BoundingBox*> rightBoxes;
 
-
+	for (int i = 0; i < boxList.size(); i++) {
+		if (boxList[i]->centerVals[X_AXIS] <= median) {
+			leftBoxes.push_back(boxList[i]);
+		} else rightBoxes.push_back(boxList[i]);
+	}
 
 	//Then build the left and right nodes recursively
 
@@ -54,4 +63,23 @@ void KDTree::computeGlobalBounds(Vec3& globalMin, Vec3& globalMax, std::vector<S
 		if (localMax.z > globalMax.z) globalMax.z = localMax.z;
 
 	}
+}
+
+float KDTree::findMedian(int axis, std::vector<BoundingBox*> boxes) {
+	std::vector<float> vals;
+	float median;
+	for (int i = 0; i < boxes.size(); i++) {
+		vals.push_back(boxes[i]->centerVals[axis]);
+	}
+	std::sort(vals.begin(), vals.end());
+	int size = vals.size();
+	if (size % 2 == 0) { //even
+		float v1 = vals[size / 2];
+		float v2 = vals[(size - 1) / 2];
+		median = (v1 + v2) / 2.0;
+	} else { //odd
+		median = vals[size / 2];
+	}
+	
+	return median;
 }

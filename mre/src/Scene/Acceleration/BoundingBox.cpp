@@ -53,6 +53,9 @@ void BoundingBox::computeCenter() {
     float yMidpoint = (min.y + max.y) / 2.0;
     float zMidpoint = (min.z + max.z) / 2.0;
     center = Vec3(xMidpoint, yMidpoint, zMidpoint);
+    centerVals[0] = center.x;
+    centerVals[1] = center.y;
+    centerVals[2] = center.z;
 }
 
 std::ostream& operator<<(std::ostream& os, BoundingBox const& b) {
