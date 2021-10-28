@@ -29,7 +29,7 @@ private:
 	Scene* scene;
 
 
-	bool useMultithreading = true;
+	bool useMultithreading = false;
 
 };
 

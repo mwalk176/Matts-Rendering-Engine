@@ -9,6 +9,8 @@ BoundingBox::BoundingBox(SceneObject* o) {
     o->getBounds(min, max);
     bounds[0] = min;
     bounds[1] = max;
+    left = nullptr;
+    right = nullptr;
     computeCenter();
 }
 
@@ -20,6 +22,8 @@ BoundingBox::BoundingBox(Vec3 minVal, Vec3 maxVal) {
     center = Vec3();
     bounds[0] = min;
     bounds[1] = max;
+    left = nullptr;
+    right = nullptr;
     computeCenter();
 }
 
@@ -59,6 +63,19 @@ void BoundingBox::computeCenter() {
 }
 
 std::ostream& operator<<(std::ostream& os, BoundingBox const& b) {
-    os << "Bounding Box:\n\tMin: " << b.min << "\n\tMax: " << b.max << "\n\tCenter: " << b.center << "\n";
+    if (b.left == nullptr && b.right == nullptr) {
+        os << "Bounding Box:\n\tMin: " << b.min << "\n\tMax: " << b.max << "\n\tCenter: " << b.center << 
+            "\n\tObject: " << b.obj->toString() << "\n";
+    } else if (b.left == nullptr) {
+        os << "Bounding Box:\n\tMin: " << b.min << "\n\tMax: " << b.max << "\n\tCenter: " << b.center <<
+            "\n\tLeft: NULL"  << "\n\tRight: " << *b.right << "\n\n";
+    } else if (b.right == nullptr) {
+        os << "Bounding Box:\n\tMin: " << b.min << "\n\tMax: " << b.max << "\n\tCenter: " << b.center <<
+            "\n\tLeft: " << *b.left << "\n\tRight: NULL" << "\n\n";
+    } else {
+        os << "Bounding Box:\n\tMin: " << b.min << "\n\tMax: " << b.max << "\n\tCenter: " << b.center <<
+            "\n\tLeft: " << *b.left << "\n\tRight: " << *b.right << "\n\n";
+    }
+   
     return os;
 }

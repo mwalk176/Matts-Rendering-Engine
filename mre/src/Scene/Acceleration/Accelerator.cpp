@@ -6,7 +6,7 @@ Accelerator::Accelerator() {
 
 Accelerator::Accelerator(std::string structure) {
 	if (structure == "BRUTEFORCE") accelStructure = new BruteForce();
-	//if (structure == "KDTREE") accelStructure = new KDTree();
+	if (structure == "KDTREE") accelStructure = new KDTree();
 	else accelStructure = new BruteForce();
 
 }
