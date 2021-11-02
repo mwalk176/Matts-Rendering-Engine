@@ -59,16 +59,16 @@ SceneObject* KDTree::traverseTree(Ray r, float& closestPoint) {
 		if (leftObj != nullptr && rightObj != nullptr) {
 			//we want to first return objects in front of us
 			//as opposed to the object we may or may not be inside of
-			if (pLeft < pRight && pLeft >= 0) {
-				closestPoint = pLeft;
-				return leftObj;
-			}
-			else if (pRight < pLeft && pRight >= 0) {
-				closestPoint = pRight;
-				return rightObj;
-			}
-			//okay so there's no object in front of us
-			else if (pLeft < pRight) {
+			//if (pLeft < pRight && pLeft >= 0) {
+			//	closestPoint = pLeft;
+			//	return leftObj;
+			//}
+			//else if (pRight < pLeft && pRight >= 0) {
+			//	closestPoint = pRight;
+			//	return rightObj;
+			//}
+
+			if (pLeft < pRight) {
 				closestPoint = pLeft;
 				return leftObj;
 			}
@@ -91,8 +91,14 @@ SceneObject* KDTree::traverseTree(Ray r, float& closestPoint) {
 	return nullptr;
 }
 
-bool KDTree::findFirstIntersction(Ray r, float& lightDist) {
+bool KDTree::findFirstIntersection(Ray r, float& lightDist) {
+	if (root->intersect(r)) {
+		if (findFirstIntersectionNode(root->left, r, lightDist)) return true;
+		else if (findFirstIntersectionNode(root->right, r, lightDist)) return true;
+		else return false;
+	}
 	return false;
+	
 }
 
 void KDTree::computeGlobalBounds(Vec3& globalMin, Vec3& globalMax, std::vector<SceneObject*> objects) {
@@ -137,12 +143,12 @@ BoundingBox* KDTree::buildTreeNode(int depth, std::vector<BoundingBox*> boxes, V
 	std::vector<BoundingBox*> rightBoxes;
 
 	for (int i = 0; i < boxes.size(); i++) {
-		if (boxes[i]->centerVals[axis] < median) {
+		if (boxes[i]->centerVals[axis] <= median) {
 			leftBoxes.push_back(boxes[i]);
 		} else if (boxes[i]->centerVals[axis] == median) { //randomly assign to left or right
-			float threshold = 0.5;
-			if ((float)rand() / RAND_MAX <= threshold) leftBoxes.push_back(boxList[i]);
-			else rightBoxes.push_back(boxList[i]);
+			//float threshold = 0.5;
+			//if ((float)rand() / RAND_MAX <= threshold) leftBoxes.push_back(boxList[i]);
+			//else rightBoxes.push_back(boxList[i]);
 		} else {
 			rightBoxes.push_back(boxList[i]);
 		}
@@ -191,7 +197,7 @@ float KDTree::findMedian(int axis, std::vector<BoundingBox*> boxes) {
 
 SceneObject* KDTree::traverseTreeNode(BoundingBox* node, Ray r, float& closestPoint) {
 	if (node == nullptr) return nullptr;
-	if (node->isLeaf) {
+	if (node->isLeaf) { //don't worry about intersecting the bounding box
 		float p0 = INFINITY;
 		float p1 = INFINITY;
 		if (node->obj->intersect(r, p0, p1)) {
@@ -199,4 +205,58 @@ SceneObject* KDTree::traverseTreeNode(BoundingBox* node, Ray r, float& closestPo
 			return node->obj;
 		}
 	}
+	if (node->intersect(r)) {
+		float pLeft = INFINITY;
+		SceneObject* leftObj = traverseTreeNode(node->left, r, pLeft);
+
+		float pRight = INFINITY;
+		SceneObject* rightObj = traverseTreeNode(node->right, r, pRight);
+				
+		if (leftObj != nullptr && rightObj != nullptr) {
+			//we want to first return objects in front of us
+			//	if (pLeft < pRight && pLeft >= 0) {
+			//		closestPoint = pLeft;
+			//		return leftObj;
+			//	} else if (pRight < pLeft && pRight >= 0) {
+			//		closestPoint = pRight;
+			//		return rightObj;
+			//	}
+			if (pLeft < pRight) {
+				closestPoint = pLeft;
+				return leftObj;
+			} else {
+				closestPoint = pRight;
+				return rightObj;
+			}
+		} else if (leftObj != nullptr) {
+			closestPoint = pLeft;
+			return leftObj;
+		} else if (rightObj != nullptr) {
+			closestPoint = pRight;
+			return rightObj;
+		} else return nullptr;
+	}
+
+	return nullptr;
+}
+
+bool KDTree::findFirstIntersectionNode(BoundingBox* node, Ray r, float& lightDist) {
+	if (node == nullptr) return false;
+	if (node->isLeaf) {
+		float p0 = INFINITY;
+		float p1 = INFINITY;
+		if (node->obj->intersect(r, p0, p1)) {
+			if (p0 < lightDist) return true;
+			else return false;
+		}
+	}
+	if (node->intersect(r)) {
+		if (findFirstIntersectionNode(node->left, r, lightDist)) return true;
+		else if (findFirstIntersectionNode(node->right, r, lightDist)) return true;
+		else return false;
+	}
+
+
+	return false;
+
 }

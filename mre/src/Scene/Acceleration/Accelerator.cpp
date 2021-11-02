@@ -20,5 +20,5 @@ SceneObject* Accelerator::getClosestObject(Ray r, float& closestPoint) {
 }
 
 bool Accelerator::inShadow(Ray r, float& lightDist) {
-	return accelStructure->findFirstIntersction(r, lightDist);
+	return accelStructure->findFirstIntersection(r, lightDist);
 }

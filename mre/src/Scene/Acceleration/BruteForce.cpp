@@ -31,7 +31,7 @@ SceneObject* BruteForce::traverseTree(Ray r, float& closestPoint) {
 	else return nullptr;
 }
 
-bool BruteForce::findFirstIntersction(Ray r, float& lightDist) {
+bool BruteForce::findFirstIntersection(Ray r, float& lightDist) {
 	int closestObject = -1;
 	float p0 = INFINITY;
 	float p1 = INFINITY;

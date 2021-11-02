@@ -15,7 +15,7 @@ class KDTree : public AccelStructure {
 public:
 	void buildTree(std::vector<SceneObject*> objects);
 	SceneObject* traverseTree(Ray r, float& closestPoint);
-	bool findFirstIntersction(Ray r, float& lightDist);
+	bool findFirstIntersection(Ray r, float& lightDist);
 
 private:
 	BoundingBox* root;
@@ -26,6 +26,7 @@ private:
 	BoundingBox* buildTreeNode(int depth, std::vector<BoundingBox*> boxes, Vec3 min, Vec3 max);
 	float findMedian(int axis, std::vector<BoundingBox*> boxes);
 	SceneObject* traverseTreeNode(BoundingBox* node, Ray r, float& closestPoint);
+	bool findFirstIntersectionNode(BoundingBox* node, Ray r, float& lightDist);
 
 };
 

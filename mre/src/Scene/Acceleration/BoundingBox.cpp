@@ -17,8 +17,8 @@ BoundingBox::BoundingBox(SceneObject* o) {
 BoundingBox::BoundingBox(Vec3 minVal, Vec3 maxVal) {
     obj = nullptr;
     isLeaf = false;
-    min = minVal;
-    max = maxVal;
+    min = minVal - 1.0;
+    max = maxVal + 1.0;
     center = Vec3();
     bounds[0] = min;
     bounds[1] = max;

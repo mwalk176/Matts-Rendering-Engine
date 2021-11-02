@@ -67,9 +67,9 @@ bool Sphere::intersect(Ray r, float& p0, float& p1) {
 	}
 
 	if (p0 > p1) std::swap(p0, p1);
-	if (p0 < 0) {
-		if (p1 < 0) return false;
-		p0 = p1;
+	if (p0 < 0) { //you're inside the object because the first hit was BEHIND the camera
+		if (p1 < 0) return false; //if both hits are behind the camera then the object is behind you
+		p0 = p1; //make the first hit the second hit
 	}
 	return true;
 

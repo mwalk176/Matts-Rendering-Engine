@@ -9,7 +9,7 @@ class BruteForce : public AccelStructure {
 public:
 	void buildTree(std::vector<SceneObject*> objects);
 	SceneObject* traverseTree(Ray r, float& closestPoint);
-	bool findFirstIntersction(Ray r, float& lightDist);
+	bool findFirstIntersection(Ray r, float& lightDist);
 
 private:
 	std::vector<BoundingBox*> boxList;

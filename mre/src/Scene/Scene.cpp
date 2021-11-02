@@ -140,13 +140,13 @@ void Scene::useDefaultScene() {
 	objects.push_back(new Rectangle(Vec3(0, -2.5, 0), Vec3(-1000, -2.5, 0), Vec3(-1000, -2.5, 1000), Vec3(0, -2.5, 1000), greyM)); //front left
 
 
-	objects.push_back(new Sphere(Vec3(), 100000, dimLight));
+	//objects.push_back(new Sphere(Vec3(), 100000, dimLight));
 	objects.push_back(new Sphere(Vec3(5, 10, -7), 5, light));
 	//objects.push_back(new Rectangle(Vec3(-3.5, 1.5, 5), Vec3(-2.5, 1.5, 5), Vec3(-2.5, 0.5, 5), Vec3(-3.5, 0.5, 5), azureM));
 	objects.push_back(new Triangle(Vec3(3.5, 1.5, 5), Vec3(1.5, 1, 7), Vec3(0.5, 1.75, 5), light));
 
-	lights.push_back(new DirectionalLight(Vec3(1, -1, 0)));
-	lights.push_back(new PointLight(Vec3(5, 10, -5)));
+	//lights.push_back(new DirectionalLight(Vec3(1, -1, 0)));
+	//lights.push_back(new PointLight(Vec3(5, 10, -5)));
 	//lights.push_back(new PointLight(Vec3()));
 
 	for (int i = 0; i < objects.size(); i++) {

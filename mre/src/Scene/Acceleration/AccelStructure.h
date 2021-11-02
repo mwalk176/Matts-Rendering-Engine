@@ -11,7 +11,7 @@ class AccelStructure {
 public:
 	virtual void buildTree(std::vector<SceneObject*> objects) = 0;
 	virtual SceneObject* traverseTree(Ray r, float& closestPoint) = 0;
-	virtual bool findFirstIntersction(Ray r, float& lightDist) = 0;
+	virtual bool findFirstIntersection(Ray r, float& lightDist) = 0;
 	
 protected:
 
