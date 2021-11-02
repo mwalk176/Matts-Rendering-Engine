@@ -25,6 +25,7 @@ private:
 	void computeGlobalBounds(Vec3& globalMin, Vec3& globalMax, std::vector<SceneObject*> objects);
 	BoundingBox* buildTreeNode(int depth, std::vector<BoundingBox*> boxes, Vec3 min, Vec3 max);
 	float findMedian(int axis, std::vector<BoundingBox*> boxes);
+	SceneObject* traverseTreeNode(BoundingBox* node, Ray r, float& closestPoint);
 
 };
 

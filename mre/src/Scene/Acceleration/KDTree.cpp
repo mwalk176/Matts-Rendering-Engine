@@ -47,6 +47,47 @@ void KDTree::buildTree(std::vector<SceneObject*> objects) {
 }
 
 SceneObject* KDTree::traverseTree(Ray r, float& closestPoint) {
+	//start at root node
+	if (root->intersect(r)) {
+		float pLeft = INFINITY;
+		SceneObject* leftObj = traverseTreeNode(root->left, r, pLeft);
+
+		float pRight = INFINITY;
+		SceneObject* rightObj = traverseTreeNode(root->right, r, pRight);
+
+
+		if (leftObj != nullptr && rightObj != nullptr) {
+			//we want to first return objects in front of us
+			//as opposed to the object we may or may not be inside of
+			if (pLeft < pRight && pLeft >= 0) {
+				closestPoint = pLeft;
+				return leftObj;
+			}
+			else if (pRight < pLeft && pRight >= 0) {
+				closestPoint = pRight;
+				return rightObj;
+			}
+			//okay so there's no object in front of us
+			else if (pLeft < pRight) {
+				closestPoint = pLeft;
+				return leftObj;
+			}
+			else {
+				closestPoint = pRight;
+				return rightObj;
+			}
+		}
+		else if (leftObj != nullptr) {
+			closestPoint = pLeft;
+			return leftObj;
+		}
+		else if (rightObj != nullptr) {
+			closestPoint = pRight;
+			return rightObj;
+		}
+		else return nullptr;
+	}
+
 	return nullptr;
 }
 
@@ -146,4 +187,16 @@ float KDTree::findMedian(int axis, std::vector<BoundingBox*> boxes) {
 	}
 	
 	return median;
+}
+
+SceneObject* KDTree::traverseTreeNode(BoundingBox* node, Ray r, float& closestPoint) {
+	if (node == nullptr) return nullptr;
+	if (node->isLeaf) {
+		float p0 = INFINITY;
+		float p1 = INFINITY;
+		if (node->obj->intersect(r, p0, p1)) {
+			closestPoint = p0;
+			return node->obj;
+		}
+	}
 }
