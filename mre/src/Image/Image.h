@@ -1,12 +1,15 @@
 #ifndef IMAGE_H
 #define IMAGE_H
 
+#include <fstream>
+
 #include "../Utils/Vec3.h"
 
 class Image {
 public:
 	Image();
 	Image(int x, int y);
+	Image(std::string fileName);
 	~Image();
 
 	int getWidth();
@@ -29,6 +32,7 @@ private:
 	Vec3** image;
 
 	void initImage();
+	double readNumber(std::ifstream& stream);
 };
 
 #endif

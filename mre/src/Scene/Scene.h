@@ -17,6 +17,8 @@
 
 #include "Acceleration/Accelerator.h"
 
+#include "../Image/Image.h"
+
 #include <vector>
 
 class Scene {

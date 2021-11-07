@@ -50,6 +50,25 @@ MPathTracerMat::MPathTracerMat(Vec3 c, Vec3 e, float i, int t, float g, float r)
 	roughness = r;
 }
 
+MPathTracerMat::MPathTracerMat(Image tex, Vec3 e, float i, int t, float g, float r) {
+	texture = tex;
+	color = Vec3();
+	emissionColor = e;
+	IOR = i;
+	type = t;
+	gamma = g;
+	matType = 2;
+	roughness = r;
+}
+
+Vec3 MPathTracerMat::getColor() {
+	return color;
+}
+
+Vec3 MPathTracerMat::getColor(float u, float v) {
+	return texture.get(u, v);
+}
+
 //Vec3 MPathTracerMat::getColor() {
 //	return color;
 //}

@@ -13,6 +13,42 @@ Image::Image(int x, int y) {
 	initImage();
 }
 
+Image::Image(std::string fileName) {
+	std::cout << "Trying to read " << fileName << "...\n";
+	std::ifstream stream;
+	stream.open(fileName, std::ios::in | std::ios::binary);
+	if (!stream.is_open()) {
+		width = 1;
+		height = 1;
+		initImage();
+		std::cout << "Couldn't Read " << fileName << "!!\n";
+	}
+	std::cout << "Successfully Opened " << fileName << "!\n";
+	std::string ppmHeader;
+	stream >> ppmHeader;
+	stream.ignore();
+	std::cout << ppmHeader << std::endl;
+	width = readNumber(stream);
+	height = readNumber(stream);
+	int maxColor = readNumber(stream);
+	initImage();
+	for (int i = height - 1; i >= 0; i--) {
+		for (int j = 0; j < width; j++) {
+			double val;
+			val = readNumber(stream);
+			image[i][j].x = val / maxColor;
+			val = readNumber(stream);
+			image[i][j].y = val / maxColor;
+			val = readNumber(stream);
+			image[i][j].z = val / maxColor;
+		}
+	}
+	stream.close();
+	writeToPPMFile();
+
+
+}
+
 void Image::initImage() {
 	image = new Vec3 * [height];
 	for (int i = 0; i < height; i++) {
@@ -21,6 +57,17 @@ void Image::initImage() {
 			image[i][j] = Vec3();
 		}
 	}
+}
+
+double Image::readNumber(std::ifstream& stream) {
+	char s;
+	while (!stream.eof()) {
+		stream >> s;
+		stream.ignore();
+		std::cout << static_cast<int>(s) << std::endl;
+		//if (isdigit(s.at(0))) return atof(s.c_str());
+	}
+	return 0.0;
 }
 
 Image::~Image() {
