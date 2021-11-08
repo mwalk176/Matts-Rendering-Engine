@@ -24,28 +24,48 @@ Image::Image(std::string fileName) {
 		std::cout << "Couldn't Read " << fileName << "!!\n";
 	}
 	std::cout << "Successfully Opened " << fileName << "!\n";
+
 	std::string ppmHeader;
 	stream >> ppmHeader;
 	stream.ignore();
 	std::cout << ppmHeader << std::endl;
+
 	width = readNumber(stream);
 	height = readNumber(stream);
 	int maxColor = readNumber(stream);
+
 	initImage();
-	for (int i = height - 1; i >= 0; i--) {
-		for (int j = 0; j < width; j++) {
-			double val;
-			val = readNumber(stream);
-			image[i][j].x = val / maxColor;
-			val = readNumber(stream);
-			image[i][j].y = val / maxColor;
-			val = readNumber(stream);
-			image[i][j].z = val / maxColor;
+	if (ppmHeader == "P3") {
+		double val;
+		for (int i = 0; i < height; i++) {
+			for (int j = 0; j < width; j++) {
+				val = readNumber(stream);
+				image[i][j].x = val / maxColor;
+				val = readNumber(stream);
+				image[i][j].y = val / maxColor;
+				val = readNumber(stream);
+				image[i][j].z = val / maxColor;
+			}
+		}
+	} else {
+		unsigned char c;
+		for (int i = 0; i < height; i++) {
+			for (int j = 0; j < width; j++) {
+
+				stream >> c;
+				image[i][j].x = (double)c / maxColor;
+				stream >> c;
+				image[i][j].y = (double)c / maxColor;
+				stream >> c;
+				image[i][j].z = (double)c / maxColor;
+
+			}
+			//stream.ignore();
 		}
 	}
-	stream.close();
-	writeToPPMFile();
 
+	stream.close();
+	//writeToPPMFile();
 
 }
 
@@ -60,14 +80,20 @@ void Image::initImage() {
 }
 
 double Image::readNumber(std::ifstream& stream) {
-	char s;
+	std::string s;
 	while (!stream.eof()) {
 		stream >> s;
 		stream.ignore();
-		std::cout << static_cast<int>(s) << std::endl;
-		//if (isdigit(s.at(0))) return atof(s.c_str());
+		//std::cout << static_cast<int>(s) << std::endl;
+		//std::cout << s << std::endl;
+		//return static_cast<int>(s);
+		if (isdigit(s.at(0))) return atof(s.c_str());
+		if (s.at(0) == '#') {
+			getline(stream, s);
+		}
 	}
 	return 0.0;
+
 }
 
 Image::~Image() {

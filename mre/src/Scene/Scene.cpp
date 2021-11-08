@@ -97,7 +97,7 @@ void Scene::useDefaultScene() {
 	camera->setCameraCoords(lookFrom, lookAt, up, fov);
 
 	
-	Image texture = Image("Textures/test1.ppm");
+	Image texture = Image("Textures/test1_p3.ppm");
 
 	MRayTracerMat* mat = new MRayTracerMat();
 	MRayTracerMat* grey = new MRayTracerMat(0.5f);
